@@ -5,7 +5,7 @@
   <version>0.9.0</version>
   <description>Driver for using robot_interfaces with Solo12.</description>
   <maintainer email="felix.widmaier@tuebingen.mpg.de">Felix Widmaier</maintainer>
-  <license>TODO: License declaration</license>
+  <license>BSD 3-clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
