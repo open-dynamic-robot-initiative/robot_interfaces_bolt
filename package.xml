@@ -10,6 +10,8 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <build_depend>robot_interfaces</build_depend>
+
+  <depend>cli_utils</depend>
   <depend>solo</depend>
   <depend>real_time_tools</depend>
 

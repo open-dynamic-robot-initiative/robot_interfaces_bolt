@@ -7,6 +7,7 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(cli_utils REQUIRED)
 find_package(real_time_tools REQUIRED)
 find_package(robot_interfaces REQUIRED)
 find_package(solo REQUIRED)
@@ -20,7 +21,14 @@ target_include_directories(solo12_driver PUBLIC
 target_link_libraries(solo12_driver
     real_time_tools::real_time_tools
     robot_interfaces::robot_interfaces
-    solo::solo
+    solo::solo12
+)
+
+
+add_executable(demo_solo12_hold src/demo_solo12_hold.cpp)
+target_link_libraries(demo_solo12_hold
+    cli_utils::program_options
+    solo12_driver
 )
 
 
