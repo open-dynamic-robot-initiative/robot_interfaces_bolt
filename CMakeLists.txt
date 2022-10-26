@@ -7,9 +7,22 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(real_time_tools REQUIRED)
+find_package(robot_interfaces REQUIRED)
+find_package(solo REQUIRED)
+
+
+add_library(solo12_driver src/solo12_driver.cpp)
+target_include_directories(solo12_driver PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(solo12_driver
+    real_time_tools::real_time_tools
+    robot_interfaces::robot_interfaces
+    solo::solo
+)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
