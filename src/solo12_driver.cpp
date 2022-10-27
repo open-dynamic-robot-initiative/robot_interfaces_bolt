@@ -1,5 +1,7 @@
 #include <robot_interfaces_solo/solo12_driver.hpp>
 
+#include <boost/range/adaptor/indexed.hpp>
+
 namespace robot_interfaces_solo
 {
 void Solo12Driver::initialize()
@@ -83,15 +85,37 @@ Solo12Driver::Observation Solo12Driver::get_latest_observation()
 
 std::string Solo12Driver::get_error()
 {
+    std::string error_msg = "";
+
+    auto board_errors = solo12_.get_motor_board_errors();
+
     if (solo12_.has_error())
     {
-        // TODO: provide more specific error messages
-        return "Unknown Error";
+        for (auto error_code :
+             boost::adaptors::index(board_errors))
+        {
+            if (error_code.value() != 0)
+            {
+                if (!error_msg.empty())
+                {
+                    // add separator if there are multiple errors
+                    error_msg += " | ";
+                }
+
+                // TODO: translate error code into human-readable message
+                error_msg += "Board " + std::to_string(error_code.index()) +
+                             ": Error " + std::to_string(error_code.value());
+            }
+        }
+
+        if (!error_msg.empty())
+        {
+            error_msg += "Unknown Error";
+        }
+
     }
-    else
-    {
-        return "";
-    }
+
+    return error_msg;
 }
 
 void Solo12Driver::shutdown()
