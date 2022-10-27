@@ -7,10 +7,20 @@ namespace robot_interfaces_solo
 void Solo12Driver::initialize()
 {
     solo12_.initialize(config_.network_interface, config_.serial_port);
-    solo12_.wait_until_ready();
+
+    // we have to call send_target_joint_torque() to trigger enabling the motors
+    // and updating the state machine to know once it is ready
+    Action::Vector12d zero_torque = Action::Vector12d::Zero();
+    while (!solo12_.is_ready())
+    {
+        solo12_.send_target_joint_torque(zero_torque);
+        real_time_tools::Timer::sleep_ms(100);
+    }
 
     // TODO: homing
     // solo12_.request_calibration();
+
+    is_initialized_ = true;
 }
 
 Solo12Driver::Action Solo12Driver::apply_action(const Action &desired_action)
