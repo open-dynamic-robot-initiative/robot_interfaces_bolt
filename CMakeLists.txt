@@ -12,6 +12,8 @@ find_package(real_time_tools REQUIRED)
 find_package(robot_interfaces REQUIRED)
 find_package(solo REQUIRED)
 
+ament_export_dependencies(cli_utils real_time_tools robot_interfaces solo)
+
 
 add_library(solo12_driver src/solo12_driver.cpp)
 target_include_directories(solo12_driver PUBLIC
@@ -32,6 +34,20 @@ target_link_libraries(demo_solo12_hold
 )
 
 
+install(DIRECTORY include/ DESTINATION include)
+install(
+    TARGETS
+        solo12_driver
+        demo_solo12_hold
+    EXPORT export_${PROJECT_NAME}
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
+    INCLUDES DESTINATION include
+)
+
+
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
@@ -43,4 +59,6 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+
+ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_package()
