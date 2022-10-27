@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
     Solo12Config config;
     config.network_interface = args.network_interface;
-    config.serial_port = args.serial_port;
+    config.slider_serial_port = args.serial_port;
 
     Solo12Driver driver(config);
     auto data = std::make_shared<Solo12SingleProcessData>();

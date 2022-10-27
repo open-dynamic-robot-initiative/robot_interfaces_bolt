@@ -12,9 +12,9 @@
 #include <robot_interfaces/robot_frontend.hpp>
 #include <solo/solo12.hpp>
 
-#include "types.hpp"
 #include "solo12_action.hpp"
 #include "solo12_observation.hpp"
+#include "types.hpp"
 
 namespace robot_interfaces_solo
 {
@@ -29,11 +29,36 @@ typedef robot_interfaces::SingleProcessRobotData<Solo12Action,
 typedef robot_interfaces::MultiProcessRobotData<Solo12Action, Solo12Observation>
     Solo12MultiProcessData;
 
+/**
+ * @brief Configuration for the Solo12 driver.
+ */
 struct Solo12Config
 {
+    /**
+     * @brief Name of the network interface to which the robot is connected
+     * (e.g. "eth0").
+     */
     std::string network_interface = "";
-    std::string serial_port = "";
+
+    /**
+     * @brief Name of the serial port to which the hardware slider is connected.
+     *
+     * This can typically be left empty, in which case the port is
+     * auto-detected.
+     */
+    std::string slider_serial_port = "";
+
+    /**
+     * @brief Maximum current that can be applied to the motors (in Ampere).
+     */
     double max_motor_current_A = 8.0;
+
+    /**
+     * @brief Offset between home position (=encoder index) and zero position.
+     *
+     * Angles (in radian) between the encoder index and the zero position of
+     * each joint.
+     */
     Vector12d home_offset_rad = Vector12d::Zero();
 };
 

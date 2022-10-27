@@ -6,7 +6,7 @@ namespace robot_interfaces_solo
 {
 void Solo12Driver::initialize()
 {
-    solo12_.initialize(config_.network_interface, config_.serial_port);
+    solo12_.initialize(config_.network_interface, config_.slider_serial_port);
     solo12_.set_max_current(config_.max_motor_current_A);
 
     // we have to call send_target_joint_torque() to trigger enabling the motors
