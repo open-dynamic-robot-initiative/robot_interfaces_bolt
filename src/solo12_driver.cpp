@@ -87,13 +87,6 @@ Solo12Driver::Observation Solo12Driver::get_latest_observation()
     obs.imu_linear_acceleration = solo12_.get_imu_linear_acceleration();
     obs.imu_attitude = solo12_.get_imu_attitude();
 
-    // TODO those are probably not needed in the observation but should be used
-    // here to check for failures
-    // obs.motor_enabled = solo12_.get_motor_enabled();
-    // obs.motor_ready = solo12_.get_motor_ready();
-    // obs.motor_board_enabled = solo12_.get_motor_board_enabled();
-    // obs.motor_board_errors = solo12_.get_motor_board_errors();
-
     obs.num_sent_command_packets = solo12_.get_num_sent_command_packets();
     obs.num_lost_command_packets = solo12_.get_num_lost_command_packets();
     obs.num_sent_sensor_packets = solo12_.get_num_sent_sensor_packets();
