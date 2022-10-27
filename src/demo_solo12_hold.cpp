@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Demo using Solo12 that holds all joints at its current position.
+ * \brief Demo using Solo12 that holds all joints at their current positions.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #include <cli_utils/program_options.hpp>
@@ -12,16 +12,14 @@ using namespace robot_interfaces_solo;
 class Args : public cli_utils::ProgramOptions
 {
 public:
-    std::string network_interface, serial_port;
+    std::string network_interface = "", serial_port = "";
+    float kp = 3.0, kd = 0.05;
 
     std::string help() const override
     {
-        return R"(Run pose detection on image files of one camera observation.
+        return R"(Demo using Solo12 that holds all joints at their current positions.
 
-Load images of the three cameras from files "camera{60,180,300}.png", run the
-pose detection on them and visualize the result.
-
-Usage:  single_observation [options] <data-dir>
+Usage:  demo_solo12_hold <network-interface> [<serial-port>]
 
 )";
     }
@@ -38,8 +36,15 @@ Usage:  single_observation [options] <data-dir>
              "Name of the network interface to which the robot is connected."
              " (e.g. 'eth0').")
             ("serial-port",
-             po::value<std::string>(&serial_port)->required(),
-             "Serial port to which the hardware slider is connected.")
+             po::value<std::string>(&serial_port),
+             "Serial port to which the hardware slider is connected."
+             " If not set, it is auto-detected.")
+            ("kp",
+             po::value<float>(&kp),
+             "P-gain for the position control.")
+            ("kd",
+             po::value<float>(&kd),
+             "D-gain for the position control.")
             ;
         // clang-format on
 
@@ -72,8 +77,8 @@ int main(int argc, char *argv[])
     Solo12Observation obs = frontend.get_observation(t);
 
     Solo12Action action;
-    action.joint_position_gains.fill(1);
-    action.joint_velocity_gains.fill(0.5);
+    action.joint_position_gains.fill(args.kp);
+    action.joint_velocity_gains.fill(args.kd);
     action.joint_positions = obs.joint_positions;
 
     while (backend->is_running())
