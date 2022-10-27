@@ -32,6 +32,7 @@ struct Solo12Config
 {
     std::string network_interface = "";
     std::string serial_port = "";
+    double max_motor_current_A = 8.0;
 };
 
 class Solo12Driver
