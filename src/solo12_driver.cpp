@@ -123,8 +123,11 @@ std::string Solo12Driver::get_error()
         {
             error_msg += "Unknown Error";
         }
-
     }
+
+    // TODO
+    // Some errors on the master board are not reported but simply result in a
+    // motor to be disabled.  So check for this explicitly.
 
     return error_msg;
 }
