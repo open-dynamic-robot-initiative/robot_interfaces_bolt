@@ -12,6 +12,7 @@
 #include <robot_interfaces/robot_frontend.hpp>
 #include <solo/solo12.hpp>
 
+#include "types.hpp"
 #include "solo12_action.hpp"
 #include "solo12_observation.hpp"
 

@@ -11,7 +11,7 @@ void Solo12Driver::initialize()
 
     // we have to call send_target_joint_torque() to trigger enabling the motors
     // and updating the state machine to know once it is ready
-    Action::Vector12d zero_torque = Action::Vector12d::Zero();
+    Vector12d zero_torque = Vector12d::Zero();
     while (!solo12_.is_ready())
     {
         solo12_.send_target_joint_torque(zero_torque);
