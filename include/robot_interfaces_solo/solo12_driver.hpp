@@ -34,6 +34,7 @@ struct Solo12Config
     std::string network_interface = "";
     std::string serial_port = "";
     double max_motor_current_A = 8.0;
+    Vector12d home_offset_rad = Vector12d::Zero();
 };
 
 class Solo12Driver

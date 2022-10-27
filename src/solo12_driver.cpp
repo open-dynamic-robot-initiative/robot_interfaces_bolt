@@ -18,8 +18,16 @@ void Solo12Driver::initialize()
         real_time_tools::Timer::sleep_ms(100);
     }
 
-    // TODO: homing
-    // solo12_.request_calibration();
+    // Homing
+    // The homing is also driven by calling send_target_joint_torque() in a
+    // loop.  Use do-while-loop because after requesting calibration, we first
+    // need to call it once to change the state from "ready" to "calibrate".
+    solo12_.request_calibration(config_.home_offset_rad);
+    do
+    {
+        solo12_.send_target_joint_torque(zero_torque);
+        real_time_tools::Timer::sleep_ms(1);
+    } while (!solo12_.is_ready());
 
     is_initialized_ = true;
 }
@@ -102,8 +110,7 @@ std::string Solo12Driver::get_error()
 
     if (solo12_.has_error())
     {
-        for (auto error_code :
-             boost::adaptors::index(board_errors))
+        for (auto error_code : boost::adaptors::index(board_errors))
         {
             if (error_code.value() != 0)
             {
