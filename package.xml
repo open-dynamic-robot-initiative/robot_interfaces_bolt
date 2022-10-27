@@ -9,6 +9,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <build_depend>mpi_cmake_modules</build_depend>
   <build_depend>robot_interfaces</build_depend>
 
   <depend>cli_utils</depend>

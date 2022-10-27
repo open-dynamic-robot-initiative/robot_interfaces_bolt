@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.8)
 project(robot_interfaces_solo)
 
+# Specify C++ Standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+
+# libraries need to be position independent for building Python modules
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -8,6 +15,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(cli_utils REQUIRED)
+find_package(mpi_cmake_modules REQUIRED)
 find_package(real_time_tools REQUIRED)
 find_package(robot_interfaces REQUIRED)
 find_package(solo REQUIRED)
@@ -31,6 +39,12 @@ add_executable(demo_solo12_hold src/demo_solo12_hold.cpp)
 target_link_libraries(demo_solo12_hold
     cli_utils::program_options
     solo12_driver
+)
+
+
+# Python Bindings
+add_pybind11_module(solo12 srcpy/solo12.cpp
+    LINK_LIBRARIES solo12_driver
 )
 
 
