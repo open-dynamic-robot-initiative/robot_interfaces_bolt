@@ -54,6 +54,7 @@ add_pybind11_module(solo12 srcpy/solo12.cpp
 
 
 install(DIRECTORY include/ DESTINATION include)
+
 install(
     TARGETS
         solo12_driver
@@ -65,6 +66,11 @@ install(
     INCLUDES DESTINATION include
 )
 
+install_scripts(
+    demos/demo_solo12_sine.py
+
+    DESTINATION lib/${PROJECT_NAME}
+)
 
 
 if(BUILD_TESTING)
