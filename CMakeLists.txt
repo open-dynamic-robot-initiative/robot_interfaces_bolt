@@ -68,6 +68,7 @@ install(
 
 install_scripts(
     demos/demo_solo12_sine.py
+    scripts/position_ctrl.py
 
     DESTINATION lib/${PROJECT_NAME}
 )
