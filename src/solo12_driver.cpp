@@ -121,7 +121,7 @@ std::string Solo12Driver::get_error()
             }
         }
 
-        if (!error_msg.empty())
+        if (error_msg.empty())
         {
             error_msg += "Unknown Error";
         }
