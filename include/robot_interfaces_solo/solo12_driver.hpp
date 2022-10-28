@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <filesystem>
+
 #include <robot_interfaces/monitored_robot_driver.hpp>
 #include <robot_interfaces/robot_backend.hpp>
 #include <robot_interfaces/robot_data.hpp>
@@ -60,6 +62,16 @@ struct Solo12Config
      * each joint.
      */
     Vector12d home_offset_rad = Vector12d::Zero();
+
+    /**
+     * @brief Load configuration from a YAML file.
+     *
+     * @param file Path to the file
+     *
+     * @return Configuration instance.  For parameters not provided in the file
+     *         the default values are kept.
+     */
+    static Solo12Config from_file(const std::filesystem::path &file);
 };
 
 class Solo12Driver

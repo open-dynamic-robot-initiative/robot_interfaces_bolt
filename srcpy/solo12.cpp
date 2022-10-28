@@ -6,6 +6,7 @@
 #include <pybind11/eigen.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/stl/filesystem.h>
 
 #include <robot_interfaces/pybind_helper.hpp>
 #include <robot_interfaces_solo/solo12_driver.hpp>
@@ -94,8 +95,7 @@ PYBIND11_MODULE(solo12, m)
         .def_readwrite("num_lost_sensor_packets",
                        &Solo12Observation::num_lost_sensor_packets);
 
-    pybind11::class_<Solo12Config, std::shared_ptr<Solo12Config>>(
-        m, "Config")
+    pybind11::class_<Solo12Config, std::shared_ptr<Solo12Config>>(m, "Config")
         .def(pybind11::init<>())
         .def_readwrite("network_interface",
                        &Solo12Config::network_interface,
@@ -114,7 +114,11 @@ PYBIND11_MODULE(solo12, m)
                        &Solo12Config::home_offset_rad,
                        "Offset between home position (=encoder index) and zero "
                        "position.\n\nAngles (in radian) between the encoder "
-                       "index and the zero position of each joint.");
+                       "index and the zero position of each joint.")
+        .def("from_file",
+             &Solo12Config::from_file,
+             "Load configuration from a YAML file (using default values for "
+             "parameters missing in the file).");
 
     m.def("create_backend",
           &create_solo12_backend,

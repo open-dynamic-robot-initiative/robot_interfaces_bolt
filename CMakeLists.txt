@@ -15,10 +15,13 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(cli_utils REQUIRED)
+find_package(yaml_utils REQUIRED)
 find_package(mpi_cmake_modules REQUIRED)
 find_package(real_time_tools REQUIRED)
 find_package(robot_interfaces REQUIRED)
 find_package(solo REQUIRED)
+
+find_package(fmt REQUIRED)
 
 ament_export_dependencies(cli_utils real_time_tools robot_interfaces solo)
 
@@ -32,6 +35,8 @@ target_link_libraries(solo12_driver
     real_time_tools::real_time_tools
     robot_interfaces::robot_interfaces
     solo::solo12
+    yaml_utils::yaml_utils
+    fmt::fmt
 )
 
 
@@ -63,14 +68,18 @@ install(
 
 
 if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # uncomment the line when a copyright and license is not present in all source files
-  #set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # uncomment the line when this package is not in a git repo
-  #set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
+    find_package(ament_cmake_pytest REQUIRED)
+    find_package(ament_lint_auto REQUIRED)
+    # the following line skips the linter which checks for copyrights
+    # uncomment the line when a copyright and license is not present in all source files
+    #set(ament_cmake_copyright_FOUND TRUE)
+    # the following line skips cpplint (only works in a git repo)
+    # uncomment the line when this package is not in a git repo
+    #set(ament_cmake_cpplint_FOUND TRUE)
+    ament_lint_auto_find_test_dependencies()
+
+    # Python tests
+    ament_add_pytest_test(test_solo12_config tests/test_solo12_config.py)
 endif()
 
 
