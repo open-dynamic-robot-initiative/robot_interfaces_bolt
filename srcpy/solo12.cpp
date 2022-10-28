@@ -68,7 +68,8 @@ PYBIND11_MODULE(solo12, m)
                 action.joint_velocity_gains = t[4].cast<Vector12d>();
 
                 return action;
-            }));
+            }))
+        .def("Zero", &Solo12Action::Zero, "Create a zero-torque action");
 
     pybind11::class_<Solo12Observation>(m, "Observation")
         .def(pybind11::init<>())
