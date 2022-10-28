@@ -35,7 +35,7 @@ target_link_libraries(solo12_driver
 )
 
 
-add_executable(demo_solo12_hold src/demo_solo12_hold.cpp)
+add_executable(demo_solo12_hold demos/demo_solo12_hold.cpp)
 target_link_libraries(demo_solo12_hold
     cli_utils::program_options
     solo12_driver
