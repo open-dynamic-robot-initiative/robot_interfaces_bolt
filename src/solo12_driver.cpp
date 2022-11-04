@@ -11,14 +11,19 @@ void Solo12Driver::initialize()
     solo12_.initialize(config_.network_interface, config_.slider_serial_port);
     solo12_.set_max_current(config_.max_motor_current_A);
 
-    // we have to call send_target_joint_torque() to trigger enabling the motors
-    // and updating the state machine to know once it is ready
+    real_time_tools::Spinner spinner;
+    spinner.set_period(0.001);
+
+    // we have to call acquire_sensors() and send_target_joint_torque() to
+    // trigger enabling the motors and updating the state machine to know once
+    // it is ready
     Vector12d zero_torque = Vector12d::Zero();
-    while (!solo12_.is_ready())
+    do
     {
+        solo12_.acquire_sensors();
         solo12_.send_target_joint_torque(zero_torque);
-        real_time_tools::Timer::sleep_ms(100);
-    }
+        spinner.spin();
+    } while (!solo12_.is_ready());
 
     // Homing
     // The homing is also driven by calling send_target_joint_torque() in a
@@ -27,8 +32,9 @@ void Solo12Driver::initialize()
     solo12_.request_calibration(config_.home_offset_rad);
     do
     {
+        solo12_.acquire_sensors();
         solo12_.send_target_joint_torque(zero_torque);
-        real_time_tools::Timer::sleep_ms(1);
+        spinner.spin();
     } while (!solo12_.is_ready());
 
     is_initialized_ = true;
