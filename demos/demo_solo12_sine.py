@@ -23,7 +23,7 @@ def main():
     kp = 3.0
     kd = 0.05
     freq = 0.5
-    amplitude = np.pi
+    amplitude = np.pi / 4
 
     # load robot configuration
     config = solo12.Config.from_file(args.config_file)
@@ -50,17 +50,20 @@ def main():
 
     while True:
         # compute target positions and velocities for the joints
-        target_positions = initial_positions + amplitude * np.sin(2 * np.pi * freq * t)
-        target_velocities = (
-            2.0 * np.pi * freq * amplitude * np.cos(2 * np.pi * freq * t)
+        t_ms = t / 1000.0
+        target_positions = initial_positions + amplitude * np.sin(
+            2 * np.pi * freq * t_ms
         )
+        target_velocities = [
+            2.0 * np.pi * freq * amplitude * np.cos(2 * np.pi * freq * t_ms)
+        ] * 12
 
         action = solo12.Action()
-        action.joint_torques = [0] * 12
-        action.joint_positions = target_positions
-        action.joint_velocities = target_velocities
-        action.joint_position_gains = [kp] * 12
-        action.joint_velocity_gains = [kd] * 12
+        action.joint_torques = np.array([0.0] * 12)
+        action.joint_positions = np.array(target_positions)
+        action.joint_velocities = np.array(target_velocities)
+        action.joint_position_gains = np.array([kp] * 12)
+        action.joint_velocity_gains = np.array([kd] * 12)
 
         t = robot_frontend.append_desired_action(action)
         robot_frontend.wait_until_timeindex(t)
