@@ -12,7 +12,7 @@ using namespace robot_interfaces_solo;
 class Args : public cli_utils::ProgramOptions
 {
 public:
-    std::string network_interface = "", serial_port = "";
+    std::string config_file;
     float kp = 3.0, kd = 0.05;
 
     std::string help() const override
@@ -31,14 +31,9 @@ Usage:  demo_solo12_hold <network-interface> [<serial-port>]
         namespace po = boost::program_options;
         // clang-format off
         options.add_options()
-            ("network-interface",
-             po::value<std::string>(&network_interface)->required(),
-             "Name of the network interface to which the robot is connected."
-             " (e.g. 'eth0').")
-            ("serial-port",
-             po::value<std::string>(&serial_port),
-             "Serial port to which the hardware slider is connected."
-             " If not set, it is auto-detected.")
+            ("config-file",
+             po::value<std::string>(&config_file)->required(),
+             "Path to the driver configuration file.")
             ("kp",
              po::value<float>(&kp),
              "P-gain for the position control.")
@@ -48,8 +43,7 @@ Usage:  demo_solo12_hold <network-interface> [<serial-port>]
             ;
         // clang-format on
 
-        positional.add("network-interface", 1);
-        positional.add("serial-port", 1);
+        positional.add("config-file", 1);
     }
 };
 
@@ -61,11 +55,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    Solo12Config config;
-    config.network_interface = args.network_interface;
-    config.slider_serial_port = args.serial_port;
+    Solo12Config config = Solo12Config::from_file(args.config_file);
 
-    Solo12Driver driver(config);
     auto data = std::make_shared<Solo12SingleProcessData>();
     Solo12Backend::Ptr backend = create_solo12_backend(data, config);
     Solo12Frontend frontend(data);
