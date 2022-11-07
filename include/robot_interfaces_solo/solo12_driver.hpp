@@ -7,6 +7,9 @@
 
 #include <filesystem>
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+
 #include <robot_interfaces/monitored_robot_driver.hpp>
 #include <robot_interfaces/robot_backend.hpp>
 #include <robot_interfaces/robot_data.hpp>
@@ -64,6 +67,14 @@ struct Solo12Config
     Vector12d home_offset_rad = Vector12d::Zero();
 
     /**
+     * @brief Logger output level.
+     *
+     * One of {"trace", "debug", "info", "warning", "error", "critical", "off"}.
+     * See documentation of spdlog for details.
+     */
+    std::string logger_level = "warning";
+
+    /**
      * @brief Load configuration from a YAML file.
      *
      * @param file Path to the file
@@ -78,9 +89,9 @@ class Solo12Driver
     : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
 {
 public:
-    Solo12Driver(const Solo12Config &config) : config_(config)
-    {
-    }
+    const std::string LOGGER_NAME = "Solo12Driver";
+
+    Solo12Driver(const Solo12Config &config);
 
     // RobotDriver methods
     void initialize() override;
