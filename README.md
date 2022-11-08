@@ -10,12 +10,10 @@ Installation
 
 ### Basic Usage
 
-FIXME: setup an Apptainer image similar to trifinger_user/robot
+TODO: setup an Apptainer image similar to trifinger_user/robot
 
 
 ### For Development
-
-FIXME: define a treep project for it.
 
 Get the **trifinger_base** Apptainer image (it also contains everything needed
 for this package):
@@ -48,8 +46,19 @@ Apptainer> colcon build
 Apptainer> source install/setup.bash  # Needed to be able to use the built packages
 ```
 
+To run an application with Apptainer:
 
-FIXME: Make clear that all commands below should be run in the container
+```bash
+$ cd ~/my_workspace/workspace
+$ apptainer shell -e path/to/trifinger_user.sif
+Apptainer> source install/setup.bash
+# now you can run applications (e.g. one of the demos):
+Apptainer> ros2 run robot_interfaces_solo demo_solo12_sine path/to/config.yml
+```
+
+**NOTE:** When running commands in the following, it is always assumed that this
+is done in inside the container with the setup.bash of the workspace sourced.
+
 
 
 Configuration
@@ -125,6 +134,52 @@ Actions and Observations
 
 TODO: Add api doc for the action and observation types.
 
+### Solo12Action
+
+`Solo12Action` has the following fields.  Each is a vector with 12 elements, one
+for each joint of the robot.
+
+TODO: build and link docs of solo package for a mapping of index to joint
+
+- `joint_torques`:  Desired torques of the joints.
+- `joint_positions`:  Desired positions of the joints (`joint_position_gains`
+  needs to be set as well for this to be effective).
+- `joint_velocities`:  Desired velocities of the joints (`joint_velocity_gains`
+  needs to be set as well for this to be effective).
+- `joint_position_gains`:  P-gains of the on-board PD+ controller.
+- `joint_velocity_gains`:  D-gains of the on-board PD+ controller.
+
+
+### Solo12Observation
+
+`Solo12Observation` has the following fields:
+The numbers in square brackets denote the length of the vectors.
+
+Measurements from the joints:
+- `joint_positions` [12]
+- `joint_velocities` [12]
+- `joint_torques` [12]
+- `joint_target_torques` [12]  (?)
+- `joint_encoder_index` [12]  (?)
+
+Positions of the hardware sliders:
+- `slider_positions` [4]
+
+Measurements from the IMU:
+- `imu_accelerometer` [3]
+- `imu_gyroscope` [3]
+- `imu_linear_acceleration` [3]
+- `imu_attitude` [4]
+
+Information on connection reliability (typically only relevant when using wifi):
+- `num_sent_command_packets`:  Total number of command packets sent to the
+  robot.
+- `num_lost_command_packets`:  Number of command packets that were sent to the
+  robot but were lost in transmission.
+- `num_sent_sensor_packets`:  Total number of sensor packets sent from the
+  robot.
+- `num_lost_sensor_packets`:  Number of sensor packets that were sent from the
+  robot but were lost in transmission.
 
 
 
