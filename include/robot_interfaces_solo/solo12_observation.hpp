@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <cstdint>
+
 #include <Eigen/Eigen>
 #include <cereal/cereal.hpp>
 #include <serialization_utils/cereal_eigen.hpp>
@@ -32,10 +34,10 @@ struct Solo12Observation : public robot_interfaces::Loggable
     Eigen::Vector4d imu_attitude;
 
     // robot status
-    double num_sent_command_packets;
-    double num_lost_command_packets;
-    double num_sent_sensor_packets;
-    double num_lost_sensor_packets;
+    uint32_t num_sent_command_packets;
+    uint32_t num_lost_command_packets;
+    uint32_t num_sent_sensor_packets;
+    uint32_t num_lost_sensor_packets;
 
     template <class Archive>
     void serialize(Archive& archive)
@@ -146,10 +148,10 @@ struct Solo12Observation : public robot_interfaces::Loggable
                   _imu_gyroscope,
                   _imu_linear_acceleration,
                   _imu_attitude,
-                  {num_sent_command_packets},
-                  {num_lost_command_packets},
-                  {num_sent_sensor_packets},
-                  {num_lost_sensor_packets}};
+                  {static_cast<double>(num_sent_command_packets)},
+                  {static_cast<double>(num_lost_command_packets)},
+                  {static_cast<double>(num_sent_sensor_packets)},
+                  {static_cast<double>(num_lost_sensor_packets)}};
 
         return result;
     }
