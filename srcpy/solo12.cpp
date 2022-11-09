@@ -20,6 +20,9 @@ PYBIND11_MODULE(solo12, m)
     // nice in the Sphinx documentation.
     options.disable_function_signatures();
 
+    // import robot_interfaces to provide bindings for Status
+    pybind11::module::import("robot_interfaces");
+
     robot_interfaces::create_interface_python_bindings<Solo12Action,
                                                        Solo12Observation>(m);
 
