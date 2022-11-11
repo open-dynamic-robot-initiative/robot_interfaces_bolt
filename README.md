@@ -120,6 +120,9 @@ It can be run with
 ros2 run robot_interfaces_solo solo12_show_data path/to/config.yml
 ```
 
+It should look like this:
+![Screenshot of solo12_show_data](doc/images/solo12_show_data_screenshot.png)
+
 
 
 Demos
