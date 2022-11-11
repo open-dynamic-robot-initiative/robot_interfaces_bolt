@@ -17,26 +17,49 @@
 
 namespace robot_interfaces_solo
 {
+/**
+ * @brief Observation of the Solo12 robot.
+ *
+ * This observation class contains all the sensor data provided by the Solo12
+ * robot.
+ * The names of the attributes correspond to the names used in ``solo::Solo12``
+ * of the solo package (for each attribute X, there is a method ``get_X()``).
+ * See there for more information.
+ */
 struct Solo12Observation : public robot_interfaces::Loggable
 {
-    // joints data
+    //! Measured joint positions.
     Vector12d joint_positions;
+    //! Measured joint velocities.
     Vector12d joint_velocities;
+    //! Measured joint torques.
     Vector12d joint_torques;
+    //! Target joint torques applied by the controller.
     Vector12d joint_target_torques;
+    //! Currently not set!
     Vector12d joint_encoder_index;
 
-    // additional data
+    //! Positions of the hardware sliders, if connected (range: 0 to 1)
     Eigen::Vector4d slider_positions;
+
+    //! Measurement of the IMU accelerometer.
     Eigen::Vector3d imu_accelerometer;
+    //! Measurement of the IMU gyroscope.
     Eigen::Vector3d imu_gyroscope;
+    //! Linear acceleration measured by the IMU.
     Eigen::Vector3d imu_linear_acceleration;
+    //! Attitude measured by the IMU.
     Eigen::Vector4d imu_attitude;
 
-    // robot status
+    //! Total number of command packets sent to the robot.
     uint32_t num_sent_command_packets;
+    //! Number of command packets that were sent to the robot but were lost in
+    //! transmission.
     uint32_t num_lost_command_packets;
+    //! Total number of sensor packets sent from the robot.
     uint32_t num_sent_sensor_packets;
+    //! Number of sensor packets that were sent from the robot but were lost in
+    //! transmission.
     uint32_t num_lost_sensor_packets;
 
     template <class Archive>

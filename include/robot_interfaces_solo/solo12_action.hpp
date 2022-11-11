@@ -15,12 +15,28 @@
 
 namespace robot_interfaces_solo
 {
+/**
+ * @brief Action for the Solo12 robot.
+ *
+ * Solo12 has an on-board PD+ controller which can be used by setting the P and
+ * D control gains per joint to the fields @ref joint_position_gains and @ref
+ * joint_velocity_gains.
+ * If the gains are zero, @ref joint_positions and @ref joint_velocities are
+ * ignored and only the torque commands in @ref joint_torques are executed.
+ */
 struct Solo12Action : public robot_interfaces::Loggable
 {
+    //! Desired joint torques.
     Vector12d joint_torques = Vector12d::Zero();
+    //! Desired joint positions.  Only used if @ref joint_position_gains are set
+    //! to a non-zero value.
     Vector12d joint_positions = Vector12d::Zero();
+    //! Desired joint velocities.  Only used if @ref joint_velocity_gains are
+    //! set to a non-zero value.
     Vector12d joint_velocities = Vector12d::Zero();
+    //! P-gains of the on-board PD+ controller.
     Vector12d joint_position_gains = Vector12d::Zero();
+    //! D-gains of the on-board PD+ controller.
     Vector12d joint_velocity_gains = Vector12d::Zero();
 
     /**

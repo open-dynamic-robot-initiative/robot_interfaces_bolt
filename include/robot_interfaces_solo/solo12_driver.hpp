@@ -131,12 +131,34 @@ private:
     double t_ = 0.0;
 };
 
+/**
+ * @brief Create robot backend using the Solo12 driver.
+ *
+ * @see Solo12Driver
+ *
+ * @param robot_data  Instance of RobotData used for communication.
+ * @param driver_config  Driver configuration.
+ * @param first_action_timeout  Duration for which the backend waits for the
+ *     first action to arrive.  If exceeded, the backend shuts down.
+ * @param max_number_of_actions  Number of actions after which the backend
+ *     automatically shuts down.
+ *
+ * @return A RobotBackend instances which uses a Solo12 driver.
+ */
 Solo12Backend::Ptr create_solo12_backend(
     Solo12Data::Ptr robot_data,
     const Solo12Config &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),
     const uint32_t max_number_of_actions = 0);
 
+/**
+ * @brief Create robot backend using the fake Solo12 driver (for testing).
+ *
+ * Arguments are the same as for @ref create_solo12_backend.
+ *
+ * @see FakeSolo12Driver
+ * @see create_solo12_backend
+ */
 Solo12Backend::Ptr create_fake_solo12_backend(
     Solo12Data::Ptr robot_data,
     const Solo12Config &driver_config,
