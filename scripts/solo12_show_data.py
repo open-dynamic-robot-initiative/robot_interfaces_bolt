@@ -14,6 +14,52 @@ import tabulate
 from robot_interfaces_solo import solo12
 
 
+class Robot:
+    def __init__(self, config_file: str, fake_robot: bool = False) -> None:
+        self.kp = 3.0
+        self.kd = 0.05
+
+        config = solo12.Config.from_file(config_file)
+        robot_data = solo12.SingleProcessData()
+        if fake_robot:
+            self.robot_backend = solo12.create_fake_backend(robot_data, config)
+        else:
+            self.robot_backend = solo12.create_backend(robot_data, config)
+        self.robot_frontend = solo12.Frontend(robot_data)
+
+        self.t = 0
+
+    def initialize(self):
+        # Initializes the robot (e.g. performs homing).
+        self.robot_backend.initialize()
+
+        # start by sending a zero-torque action (this is needed to start the backend
+        # loop)
+        action = solo12.Action.Zero()
+        self.t = self.robot_frontend.append_desired_action(action)
+
+        # get the initial joint positions to construct the desired action
+        observation = self.robot_frontend.get_observation(self.t)
+
+        self.desired_action = solo12.Action()
+        self.desired_action.joint_torques = np.array([0.0] * 12)
+        self.desired_action.joint_positions = observation.joint_positions
+        self.desired_action.joint_velocities = np.array([0.0] * 12)
+        self.desired_action.joint_position_gains = np.array([self.kp] * 12)
+        self.desired_action.joint_velocity_gains = np.array([self.kd] * 12)
+
+    def update(self):
+        # get data
+        obs = self.robot_frontend.get_observation(self.t)
+        applied_action = self.robot_frontend.get_applied_action(self.t)
+        status = self.robot_frontend.get_status(self.t)
+
+        # send action
+        self.t = self.robot_frontend.append_desired_action(self.desired_action)
+
+        return obs, status, applied_action
+
+
 class SliderBar(u.ProgressBar):
     def __init__(self, label):
         super().__init__(None, "progressbar.complete", 0.0, 1.0)
@@ -41,7 +87,9 @@ def labeled_vector(label: str, vector: typing.Sequence, fmt: str = "% .4f") -> s
 
 
 class Window:
-    def __init__(self):
+    def __init__(self, robot: Robot):
+        self.robot = robot
+
         # define all the text fields
         self.obs_motor_data_text = u.Text("")
         self.obs_imu_acc_texts = u.Text("")
@@ -129,12 +177,21 @@ class Window:
         self.loop = u.MainLoop(frame, palette=palette, unhandled_input=exit_on_)
 
     def run(self):
+        update_interval_s = 0.001
+
+        # set update callback
+        def update_window(loop: u.MainLoop, win):
+            win.update_data()
+            loop.set_alarm_in(update_interval_s, update_window, win)
+
+        self.loop.set_alarm_in(update_interval_s, update_window, self)
         self.loop.run()
 
-    def update_data(
-        self, observation: solo12.Observation, status, applied_action: solo12.Action
-    ):
+    def update_data(self):
         """Update the text fields based on the given observation."""
+
+        observation, status, applied_action = self.robot.update()
+
         ## Observation
         obs = observation
 
@@ -213,52 +270,6 @@ class Window:
         )
 
 
-class Robot:
-    def __init__(self, config_file: str, fake_robot: bool = False) -> None:
-        self.kp = 3.0
-        self.kd = 0.05
-
-        config = solo12.Config.from_file(config_file)
-        robot_data = solo12.SingleProcessData()
-        if fake_robot:
-            self.robot_backend = solo12.create_fake_backend(robot_data, config)
-        else:
-            self.robot_backend = solo12.create_backend(robot_data, config)
-        self.robot_frontend = solo12.Frontend(robot_data)
-
-        self.t = 0
-
-    def initialize(self):
-        # Initializes the robot (e.g. performs homing).
-        self.robot_backend.initialize()
-
-        # start by sending a zero-torque action (this is needed to start the backend
-        # loop)
-        action = solo12.Action.Zero()
-        self.t = self.robot_frontend.append_desired_action(action)
-
-        # get the initial joint positions to construct the desired action
-        observation = self.robot_frontend.get_observation(self.t)
-
-        self.desired_action = solo12.Action()
-        self.desired_action.joint_torques = np.array([0.0] * 12)
-        self.desired_action.joint_positions = observation.joint_positions
-        self.desired_action.joint_velocities = np.array([0.0] * 12)
-        self.desired_action.joint_position_gains = np.array([self.kp] * 12)
-        self.desired_action.joint_velocity_gains = np.array([self.kd] * 12)
-
-    def update(self):
-        # get data
-        obs = self.robot_frontend.get_observation(self.t)
-        applied_action = self.robot_frontend.get_applied_action(self.t)
-        status = self.robot_frontend.get_status(self.t)
-
-        # send action
-        self.t = self.robot_frontend.append_desired_action(self.desired_action)
-
-        return obs, status, applied_action
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -276,15 +287,7 @@ def main():
     robot = Robot(args.config_file, args.fake)
     robot.initialize()
 
-    win = Window()
-
-    def update_window(loop: u.MainLoop, win):
-        observation, status, applied_action = robot.update()
-        win.update_data(observation, status, applied_action)
-        loop.set_alarm_in(0.001, update_window, win)
-
-    win.loop.set_alarm_in(0.001, update_window, win)
-
+    win = Window(robot)
     win.run()
 
 
