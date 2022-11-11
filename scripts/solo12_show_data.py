@@ -75,11 +75,6 @@ class SliderBar(u.ProgressBar):
         return f"slider {self.label}: {self.slider_position:.4f}"
 
 
-def exit_on_(key):
-    if key in ("q", "Q", "esc"):
-        raise u.ExitMainLoop()
-
-
 def labeled_vector(label: str, vector: typing.Sequence, fmt: str = "% .4f") -> str:
     n = len(vector)
     fmt_str = "%s " + " ".join([fmt] * n)
@@ -174,9 +169,15 @@ class Window:
             ("progressbar.complete", "default", "dark gray"),
         ]
 
-        self.loop = u.MainLoop(frame, palette=palette, unhandled_input=exit_on_)
+        self.loop = u.MainLoop(
+            frame, palette=palette, unhandled_input=self._key_press_handler
+        )
 
-    def run(self):
+    def _key_press_handler(self, key: str) -> None:
+        if key in ("q", "Q", "esc"):
+            raise u.ExitMainLoop()
+
+    def run(self) -> None:
         update_interval_s = 0.001
 
         # set update callback
@@ -187,7 +188,7 @@ class Window:
         self.loop.set_alarm_in(update_interval_s, update_window, self)
         self.loop.run()
 
-    def update_data(self):
+    def update_data(self) -> None:
         """Update the text fields based on the given observation."""
 
         observation, status, applied_action = self.robot.update()
