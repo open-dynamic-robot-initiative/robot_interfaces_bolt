@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """Show all sensor data of Solo12.
 
-Runs position control to hold the joints in place and print all observation data to the
-terminal.
+Show all data from observation, status and applied action in a simple TUI.  Press M to
+toggle between position control mode (holding all joints at their current position) and
+zero torque mode.
 """
 import argparse
+import enum
 import typing
 
 import numpy as np
@@ -15,9 +17,14 @@ from robot_interfaces_solo import solo12
 
 
 class Robot:
+    class ControlMode(enum.Enum):
+        ZERO_TORQUE = 1
+        HOLD_POSITION = 2
+
     def __init__(self, config_file: str, fake_robot: bool = False) -> None:
         self.kp = 3.0
         self.kd = 0.05
+        self.control_mode = Robot.ControlMode.HOLD_POSITION
 
         config = solo12.Config.from_file(config_file)
         robot_data = solo12.SingleProcessData()
@@ -54,10 +61,24 @@ class Robot:
         applied_action = self.robot_frontend.get_applied_action(self.t)
         status = self.robot_frontend.get_status(self.t)
 
-        # send action
+        # send action and update t
         self.t = self.robot_frontend.append_desired_action(self.desired_action)
 
         return obs, status, applied_action
+
+    def set_control_mode(self, mode: ControlMode):
+        self.control_mode = mode
+
+        if self.control_mode == Robot.ControlMode.ZERO_TORQUE:
+            self.desired_action = solo12.Action.Zero()
+        elif self.control_mode == Robot.ControlMode.HOLD_POSITION:
+            observation = self.robot_frontend.get_observation(self.t)
+            self.desired_action = solo12.Action()
+            self.desired_action.joint_torques = np.array([0.0] * 12)
+            self.desired_action.joint_positions = observation.joint_positions
+            self.desired_action.joint_velocities = np.array([0.0] * 12)
+            self.desired_action.joint_position_gains = np.array([self.kp] * 12)
+            self.desired_action.joint_velocity_gains = np.array([self.kd] * 12)
 
 
 class SliderBar(u.ProgressBar):
@@ -98,6 +119,7 @@ class Window:
         self.status_error_state_text = u.Text("")
         self.status_error_msg_text = u.Text("")
         self.applied_action_text = u.Text("")
+        self.control_mode_text = u.Text("")
 
         # define the window layout
         motor_data_box = u.LineBox(
@@ -162,23 +184,36 @@ class Window:
             align="center",
             width="clip",
         )
-        footer = u.Text(" Press Q to exit")
-        frame = u.Frame(body=body, header=header, footer=footer)
+        footer = u.Pile(
+            [self.control_mode_text, u.Text("Q/ESC: exit | M: toggle control mode")]
+        )
+        self.mainframe = u.Frame(body=body, header=header, footer=footer)
 
         palette = [
             ("progressbar.complete", "default", "dark gray"),
         ]
 
         self.loop = u.MainLoop(
-            frame, palette=palette, unhandled_input=self._key_press_handler
+            self.mainframe, palette=palette, unhandled_input=self._key_press_handler
         )
 
     def _key_press_handler(self, key: str) -> None:
         if key in ("q", "Q", "esc"):
             raise u.ExitMainLoop()
+        if key in ("m", "M"):
+            if self.robot.control_mode == Robot.ControlMode.ZERO_TORQUE:
+                self.set_control_mode(Robot.ControlMode.HOLD_POSITION)
+            else:
+                self.set_control_mode(Robot.ControlMode.ZERO_TORQUE)
+
+    def set_control_mode(self, mode: Robot.ControlMode):
+        self.robot.set_control_mode(mode)
+        self.control_mode_text.set_text(f"Active Control Mode: {mode.name}")
 
     def run(self) -> None:
         update_interval_s = 0.001
+
+        self.set_control_mode(Robot.ControlMode.HOLD_POSITION)
 
         # set update callback
         def update_window(loop: u.MainLoop, win):
@@ -193,7 +228,7 @@ class Window:
 
         observation, status, applied_action = self.robot.update()
 
-        ## Observation
+        # Observation
         obs = observation
 
         motor_data = [
@@ -250,14 +285,14 @@ class Window:
             )
         )
 
-        ## Status
+        # Status
         self.status_action_repetitions_text.set_text(
             f"action_repetitions: {status.action_repetitions}"
         )
         self.status_error_state_text.set_text(f"error_status: {status.error_status}")
         self.status_error_msg_text.set_text(status.get_error_message())
 
-        ## Applied Action
+        # Applied Action
         applied_action_data = [
             ["Joint Index"] + list(map(str, range(12))),
             ["joint_torques"] + list(applied_action.joint_torques),
