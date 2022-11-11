@@ -131,4 +131,12 @@ PYBIND11_MODULE(solo12, m)
           pybind11::arg("first_action_timeout") =
               std::numeric_limits<double>::infinity(),
           pybind11::arg("max_number_of_actions") = 0);
+
+    m.def("create_fake_backend",
+          &create_fake_solo12_backend,
+          pybind11::arg("robot_data"),
+          pybind11::arg("driver_config"),
+          pybind11::arg("first_action_timeout") =
+              std::numeric_limits<double>::infinity(),
+          pybind11::arg("max_number_of_actions") = 0);
 }

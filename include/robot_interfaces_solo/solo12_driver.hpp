@@ -7,8 +7,8 @@
 
 #include <filesystem>
 
-#include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
 
 #include <robot_interfaces/monitored_robot_driver.hpp>
 #include <robot_interfaces/robot_backend.hpp>
@@ -85,6 +85,7 @@ struct Solo12Config
     static Solo12Config from_file(const std::filesystem::path &file);
 };
 
+//! Driver to use Solo12
 class Solo12Driver
     : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
 {
@@ -107,9 +108,39 @@ private:
     bool is_initialized_ = false;
 };
 
+//! Fake driver for testing (ignores actions and returns some artificial observations).
+class FakeSolo12Driver
+    : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
+{
+public:
+    const std::string LOGGER_NAME = "Solo12Driver";
+
+    FakeSolo12Driver(const Solo12Config &config);
+
+    // RobotDriver methods
+    void initialize() override;
+    Action apply_action(const Action &desired_action) override;
+    Observation get_latest_observation() override;
+    std::string get_error() override;
+    void shutdown() override;
+
+private:
+    const Solo12Config config_;
+    Action applied_action_;
+    bool is_initialized_ = false;
+    double t_ = 0.0;
+};
+
 Solo12Backend::Ptr create_solo12_backend(
     Solo12Data::Ptr robot_data,
     const Solo12Config &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),
     const uint32_t max_number_of_actions = 0);
+
+Solo12Backend::Ptr create_fake_solo12_backend(
+    Solo12Data::Ptr robot_data,
+    const Solo12Config &driver_config,
+    const double first_action_timeout = std::numeric_limits<double>::infinity(),
+    const uint32_t max_number_of_actions = 0);
+
 }  // namespace robot_interfaces_solo

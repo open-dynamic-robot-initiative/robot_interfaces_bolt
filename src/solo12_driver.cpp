@@ -1,5 +1,7 @@
 #include <robot_interfaces_solo/solo12_driver.hpp>
 
+#include <cmath>
+
 #include <fmt/format.h>
 #include <yaml-cpp/yaml.h>
 #include <boost/range/adaptor/indexed.hpp>
@@ -217,6 +219,88 @@ Solo12Config Solo12Config::from_file(
     return config;
 }
 
+FakeSolo12Driver::FakeSolo12Driver(const Solo12Config &config) : config_(config)
+{
+    // initialise logger and set level based on config
+    // FIXME this fails if two drivers are created in parallel
+    auto logger = spdlog::stderr_color_mt(LOGGER_NAME);
+    auto log_level = spdlog::level::from_str(config.logger_level);
+    logger->set_level(log_level);
+}
+
+void FakeSolo12Driver::initialize()
+{
+    auto logger = spdlog::get(LOGGER_NAME);
+
+    logger->debug("Initialize Fake Solo12");
+    real_time_tools::Timer::sleep_sec(2);
+    is_initialized_ = true;
+}
+
+FakeSolo12Driver::Action FakeSolo12Driver::apply_action(
+    const Action &desired_action)
+{
+    double start_time_sec = real_time_tools::Timer::get_current_time_sec();
+
+    if (!is_initialized_)
+    {
+        throw std::runtime_error(
+            "Robot needs to be initialized before applying actions.  Run "
+            "the `initialize()` method.");
+    }
+
+    real_time_tools::Timer::sleep_until_sec(start_time_sec + 0.001);
+
+    return desired_action;
+}
+
+FakeSolo12Driver::Observation FakeSolo12Driver::get_latest_observation()
+{
+    if (!is_initialized_)
+    {
+        throw std::runtime_error(
+            "Robot needs to be initialized before getting observations.  Run "
+            "the `initialize()` method.");
+    }
+
+    double freq = 0.5;
+    double amplitude = M_PI;
+
+    Observation obs;
+
+    // fill with some fake data (using sine waves)
+    obs.joint_positions.fill(amplitude * std::sin(2.0 * M_PI * freq * t_));
+    obs.joint_velocities.fill(2.0 * M_PI * freq * amplitude *
+                              std::cos(2.0 * M_PI * freq * t_));
+    obs.joint_torques = obs.joint_velocities / 3;
+
+    obs.slider_positions << 0.0, 0.3, 0.5, 1.0;
+
+    obs.imu_accelerometer = Eigen::Vector3d::Random();
+    obs.imu_gyroscope = Eigen::Vector3d::Random();
+    obs.imu_linear_acceleration = Eigen::Vector3d::Random();
+    obs.imu_attitude = Eigen::Vector4d::Random();
+
+    obs.num_sent_command_packets = t_ * 1000;
+    obs.num_lost_command_packets = 0;
+    obs.num_sent_sensor_packets = t_ * 1000;
+    ;
+    obs.num_lost_sensor_packets = 0;
+
+    t_ += 0.001;
+
+    return obs;
+}
+
+std::string FakeSolo12Driver::get_error()
+{
+    return "";
+}
+
+void FakeSolo12Driver::shutdown()
+{
+}
+
 Solo12Backend::Ptr create_solo12_backend(Solo12Data::Ptr robot_data,
                                          const Solo12Config &driver_config,
                                          const double first_action_timeout,
@@ -244,4 +328,24 @@ Solo12Backend::Ptr create_solo12_backend(Solo12Data::Ptr robot_data,
 
     return backend;
 }
+
+Solo12Backend::Ptr create_fake_solo12_backend(
+    Solo12Data::Ptr robot_data,
+    const Solo12Config &driver_config,
+    const double first_action_timeout,
+    const uint32_t max_number_of_actions)
+{
+    auto driver = std::make_shared<FakeSolo12Driver>(driver_config);
+
+    constexpr bool real_time_mode = true;
+    auto backend = std::make_shared<Solo12Backend>(driver,
+                                                   robot_data,
+                                                   real_time_mode,
+                                                   first_action_timeout,
+                                                   max_number_of_actions);
+    backend->set_max_action_repetitions(std::numeric_limits<uint32_t>::max());
+
+    return backend;
+}
+
 }  // namespace robot_interfaces_solo
