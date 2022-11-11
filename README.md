@@ -108,8 +108,22 @@ done in the following way:
 
 
 
-Run Demo
---------
+Test with the Robot
+-------------------
+
+To test if everything is working properly (i.e. connection to robot is working
+and all sensor data is transferred correctly, there is the application
+`solo12_show_data`.  It starts the robot and then simply holds all joints at the
+initial position while printing all observation and status data.
+It can be run with
+```bash
+ros2 run robot_interfaces_solo solo12_show_data path/to/config.yml
+```
+
+
+
+Demos
+-----
 
 This package contains two demos (on in C++ and one in Python).  Both can be run
 with this command:
