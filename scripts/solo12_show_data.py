@@ -185,7 +185,11 @@ class Window:
             width="clip",
         )
         footer = u.Pile(
-            [self.control_mode_text, u.Text("Q/ESC: exit | M: toggle control mode")]
+            [
+                u.Divider("⎼"),
+                self.control_mode_text,
+                u.Text("Q/ESC: exit | M: toggle control mode"),
+            ]
         )
         self.mainframe = u.Frame(body=body, header=header, footer=footer)
 
