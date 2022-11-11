@@ -172,7 +172,11 @@ class Window:
                 label="Command packet loss",
                 lost=obs.num_lost_command_packets,
                 total=obs.num_sent_command_packets,
-                ratio=obs.num_lost_command_packets / obs.num_sent_command_packets * 100,
+                ratio=(
+                    obs.num_lost_command_packets / obs.num_sent_command_packets * 100
+                    if obs.num_sent_command_packets
+                    else 0
+                ),
             )
         )
         self.obs_packet_loss_sensor_text.set_text(
@@ -180,7 +184,11 @@ class Window:
                 label="Sensor  packet loss",
                 lost=obs.num_lost_sensor_packets,
                 total=obs.num_sent_sensor_packets,
-                ratio=obs.num_lost_sensor_packets / obs.num_sent_sensor_packets * 100,
+                ratio=(
+                    obs.num_lost_sensor_packets / obs.num_sent_sensor_packets * 100
+                    if obs.num_sent_sensor_packets
+                    else 0
+                ),
             )
         )
 
