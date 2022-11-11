@@ -214,13 +214,16 @@ class Window:
 
 
 class Robot:
-    def __init__(self, config_file: str) -> None:
+    def __init__(self, config_file: str, fake_robot: bool = False) -> None:
         self.kp = 3.0
         self.kd = 0.05
 
         config = solo12.Config.from_file(config_file)
         robot_data = solo12.SingleProcessData()
-        self.robot_backend = solo12.create_backend(robot_data, config)
+        if fake_robot:
+            self.robot_backend = solo12.create_fake_backend(robot_data, config)
+        else:
+            self.robot_backend = solo12.create_backend(robot_data, config)
         self.robot_frontend = solo12.Frontend(robot_data)
 
         self.t = 0
@@ -263,9 +266,14 @@ def main():
         type=str,
         help="YAML file with Solo12 driver configuration.",
     )
+    parser.add_argument(
+        "--fake",
+        action="store_true",
+        help="Use fake robot driver (for testing without actual robot).",
+    )
     args = parser.parse_args()
 
-    robot = Robot(args.config_file)
+    robot = Robot(args.config_file, args.fake)
     robot.initialize()
 
     win = Window()
