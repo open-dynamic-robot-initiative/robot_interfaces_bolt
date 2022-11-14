@@ -2,6 +2,7 @@
 
 #include <cmath>
 
+#include <spdlog/sinks/stdout_color_sinks.h>
 #include <fmt/format.h>
 #include <yaml-cpp/yaml.h>
 #include <boost/range/adaptor/indexed.hpp>
@@ -11,17 +12,18 @@ namespace robot_interfaces_solo
 Solo12Driver::Solo12Driver(const Solo12Config &config) : config_(config)
 {
     // initialise logger and set level based on config
-    // FIXME this fails if two drivers are created in parallel
-    auto logger = spdlog::stderr_color_mt(LOGGER_NAME);
-    auto log_level = spdlog::level::from_str(config.logger_level);
-    logger->set_level(log_level);
+    log_ = spdlog::get(LOGGER_NAME);
+    if (!log_)
+    {
+        log_ = spdlog::stderr_color_mt(LOGGER_NAME);
+        auto log_level = spdlog::level::from_str(config.logger_level);
+        log_->set_level(log_level);
+    }
 }
 
 void Solo12Driver::initialize()
 {
-    auto logger = spdlog::get(LOGGER_NAME);
-
-    logger->debug("Initialize Solo12");
+    log_->debug("Initialize Solo12");
     solo12_.initialize(config_.network_interface, config_.slider_serial_port);
     solo12_.set_max_current(config_.max_motor_current_A);
 
@@ -31,7 +33,7 @@ void Solo12Driver::initialize()
     // we have to call acquire_sensors() and send_target_joint_torque() to
     // trigger enabling the motors and updating the state machine to know once
     // it is ready
-    logger->debug("Enable motors");
+    log_->debug("Enable motors");
     Vector12d zero_torque = Vector12d::Zero();
     do
     {
@@ -44,7 +46,7 @@ void Solo12Driver::initialize()
     // The homing is also driven by calling send_target_joint_torque() in a
     // loop.  Use do-while-loop because after requesting calibration, we first
     // need to call it once to change the state from "ready" to "calibrate".
-    logger->debug("Start homing");
+    log_->debug("Start homing");
     solo12_.request_calibration(config_.home_offset_rad);
     do
     {
@@ -54,7 +56,7 @@ void Solo12Driver::initialize()
     } while (!solo12_.is_ready());
 
     is_initialized_ = true;
-    logger->debug("Initialization finished");
+    log_->debug("Initialization finished");
 }
 
 Solo12Driver::Action Solo12Driver::apply_action(const Action &desired_action)
@@ -222,17 +224,18 @@ Solo12Config Solo12Config::from_file(
 FakeSolo12Driver::FakeSolo12Driver(const Solo12Config &config) : config_(config)
 {
     // initialise logger and set level based on config
-    // FIXME this fails if two drivers are created in parallel
-    auto logger = spdlog::stderr_color_mt(LOGGER_NAME);
-    auto log_level = spdlog::level::from_str(config.logger_level);
-    logger->set_level(log_level);
+    log_ = spdlog::get(LOGGER_NAME);
+    if (!log_)
+    {
+        log_ = spdlog::stderr_color_mt(LOGGER_NAME);
+        auto log_level = spdlog::level::from_str(config.logger_level);
+        log_->set_level(log_level);
+    }
 }
 
 void FakeSolo12Driver::initialize()
 {
-    auto logger = spdlog::get(LOGGER_NAME);
-
-    logger->debug("Initialize Fake Solo12");
+    log_->debug("Initialize Fake Solo12");
     real_time_tools::Timer::sleep_sec(2);
     is_initialized_ = true;
 }

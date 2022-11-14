@@ -7,7 +7,6 @@
 
 #include <filesystem>
 
-#include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
 #include <robot_interfaces/monitored_robot_driver.hpp>
@@ -102,6 +101,7 @@ public:
     void shutdown() override;
 
 private:
+    std::shared_ptr<spdlog::logger> log_;
     const Solo12Config config_;
     solo::Solo12 solo12_;
     Action applied_action_;
@@ -113,7 +113,7 @@ class FakeSolo12Driver
     : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
 {
 public:
-    const std::string LOGGER_NAME = "Solo12Driver";
+    const std::string LOGGER_NAME = "FakeSolo12Driver";
 
     FakeSolo12Driver(const Solo12Config &config);
 
@@ -125,6 +125,7 @@ public:
     void shutdown() override;
 
 private:
+    std::shared_ptr<spdlog::logger> log_;
     const Solo12Config config_;
     Action applied_action_;
     bool is_initialized_ = false;
