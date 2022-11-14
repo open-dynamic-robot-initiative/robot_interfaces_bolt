@@ -89,7 +89,7 @@ class Solo12Driver
     : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
 {
 public:
-    const std::string LOGGER_NAME = "Solo12Driver";
+    inline static const std::string LOGGER_NAME = "Solo12Driver";
 
     Solo12Driver(const Solo12Config &config);
 
@@ -113,7 +113,7 @@ class FakeSolo12Driver
     : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
 {
 public:
-    const std::string LOGGER_NAME = "FakeSolo12Driver";
+    inline static const std::string LOGGER_NAME = "FakeSolo12Driver";
 
     FakeSolo12Driver(const Solo12Config &config);
 
