@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Show all sensor data of Solo12.
 
 Show all data from observation, status and applied action in a simple TUI.  Press M to
