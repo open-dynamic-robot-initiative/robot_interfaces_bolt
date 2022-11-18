@@ -1,0 +1,4 @@
+mypy
+types-tabulate
+numpy
+pytest
