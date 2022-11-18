@@ -1,0 +1,7 @@
+[[tool.mypy.overrides]]
+module = [
+    "robot_interfaces_solo",  # there are no stubs for pybind11 modules
+    "urwid",
+]
+ignore_missing_imports = true
+
