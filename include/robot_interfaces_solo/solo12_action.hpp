@@ -5,6 +5,9 @@
  */
 #pragma once
 
+#include <vector>
+#include <string>
+
 #include <Eigen/Eigen>
 #include <cereal/cereal.hpp>
 #include <serialization_utils/cereal_eigen.hpp>

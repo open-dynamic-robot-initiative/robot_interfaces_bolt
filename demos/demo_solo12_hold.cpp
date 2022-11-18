@@ -3,11 +3,14 @@
  * \brief Demo using Solo12 that holds all joints at their current positions.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
+#include <string>
+#include <memory>
+
 #include <cli_utils/program_options.hpp>
 
 #include <robot_interfaces_solo/solo12_driver.hpp>
 
-using namespace robot_interfaces_solo;
+namespace ris = robot_interfaces_solo;
 
 // Class to get console arguments
 class Args : public cli_utils::ProgramOptions
@@ -57,24 +60,24 @@ int main(int argc, char *argv[])
     }
 
     // load the driver configuration from a YAML file
-    Solo12Config config = Solo12Config::from_file(args.config_file);
+    ris::Solo12Config config = ris::Solo12Config::from_file(args.config_file);
 
     // create a robot data instance, robot backend and frontend.
-    auto data = std::make_shared<Solo12SingleProcessData>();
-    Solo12Backend::Ptr backend = create_solo12_backend(data, config);
-    Solo12Frontend frontend(data);
+    auto data = std::make_shared<ris::Solo12SingleProcessData>();
+    ris::Solo12Backend::Ptr backend = create_solo12_backend(data, config);
+    ris::Solo12Frontend frontend(data);
 
     // initialise the robot (this also runs the homing)
     backend->initialize();
 
     // start with a zero-torque action (we need to send an initial action first,
     // before we can access the observation)
-    auto t = frontend.append_desired_action(Solo12Action::Zero());
-    Solo12Observation obs = frontend.get_observation(t);
+    auto t = frontend.append_desired_action(ris::Solo12Action::Zero());
+    ris::Solo12Observation obs = frontend.get_observation(t);
 
     // construct a simple position control action, using the current position
     // from the observation as target position.
-    Solo12Action action;
+    ris::Solo12Action action;
     action.joint_position_gains.fill(args.kp);
     action.joint_velocity_gains.fill(args.kd);
     action.joint_positions = obs.joint_positions;
