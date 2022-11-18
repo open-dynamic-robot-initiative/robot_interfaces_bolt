@@ -24,6 +24,7 @@ find_package(solo REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
+find_package(pybind11 REQUIRED)
 
 ament_export_dependencies(cli_utils real_time_tools robot_interfaces solo)
 
@@ -57,6 +58,26 @@ target_link_libraries(solo12_driver
     solo12_config
 )
 
+add_library(solo12_pybullet_driver src/solo12_pybullet_driver.cpp)
+target_include_directories(solo12_pybullet_driver PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(solo12_pybullet_driver
+    Eigen3::Eigen
+    real_time_tools::real_time_tools
+    robot_interfaces::robot_interfaces
+    spdlog::spdlog
+    pybind11::pybind11
+
+    solo12_config
+)
+# using pybind11 types, therefore visibility needs to be hidden
+# https://pybind11.readthedocs.io/en/stable/faq.html#someclass-declared-with-greater-visibility-than-the-type-of-its-field-someclass-member-wattributes
+set_target_properties(solo12_pybullet_driver
+    PROPERTIES CXX_VISIBILITY_PRESET hidden)
+
+
 
 add_executable(demo_solo12_hold demos/demo_solo12_hold.cpp)
 target_link_libraries(demo_solo12_hold
@@ -67,7 +88,9 @@ target_link_libraries(demo_solo12_hold
 
 # Python Bindings
 add_pybind11_module(solo12 srcpy/solo12.cpp
-    LINK_LIBRARIES solo12_driver
+    LINK_LIBRARIES 
+        solo12_driver
+        solo12_pybullet_driver
 )
 
 
@@ -77,6 +100,7 @@ install(
     TARGETS
         solo12_config
         solo12_driver
+        solo12_pybullet_driver
         demo_solo12_hold
     EXPORT export_${PROJECT_NAME}
     LIBRARY DESTINATION lib

@@ -13,6 +13,7 @@
 
 #include <robot_interfaces/pybind_helper.hpp>
 #include <robot_interfaces_solo/solo12_driver.hpp>
+#include <robot_interfaces_solo/solo12_pybullet_driver.hpp>
 
 namespace ris = robot_interfaces_solo;
 
@@ -147,4 +148,13 @@ PYBIND11_MODULE(solo12, m)
           pybind11::arg("first_action_timeout") =
               std::numeric_limits<double>::infinity(),
           pybind11::arg("max_number_of_actions") = 0);
+
+    m.def("create_pybullet_backend",
+          &ris::create_pybullet_solo12_backend,
+          pybind11::arg("robot_data"),
+          pybind11::arg("driver_config"),
+          pybind11::arg("first_action_timeout") =
+              std::numeric_limits<double>::infinity(),
+          pybind11::arg("max_number_of_actions") = 0);
+
 }
