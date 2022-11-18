@@ -21,11 +21,26 @@ find_package(real_time_tools REQUIRED)
 find_package(robot_interfaces REQUIRED)
 find_package(solo REQUIRED)
 
+find_package(Eigen3 REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 
 ament_export_dependencies(cli_utils real_time_tools robot_interfaces solo)
 
+
+
+add_library(solo12_config
+    src/solo12_config.cpp
+)
+target_include_directories(solo12_config PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(solo12_config
+    Eigen3::Eigen
+    yaml_utils::yaml_utils
+    fmt::fmt
+)
 
 add_library(solo12_driver src/solo12_driver.cpp)
 target_include_directories(solo12_driver PUBLIC
@@ -33,12 +48,13 @@ target_include_directories(solo12_driver PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(solo12_driver
+    Eigen3::Eigen
     real_time_tools::real_time_tools
     robot_interfaces::robot_interfaces
     solo::solo12
-    yaml_utils::yaml_utils
-    fmt::fmt
     spdlog::spdlog
+
+    solo12_config
 )
 
 
@@ -59,6 +75,7 @@ install(DIRECTORY include/ DESTINATION include)
 
 install(
     TARGETS
+        solo12_config
         solo12_driver
         demo_solo12_hold
     EXPORT export_${PROJECT_NAME}
