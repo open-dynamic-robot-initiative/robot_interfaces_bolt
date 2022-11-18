@@ -5,8 +5,8 @@
  */
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <Eigen/Eigen>
 #include <cereal/cereal.hpp>

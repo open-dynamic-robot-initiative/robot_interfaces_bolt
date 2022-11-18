@@ -111,7 +111,8 @@ private:
     bool is_initialized_ = false;
 };
 
-//! Fake driver for testing (ignores actions and returns some artificial observations).
+//! Fake driver for testing (ignores actions and returns some artificial
+//! observations).
 class FakeSolo12Driver
     : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
 {

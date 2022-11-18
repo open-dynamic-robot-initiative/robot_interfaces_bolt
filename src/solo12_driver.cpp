@@ -5,8 +5,8 @@
 #include <memory>
 #include <string>
 
-#include <spdlog/sinks/stdout_color_sinks.h>
 #include <fmt/format.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 #include <yaml-cpp/yaml.h>
 #include <boost/range/adaptor/indexed.hpp>
 

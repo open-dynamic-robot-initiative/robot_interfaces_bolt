@@ -3,8 +3,8 @@
  * \brief Demo using Solo12 that holds all joints at their current positions.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
-#include <string>
 #include <memory>
+#include <string>
 
 #include <cli_utils/program_options.hpp>
 
