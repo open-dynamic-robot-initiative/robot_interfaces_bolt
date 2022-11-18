@@ -15,7 +15,7 @@
 
 #include <robot_interfaces/loggable.hpp>
 
-#include "types.hpp"
+#include "basic_types.hpp"
 
 namespace robot_interfaces_solo
 {

@@ -13,29 +13,13 @@
 #include <spdlog/spdlog.h>
 
 #include <robot_interfaces/monitored_robot_driver.hpp>
-#include <robot_interfaces/robot_backend.hpp>
-#include <robot_interfaces/robot_data.hpp>
-#include <robot_interfaces/robot_driver.hpp>
 #include <robot_interfaces/robot_frontend.hpp>
 #include <solo/solo12.hpp>
 
-#include "solo12_action.hpp"
-#include "solo12_observation.hpp"
-#include "types.hpp"
+#include "solo12_types.hpp"
 
 namespace robot_interfaces_solo
 {
-typedef robot_interfaces::RobotBackend<Solo12Action, Solo12Observation>
-    Solo12Backend;
-typedef robot_interfaces::RobotFrontend<Solo12Action, Solo12Observation>
-    Solo12Frontend;
-typedef robot_interfaces::RobotData<Solo12Action, Solo12Observation> Solo12Data;
-typedef robot_interfaces::SingleProcessRobotData<Solo12Action,
-                                                 Solo12Observation>
-    Solo12SingleProcessData;
-typedef robot_interfaces::MultiProcessRobotData<Solo12Action, Solo12Observation>
-    Solo12MultiProcessData;
-
 /**
  * @brief Configuration for the Solo12 driver.
  */
