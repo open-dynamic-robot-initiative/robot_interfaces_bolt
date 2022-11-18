@@ -6,6 +6,8 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+#include <vector>
 
 #include <Eigen/Eigen>
 #include <cereal/cereal.hpp>

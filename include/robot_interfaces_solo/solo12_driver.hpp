@@ -6,6 +6,9 @@
 #pragma once
 
 #include <filesystem>
+#include <limits>
+#include <memory>
+#include <string>
 
 #include <spdlog/spdlog.h>
 
@@ -91,7 +94,7 @@ class Solo12Driver
 public:
     inline static const std::string LOGGER_NAME = "Solo12Driver";
 
-    Solo12Driver(const Solo12Config &config);
+    explicit Solo12Driver(const Solo12Config &config);
 
     // RobotDriver methods
     void initialize() override;
@@ -108,14 +111,15 @@ private:
     bool is_initialized_ = false;
 };
 
-//! Fake driver for testing (ignores actions and returns some artificial observations).
+//! Fake driver for testing (ignores actions and returns some artificial
+//! observations).
 class FakeSolo12Driver
     : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
 {
 public:
     inline static const std::string LOGGER_NAME = "FakeSolo12Driver";
 
-    FakeSolo12Driver(const Solo12Config &config);
+    explicit FakeSolo12Driver(const Solo12Config &config);
 
     // RobotDriver methods
     void initialize() override;
