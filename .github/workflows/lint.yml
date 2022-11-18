@@ -1,0 +1,58 @@
+name: Linters
+
+on: [pull_request]
+
+jobs:
+  mypy:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Install
+        run: |
+          python3 -m pip install -r requirements-mypy.txt
+      - name: Add matcher
+        run: |
+          echo "::add-matcher::.github/workflows/mypy-problem-matcher.json"
+      - name: Run mypy
+        run: |
+          python3 -m mypy .
+
+  flake8:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Install
+        run: |
+          python3 -m pip install flake8
+      - name: Add matcher
+        run: |
+          echo "::add-matcher::.github/workflows/flake8-problem-matcher.json"
+      - name: Lint with flake8
+        run: |
+          python3 -m flake8 .
+
+  black:
+    name: Python Formatting
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - uses: psf/black@stable
+
+  clang-format:
+    name: C++ Formatting
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - run: wget https://raw.githubusercontent.com/machines-in-motion/mpi_cmake_modules/master/scripts/run-clang-format
+      - run: wget https://raw.githubusercontent.com/machines-in-motion/mpi_cmake_modules/master/resources/_clang-format
+      - run: python ./run-clang-format -r .
