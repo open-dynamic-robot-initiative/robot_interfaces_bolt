@@ -21,8 +21,7 @@
 namespace robot_interfaces_solo
 {
 //! Driver to use Solo12
-class Solo12Driver
-    : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
+class Solo12Driver : public BaseSolo12Driver
 {
 public:
     inline static const std::string LOGGER_NAME = "Solo12Driver";
@@ -46,8 +45,7 @@ private:
 
 //! Fake driver for testing (ignores actions and returns some artificial
 //! observations).
-class FakeSolo12Driver
-    : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
+class FakeSolo12Driver : public BaseSolo12Driver
 {
 public:
     inline static const std::string LOGGER_NAME = "FakeSolo12Driver";
@@ -88,6 +86,7 @@ Solo12Backend::Ptr create_solo12_backend(
     const Solo12Config &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),
     const uint32_t max_number_of_actions = 0);
+
 
 /**
  * @brief Create robot backend using the fake Solo12 driver (for testing).

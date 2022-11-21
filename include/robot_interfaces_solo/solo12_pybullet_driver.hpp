@@ -18,8 +18,7 @@ namespace robot_interfaces_solo
 {
 namespace py = pybind11;
 
-class PyBulletSolo12Driver
-    : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
+class PyBulletSolo12Driver : public BaseSolo12Driver
 {
 private:
     std::shared_ptr<spdlog::logger> log_;
