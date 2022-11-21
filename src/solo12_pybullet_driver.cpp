@@ -34,23 +34,29 @@ PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
     {
         log_->debug("Python interpreter is already initialized.");
     }
+
+    // set up simulation environment
+    {
+        py::gil_scoped_acquire acquire;
+
+        py::module bullet_utils_env = py::module::import("bullet_utils.env");
+        py::module solo12wrapper =
+            py::module::import("robot_properties_solo.solo12wrapper");
+
+        py::object RPSSolo12Config = solo12wrapper.attr("Solo12Config");
+
+        // TODO: to disable visualisation, pass pybullet.DIRECT as arg to
+        // BulletEnvWithGround
+        sim_env_ = bullet_utils_env.attr("BulletEnvWithGround")();
+        sim_robot_ = solo12wrapper.attr("Solo12Robot")();
+        sim_env_.attr("add_robot")(sim_robot_);
+
+        sim_robot_.attr("reset_to_initial_state")();
+    }
 }
 
 void PyBulletSolo12Driver::initialize()
 {
-    py::gil_scoped_acquire acquire;
-
-    py::module bullet_utils_env = py::module::import("bullet_utils.env");
-    py::module solo12wrapper =
-        py::module::import("robot_properties_solo.solo12wrapper");
-
-    py::object RPSSolo12Config = solo12wrapper.attr("Solo12Config");
-
-    sim_env_ = bullet_utils_env.attr("BulletEnvWithGround")();
-    sim_robot_ = solo12wrapper.attr("Solo12Robot")();
-    sim_env_.attr("add_robot")(sim_robot_);
-
-    sim_robot_.attr("reset_to_initial_state")();
 }
 
 Solo12Observation PyBulletSolo12Driver::get_latest_observation()
@@ -138,6 +144,11 @@ std::string PyBulletSolo12Driver::get_error()
 
 void PyBulletSolo12Driver::shutdown()
 {
+}
+
+py::object PyBulletSolo12Driver::get_bullet_env()
+{
+    return sim_env_;
 }
 
 Solo12Backend::Ptr create_pybullet_solo12_backend(

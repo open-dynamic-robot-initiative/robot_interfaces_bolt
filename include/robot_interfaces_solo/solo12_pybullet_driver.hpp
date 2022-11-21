@@ -35,13 +35,13 @@ private:
 
     Vector12d applied_torques_ = Vector12d::Zero();
 
-    // TODO: user should be able to access the env
     py::object sim_env_;
     py::object sim_robot_;
 
 public:
     inline static const std::string LOGGER_NAME = "PyBulletSolo12Driver";
 
+    // TODO: parameter for fixed base (might be nice for testing)?
     PyBulletSolo12Driver(bool real_time_mode,
                          bool visualize,
                          const std::string &logger_level = "debug");
@@ -51,6 +51,9 @@ public:
     Solo12Action apply_action(const Solo12Action &desired_action) override;
     std::string get_error() override;
     void shutdown() override;
+
+    //! Get the bullet environment instance for direct access to the simulation.
+    py::object get_bullet_env();
 };
 
 /**
