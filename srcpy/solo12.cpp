@@ -133,8 +133,8 @@ PYBIND11_MODULE(solo12, m)
              "Load configuration from a YAML file (using default values for "
              "parameters missing in the file).");
 
-    m.def("create_backend",
-          &ris::create_solo12_backend,
+    m.def("create_real_backend",
+          &ris::create_real_solo12_backend,
           pybind11::arg("robot_data"),
           pybind11::arg("driver_config"),
           pybind11::arg("first_action_timeout") =

@@ -56,7 +56,7 @@ class Robot:
         robot_data = solo12.SingleProcessData()
 
         if backend_mode == BackendMode.REAL:
-            self.robot_backend = solo12.create_backend(robot_data, config)
+            self.robot_backend = solo12.create_real_backend(robot_data, config)
         elif backend_mode == BackendMode.FAKE:
             self.robot_backend = solo12.create_fake_backend(robot_data, config)
         elif backend_mode == BackendMode.PYBULLET:

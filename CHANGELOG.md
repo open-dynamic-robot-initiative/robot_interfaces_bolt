@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - PyBullet driver for Solo12 for testing in simulation.
 
+### Changed
+- Make `create_solo12_backend()` more generic by accepting a driver as argument (so it
+  can be used for all driver types).
+  The old version is still available but renamed to `create_real_solo12_backend()`
+  (`create_real_backend()` in the Python bindings).
+
 ## [0.9.0] - 2022-11-11
 
 First beta release.  Contains the `Solo12Driver` with Python bindings, two
