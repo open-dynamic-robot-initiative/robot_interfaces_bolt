@@ -14,6 +14,7 @@
 #include <robot_interfaces/pybind_helper.hpp>
 #include <robot_interfaces_solo/solo12_driver.hpp>
 #include <robot_interfaces_solo/solo12_pybullet_driver.hpp>
+#include <robot_interfaces_solo/solo12_utils.hpp>
 
 namespace ris = robot_interfaces_solo;
 
@@ -133,6 +134,18 @@ PYBIND11_MODULE(solo12, m)
              "Load configuration from a YAML file (using default values for "
              "parameters missing in the file).");
 
+    pybind11::class_<ris::BaseSolo12Driver, ris::BaseSolo12Driver::Ptr>
+        base_driver(m, "BaseSolo12Driver");
+
+    pybind11::class_<ris::PyBulletSolo12Driver,
+                     std::shared_ptr<ris::PyBulletSolo12Driver>,
+                     ris::BaseSolo12Driver>(m, "PyBulletDriver")
+        .def(pybind11::init<bool, bool, const std::string &>(),
+             pybind11::arg("real_time_mode"),
+             pybind11::arg("visualize"),
+             pybind11::arg("logger_level") = "debug")
+        .def("get_bullet_env", &ris::PyBulletSolo12Driver::get_bullet_env);
+
     m.def("create_backend",
           &ris::create_solo12_backend,
           pybind11::arg("robot_data"),
@@ -141,6 +154,7 @@ PYBIND11_MODULE(solo12, m)
               std::numeric_limits<double>::infinity(),
           pybind11::arg("max_number_of_actions") = 0,
           pybind11::arg("enable_timing_watchdog") = true);
+
     m.def("create_real_backend",
           &ris::create_real_solo12_backend,
           pybind11::arg("robot_data"),
@@ -164,5 +178,4 @@ PYBIND11_MODULE(solo12, m)
           pybind11::arg("first_action_timeout") =
               std::numeric_limits<double>::infinity(),
           pybind11::arg("max_number_of_actions") = 0);
-
 }
