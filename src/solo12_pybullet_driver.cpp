@@ -5,6 +5,8 @@
 #include <pybind11/stl_bind.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
+#include <robot_interfaces_solo/solo12_utils.hpp>
+
 namespace robot_interfaces_solo
 {
 PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
@@ -147,14 +149,11 @@ Solo12Backend::Ptr create_pybullet_solo12_backend(
     auto driver = std::make_shared<PyBulletSolo12Driver>(
         true, true, driver_config.logger_level);
 
-    constexpr bool real_time_mode = true;
-    auto backend = std::make_shared<Solo12Backend>(driver,
-                                                   robot_data,
-                                                   real_time_mode,
-                                                   first_action_timeout,
-                                                   max_number_of_actions);
-    backend->set_max_action_repetitions(std::numeric_limits<uint32_t>::max());
-
-    return backend;
+    constexpr bool enable_timing_watchdog = false;
+    return create_solo12_backend(robot_data,
+                                 driver,
+                                 first_action_timeout,
+                                 max_number_of_actions,
+                                 enable_timing_watchdog);
 }
 }  // namespace robot_interfaces_solo

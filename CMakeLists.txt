@@ -43,7 +43,10 @@ target_link_libraries(solo12_config
     fmt::fmt
 )
 
-add_library(solo12_driver src/solo12_driver.cpp)
+add_library(solo12_driver
+    src/solo12_driver.cpp
+    src/solo12_utils.cpp
+)
 target_include_directories(solo12_driver PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
@@ -58,7 +61,10 @@ target_link_libraries(solo12_driver
     solo12_config
 )
 
-add_library(solo12_pybullet_driver src/solo12_pybullet_driver.cpp)
+add_library(solo12_pybullet_driver
+    src/solo12_pybullet_driver.cpp
+    src/solo12_utils.cpp
+)
 target_include_directories(solo12_pybullet_driver PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
