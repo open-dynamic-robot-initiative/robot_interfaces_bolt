@@ -117,6 +117,7 @@ install(
 
 install_scripts(
     demos/demo_solo12_sine.py
+    demos/demo_solo12_simulation.py
     scripts/solo12_show_data.py
 
     DESTINATION lib/${PROJECT_NAME}
