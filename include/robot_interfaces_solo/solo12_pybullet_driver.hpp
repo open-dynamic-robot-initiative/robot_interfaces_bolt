@@ -21,6 +21,11 @@ namespace py = pybind11;
  *
  * This driver can be used as a replacement for the "real" Solo12 driver for
  * testing things in simulation.
+ *
+ * @warning
+ *   The fields ``imu_linear_acceleration`` and ``imu_attitude`` of the
+ *   observation are not set by this driver, as the corresponding values are not
+ *   provided by the simulation.
  */
 class PyBulletSolo12Driver : public BaseSolo12Driver
 {

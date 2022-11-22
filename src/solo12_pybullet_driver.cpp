@@ -101,7 +101,10 @@ Solo12Observation PyBulletSolo12Driver::get_latest_observation()
         sim_robot_.attr("get_base_imu_linacc")().cast<Eigen::Vector3d>();
     observation.imu_gyroscope =
         sim_robot_.attr("get_base_imu_angvel")().cast<Eigen::Vector3d>();
-    // FIXME: Other IMU data
+    // NOTE: Other IMU data is currently not provided by the simulation, so set
+    // them to zero
+    observation.imu_linear_acceleration.setZero();
+    observation.imu_attitude.setZero();
 
     return observation;
 }
