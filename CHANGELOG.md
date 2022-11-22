@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - PyBullet driver for Solo12 for testing in simulation.
+- New demo `demo_solo12_simulation` illustration how to use the PyBullet driver.
+- New option `--sim` for `solo12_show_data` to use the simulation backend. 
 
 ### Changed
 - Make `create_solo12_backend()` more generic by accepting a driver as argument (so it
