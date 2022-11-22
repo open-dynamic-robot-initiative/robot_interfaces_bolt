@@ -44,7 +44,7 @@ def main() -> None:
 
     # Create a backend with a PyBullet driver.  Here we need to instantiate the driver
     # on our own, so we have a handle to access the simulation.
-    sim_driver = solo12.PyBulletDriver(True, True)
+    sim_driver = solo12.PyBulletDriver(real_time_mode=True, visualize=True)
     sim_env: BulletEnvWithGround = sim_driver.get_bullet_env()
     robot_backend = solo12.create_backend(
         robot_data, sim_driver, enable_timing_watchdog=False
