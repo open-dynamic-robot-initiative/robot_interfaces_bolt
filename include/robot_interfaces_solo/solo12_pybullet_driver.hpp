@@ -30,9 +30,6 @@ private:
     //! @brief If true, step simulation at 1 kHz, otherwise as fast as possible
     bool real_time_mode_;
 
-    //! @brief If true, pyBullet GUI for visualization is started.
-    bool visualize_;
-
     //! @brief Number of received commands (=actions).
     int command_packet_counter_ = 0;
     //! @brief Number of provided observations.

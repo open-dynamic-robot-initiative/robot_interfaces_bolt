@@ -15,7 +15,7 @@ PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
                                            bool visualize,
                                            bool use_fixed_base,
                                            const std::string &logger_level)
-    : real_time_mode_(real_time_mode), visualize_(visualize)
+    : real_time_mode_(real_time_mode)
 {
     // initialise logger and set level based on config
     log_ = spdlog::get(LOGGER_NAME);
