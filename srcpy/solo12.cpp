@@ -140,9 +140,10 @@ PYBIND11_MODULE(solo12, m)
     pybind11::class_<ris::PyBulletSolo12Driver,
                      std::shared_ptr<ris::PyBulletSolo12Driver>,
                      ris::BaseSolo12Driver>(m, "PyBulletDriver")
-        .def(pybind11::init<bool, bool, const std::string &>(),
+        .def(pybind11::init<bool, bool, bool, const std::string &>(),
              pybind11::arg("real_time_mode") = true,
              pybind11::arg("visualize") = true,
+             pybind11::arg("use_fixed_base") = false,
              pybind11::arg("logger_level") = "debug")
         .def("get_bullet_env", &ris::PyBulletSolo12Driver::get_bullet_env);
 

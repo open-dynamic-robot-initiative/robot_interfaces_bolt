@@ -7,10 +7,13 @@
 
 #include <robot_interfaces_solo/solo12_utils.hpp>
 
+using namespace pybind11::literals;
+
 namespace robot_interfaces_solo
 {
 PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
                                            bool visualize,
+                                           bool use_fixed_base,
                                            const std::string &logger_level)
     : real_time_mode_(real_time_mode), visualize_(visualize)
 {
@@ -50,7 +53,8 @@ PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
             visualize ? pybullet.attr("GUI") : pybullet.attr("DIRECT");
         sim_env_ =
             bullet_utils_env.attr("BulletEnvWithGround")(pybullet_server);
-        sim_robot_ = solo12wrapper.attr("Solo12Robot")();
+        sim_robot_ = solo12wrapper.attr("Solo12Robot")(
+            "useFixedBase"_a = py::cast(use_fixed_base));
         sim_env_.attr("add_robot")(sim_robot_);
 
         sim_robot_.attr("reset_to_initial_state")();
@@ -160,7 +164,7 @@ Solo12Backend::Ptr create_pybullet_solo12_backend(
     const uint32_t max_number_of_actions)
 {
     auto driver = std::make_shared<PyBulletSolo12Driver>(
-        true, true, driver_config.logger_level);
+        true, true, false, driver_config.logger_level);
 
     constexpr bool enable_timing_watchdog = false;
     return create_solo12_backend(robot_data,

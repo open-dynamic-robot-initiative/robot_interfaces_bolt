@@ -5,8 +5,6 @@
  */
 #pragma once
 
-#include <filesystem>
-
 #include <pybind11/pybind11.h>
 #include <spdlog/spdlog.h>
 
@@ -40,9 +38,9 @@ private:
 public:
     inline static const std::string LOGGER_NAME = "PyBulletSolo12Driver";
 
-    // TODO: parameter for fixed base (might be nice for testing)?
     PyBulletSolo12Driver(bool real_time_mode=true,
                          bool visualize=true,
+                         bool use_fixed_base=false,
                          const std::string &logger_level = "debug");
 
     void initialize() override;
