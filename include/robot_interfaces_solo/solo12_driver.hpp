@@ -89,10 +89,10 @@ Solo12Backend::Ptr create_real_solo12_backend(
 /**
  * @brief Create robot backend using the fake Solo12 driver (for testing).
  *
- * Arguments are the same as for @ref create_solo12_backend.
+ * Arguments are the same as for @ref create_real_solo12_backend.
  *
  * @see FakeSolo12Driver
- * @see create_solo12_backend
+ * @see create_real_solo12_backend
  */
 Solo12Backend::Ptr create_fake_solo12_backend(
     Solo12Data::Ptr robot_data,

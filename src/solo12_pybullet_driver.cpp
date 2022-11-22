@@ -78,6 +78,8 @@ Solo12Observation PyBulletSolo12Driver::get_latest_observation()
     observation.num_lost_sensor_packets = 0;
 
     observation.joint_torques = applied_torques_;
+    // FIXME this is wrong, target_torques only contains the torque part of the
+    // action
     observation.joint_target_torques = applied_torques_;
 
     // for the stuff below, we need to access Python objects
