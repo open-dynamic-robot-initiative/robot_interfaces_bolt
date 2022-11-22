@@ -74,7 +74,10 @@ public:
      *     move (i.e. the robot is hanging in the air).  Can be useful for
      *     debugging.
      * @param logger_level  Output level used by the logger.  Has to be a
-     *     level supported by spdlog (e.g. "debug", "info", ...).
+     *     level supported by spdlog (e.g. "debug", "info", ...).  This is only
+     *     considered if a new logger is initialised, i.e. the level is not
+     *     changed, if a logger with the name stored in @ref
+     *     PyBulletSolo12Driver::LOGGER_NAME does already exist.
      */
     PyBulletSolo12Driver(bool real_time_mode = true,
                          bool visualize = true,

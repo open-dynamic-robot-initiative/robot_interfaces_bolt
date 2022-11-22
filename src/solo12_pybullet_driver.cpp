@@ -22,7 +22,6 @@ PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
     if (!log_)
     {
         log_ = spdlog::stderr_color_mt(LOGGER_NAME);
-        // TODO: better way to configure this?
         auto log_level = spdlog::level::from_str(logger_level);
         log_->set_level(log_level);
     }
