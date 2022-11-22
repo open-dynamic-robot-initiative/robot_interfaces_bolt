@@ -39,15 +39,17 @@ PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
     {
         py::gil_scoped_acquire acquire;
 
+        py::module pybullet = py::module::import("pybullet");
         py::module bullet_utils_env = py::module::import("bullet_utils.env");
         py::module solo12wrapper =
             py::module::import("robot_properties_solo.solo12wrapper");
 
         py::object RPSSolo12Config = solo12wrapper.attr("Solo12Config");
 
-        // TODO: to disable visualisation, pass pybullet.DIRECT as arg to
-        // BulletEnvWithGround
-        sim_env_ = bullet_utils_env.attr("BulletEnvWithGround")();
+        py::object pybullet_server =
+            visualize ? pybullet.attr("GUI") : pybullet.attr("DIRECT");
+        sim_env_ =
+            bullet_utils_env.attr("BulletEnvWithGround")(pybullet_server);
         sim_robot_ = solo12wrapper.attr("Solo12Robot")();
         sim_env_.attr("add_robot")(sim_robot_);
 
