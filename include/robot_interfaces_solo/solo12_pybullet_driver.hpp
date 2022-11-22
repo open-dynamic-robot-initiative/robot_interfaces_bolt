@@ -57,6 +57,9 @@ private:
     //! controlling the simulated robot.
     py::object sim_robot_;
 
+    //! Get tuple (joint_positions, joint_velocities).
+    std::tuple<Vector12d, Vector12d> get_position_and_velocity();
+
 public:
     //! @brief Name of the spdlog logger used.
     inline static const std::string LOGGER_NAME = "PyBulletSolo12Driver";
@@ -73,9 +76,9 @@ public:
      * @param logger_level  Output level used by the logger.  Has to be a
      *     level supported by spdlog (e.g. "debug", "info", ...).
      */
-    PyBulletSolo12Driver(bool real_time_mode=true,
-                         bool visualize=true,
-                         bool use_fixed_base=false,
+    PyBulletSolo12Driver(bool real_time_mode = true,
+                         bool visualize = true,
+                         bool use_fixed_base = false,
                          const std::string &logger_level = "debug");
 
     void initialize() override;

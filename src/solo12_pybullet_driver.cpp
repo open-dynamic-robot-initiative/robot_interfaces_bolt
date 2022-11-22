@@ -65,6 +65,20 @@ void PyBulletSolo12Driver::initialize()
 {
 }
 
+std::tuple<Vector12d, Vector12d>
+PyBulletSolo12Driver::get_position_and_velocity()
+{
+    py::gil_scoped_acquire acquire;
+
+    py::tuple py_state = sim_robot_.attr("get_state")();
+    Vector12d joint_positions =
+        py_state[0][py::slice(-12, std::nullopt, 1)].cast<Vector12d>();
+    Vector12d joint_velocities =
+        py_state[1][py::slice(-12, std::nullopt, 1)].cast<Vector12d>();
+
+    return {joint_positions, joint_velocities};
+}
+
 Solo12Observation PyBulletSolo12Driver::get_latest_observation()
 {
     Solo12Observation observation;
@@ -83,11 +97,9 @@ Solo12Observation PyBulletSolo12Driver::get_latest_observation()
     // for the stuff below, we need to access Python objects
     py::gil_scoped_acquire gil;
 
-    py::tuple py_state = sim_robot_.attr("get_state")();
-    observation.joint_positions =
-        py_state[0][py::slice(-12, std::nullopt, 1)].cast<Vector12d>();
-    observation.joint_velocities =
-        py_state[1][py::slice(-12, std::nullopt, 1)].cast<Vector12d>();
+    auto [joint_positions, joint_velocities] = get_position_and_velocity();
+    observation.joint_positions = joint_positions;
+    observation.joint_velocities = joint_velocities;
 
     py::function get_slider_position = sim_robot_.attr("get_slider_position");
     observation.slider_positions[0] = get_slider_position("a").cast<double>();
@@ -112,14 +124,12 @@ Solo12Action PyBulletSolo12Driver::apply_action(
 {
     auto start_time = std::chrono::system_clock::now();
 
-    // TODO: can be done more efficiently (only joint pos and vel are used)
-    Solo12Observation observation = get_latest_observation();
+    auto [joint_positions, joint_velocities] = get_position_and_velocity();
 
     // PD+ controller: Iq_ref = Iq_feeforward + Kp*err_pos + Kd*err_vel
-    Vector12d position_error =
-        desired_action.joint_positions - observation.joint_positions;
+    Vector12d position_error = desired_action.joint_positions - joint_positions;
     Vector12d velocity_error =
-        desired_action.joint_velocities - observation.joint_velocities;
+        desired_action.joint_velocities - joint_velocities;
     desired_torques_ = desired_action.joint_torques;
     applied_torques_ =
         desired_action.joint_torques +
