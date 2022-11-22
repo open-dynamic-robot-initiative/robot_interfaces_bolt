@@ -23,7 +23,6 @@ class PyBulletSolo12Driver : public BaseSolo12Driver
 private:
     std::shared_ptr<spdlog::logger> log_;
 
-    // FIXME real_time_mode_ and visualize_ are not used
     //! @brief If true, step simulation at 1 kHz, otherwise as fast as possible
     bool real_time_mode_;
 
@@ -42,8 +41,8 @@ public:
     inline static const std::string LOGGER_NAME = "PyBulletSolo12Driver";
 
     // TODO: parameter for fixed base (might be nice for testing)?
-    PyBulletSolo12Driver(bool real_time_mode,
-                         bool visualize,
+    PyBulletSolo12Driver(bool real_time_mode=true,
+                         bool visualize=true,
                          const std::string &logger_level = "debug");
 
     void initialize() override;
