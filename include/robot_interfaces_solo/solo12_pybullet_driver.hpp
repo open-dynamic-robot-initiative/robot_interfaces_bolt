@@ -40,7 +40,14 @@ private:
     //! @brief Number of provided observations.
     int sensor_packet_counter_ = 0;
 
-    //! @brief Actual torques that were applied based on the latest action.
+    //! @brief The torque-part of the last desired action.
+    Vector12d desired_torques_ = Vector12d::Zero();
+    /**
+     * @brief Actual torques that were applied based on the latest action.
+     *
+     * This also includes the resulting torque from the PD controller if the
+     * corresponding parts of the action were set.
+     */
     Vector12d applied_torques_ = Vector12d::Zero();
 
     //! Instance of ``bullet_utils.env.BulletEnvWithGround`` used to set up the

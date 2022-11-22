@@ -78,9 +78,7 @@ Solo12Observation PyBulletSolo12Driver::get_latest_observation()
     observation.num_lost_sensor_packets = 0;
 
     observation.joint_torques = applied_torques_;
-    // FIXME this is wrong, target_torques only contains the torque part of the
-    // action
-    observation.joint_target_torques = applied_torques_;
+    observation.joint_target_torques = desired_torques_;
 
     // for the stuff below, we need to access Python objects
     py::gil_scoped_acquire gil;
@@ -122,6 +120,7 @@ Solo12Action PyBulletSolo12Driver::apply_action(
         desired_action.joint_positions - observation.joint_positions;
     Vector12d velocity_error =
         desired_action.joint_velocities - observation.joint_velocities;
+    desired_torques_ = desired_action.joint_torques;
     applied_torques_ =
         desired_action.joint_torques +
         desired_action.joint_position_gains.cwiseProduct(position_error) +
