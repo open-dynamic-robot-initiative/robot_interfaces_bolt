@@ -1,8 +1,8 @@
-# Build the package and run tests, using the latest trifinger_user Apptainer
+# Build the package and run tests, using the latest solo_user Apptainer
 # image.
-# The Apptainer image has a full ROBOT_FINGERS workspace installed, so all
-# dependencies are there and only the checked package needs to be build, not the
-# whole workspace.
+# The Apptainer image has a full ROBOT_INTERFACES_SOLO workspace installed, so
+# all dependencies are there and only the checked package needs to be build, not
+# the whole workspace.
 #
 # Note: The Apptainer image only gets automatically rebuild, if something in the
 # image definition changes, not when other packages are changed.  So to avoid
