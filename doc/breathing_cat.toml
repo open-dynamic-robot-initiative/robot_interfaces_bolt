@@ -1,0 +1,6 @@
+[mainpage]
+title = "Solo12 drivers for robot_interfaces"
+auto_general_docs = false
+
+[intersphinx.mapping]
+robot_interfaces = "https://open-dynamic-robot-initiative.github.io/robot_interfaces"
