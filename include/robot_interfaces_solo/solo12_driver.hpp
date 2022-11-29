@@ -12,84 +12,15 @@
 
 #include <spdlog/spdlog.h>
 
-#include <robot_interfaces/monitored_robot_driver.hpp>
-#include <robot_interfaces/robot_backend.hpp>
-#include <robot_interfaces/robot_data.hpp>
-#include <robot_interfaces/robot_driver.hpp>
 #include <robot_interfaces/robot_frontend.hpp>
 #include <solo/solo12.hpp>
 
-#include "solo12_action.hpp"
-#include "solo12_observation.hpp"
-#include "types.hpp"
+#include "solo12_types.hpp"
 
 namespace robot_interfaces_solo
 {
-typedef robot_interfaces::RobotBackend<Solo12Action, Solo12Observation>
-    Solo12Backend;
-typedef robot_interfaces::RobotFrontend<Solo12Action, Solo12Observation>
-    Solo12Frontend;
-typedef robot_interfaces::RobotData<Solo12Action, Solo12Observation> Solo12Data;
-typedef robot_interfaces::SingleProcessRobotData<Solo12Action,
-                                                 Solo12Observation>
-    Solo12SingleProcessData;
-typedef robot_interfaces::MultiProcessRobotData<Solo12Action, Solo12Observation>
-    Solo12MultiProcessData;
-
-/**
- * @brief Configuration for the Solo12 driver.
- */
-struct Solo12Config
-{
-    /**
-     * @brief Name of the network interface to which the robot is connected
-     * (e.g. "eth0").
-     */
-    std::string network_interface = "";
-
-    /**
-     * @brief Name of the serial port to which the hardware slider is connected.
-     *
-     * This can typically be left empty, in which case the port is
-     * auto-detected.
-     */
-    std::string slider_serial_port = "";
-
-    /**
-     * @brief Maximum current that can be applied to the motors (in Ampere).
-     */
-    double max_motor_current_A = 8.0;
-
-    /**
-     * @brief Offset between home position (=encoder index) and zero position.
-     *
-     * Angles (in radian) between the encoder index and the zero position of
-     * each joint.
-     */
-    Vector12d home_offset_rad = Vector12d::Zero();
-
-    /**
-     * @brief Logger output level.
-     *
-     * One of {"trace", "debug", "info", "warning", "error", "critical", "off"}.
-     * See documentation of spdlog for details.
-     */
-    std::string logger_level = "warning";
-
-    /**
-     * @brief Load configuration from a YAML file.
-     *
-     * @param file Path to the file
-     *
-     * @return Configuration instance.  For parameters not provided in the file
-     *         the default values are kept.
-     */
-    static Solo12Config from_file(const std::filesystem::path &file);
-};
-
 //! Driver to use Solo12
-class Solo12Driver
-    : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
+class Solo12Driver : public BaseSolo12Driver
 {
 public:
     inline static const std::string LOGGER_NAME = "Solo12Driver";
@@ -113,8 +44,7 @@ private:
 
 //! Fake driver for testing (ignores actions and returns some artificial
 //! observations).
-class FakeSolo12Driver
-    : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
+class FakeSolo12Driver : public BaseSolo12Driver
 {
 public:
     inline static const std::string LOGGER_NAME = "FakeSolo12Driver";
@@ -137,7 +67,7 @@ private:
 };
 
 /**
- * @brief Create robot backend using the Solo12 driver.
+ * @brief Create robot backend using the Solo12 driver (real robot).
  *
  * @see Solo12Driver
  *
@@ -150,7 +80,7 @@ private:
  *
  * @return A RobotBackend instances which uses a Solo12 driver.
  */
-Solo12Backend::Ptr create_solo12_backend(
+Solo12Backend::Ptr create_real_solo12_backend(
     Solo12Data::Ptr robot_data,
     const Solo12Config &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),
@@ -159,10 +89,10 @@ Solo12Backend::Ptr create_solo12_backend(
 /**
  * @brief Create robot backend using the fake Solo12 driver (for testing).
  *
- * Arguments are the same as for @ref create_solo12_backend.
+ * Arguments are the same as for @ref create_real_solo12_backend.
  *
  * @see FakeSolo12Driver
- * @see create_solo12_backend
+ * @see create_real_solo12_backend
  */
 Solo12Backend::Ptr create_fake_solo12_backend(
     Solo12Data::Ptr robot_data,

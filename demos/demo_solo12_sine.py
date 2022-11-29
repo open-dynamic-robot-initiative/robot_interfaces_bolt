@@ -32,7 +32,7 @@ def main():
     robot_data = solo12.SingleProcessData()
 
     # The backend takes care of communication with the robot hardware.
-    robot_backend = solo12.create_backend(robot_data, config)
+    robot_backend = solo12.create_real_backend(robot_data, config)
 
     # The frontend is used by the user to get observations and send actions
     robot_frontend = solo12.Frontend(robot_data)

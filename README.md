@@ -184,19 +184,28 @@ It should look like this:
 Demos
 -----
 
-This package contains two demos (on in C++ and one in Python).  Both can be run
-with this command:
-```bash
-ros2 run robot_interfaces_solo <demo-name> path/to/config.yml
-```
+There are a few demos/examples showing the basic usage:
 
-- **demo_solo12_hold** [C++]: Initialises the robot and then simply holds the joints
-  in place using position commands.  It is implemented in
-  `demos/demo_solo12_hold.cpp`.
+- **demo_solo12_hold** [C++]: Initialises the robot and then simply holds the
+  joints in place using position commands.  It is implemented in
+  `demos/demo_solo12_hold.cpp` and can be run with
+  ```bash
+  ros2 run robot_interfaces_solo demo_solo12_hold path/to/config.yml
+  ```
+
 - **demo_solo12_sine** [Python]: Initialises the robot and then moves all joints
   back and forth using a sine profile.  It is implemented in
-  `demos/demo_solo12_sine.py`.
+  `demos/demo_solo12_sine.py` and can be run with
+  ```bash
+  ros2 run robot_interfaces_solo demo_solo12_sine path/to/config.yml
+  ```
 
+- **demo_solo12_simulation** [Python]: Shows how to use a simulation backend,
+  including directly accessing the simulation to obtain additional data.  It is
+  implemented in `demos/demo_solo12_simulation.py` and can be run with
+  ```bash
+  ros2 run robot_interfaces_solo demo_solo12_simulation
+  ```
 
 These demos should give an idea on how to use robot_interfaces with the Solo12
 driver.

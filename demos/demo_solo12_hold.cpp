@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     // create a robot data instance, robot backend and frontend.
     auto data = std::make_shared<ris::Solo12SingleProcessData>();
-    ris::Solo12Backend::Ptr backend = create_solo12_backend(data, config);
+    ris::Solo12Backend::Ptr backend = create_real_solo12_backend(data, config);
     ris::Solo12Frontend frontend(data);
 
     // initialise the robot (this also runs the homing)

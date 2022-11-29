@@ -16,6 +16,12 @@ import tabulate
 from robot_interfaces_solo import solo12
 
 
+class BackendMode(enum.Enum):
+    REAL = 0
+    FAKE = 1
+    PYBULLET = 2
+
+
 class Robot:
     """Wrapper around the robot interface for running in different control modes.
 
@@ -33,12 +39,14 @@ class Robot:
         #: Use position controller to hold all joints at their current position.
         HOLD_POSITION = 2
 
-    def __init__(self, config_file: str, fake_robot: bool = False) -> None:
+    def __init__(
+        self, config_file: str, backend_mode: BackendMode = BackendMode.REAL
+    ) -> None:
         """
         Args:
             config_file:  Path to the driver config file.
-            fake_robot:  If true, use the fake backend instead of the real robot (for
-                testing).
+            backend_mode:  Specifies the type of backend to be used (real robot,
+                simulation or 'fake robot').
         """
         self.kp = 3.0
         self.kd = 0.05
@@ -46,10 +54,16 @@ class Robot:
 
         config = solo12.Config.from_file(config_file)
         robot_data = solo12.SingleProcessData()
-        if fake_robot:
+
+        if backend_mode == BackendMode.REAL:
+            self.robot_backend = solo12.create_real_backend(robot_data, config)
+        elif backend_mode == BackendMode.FAKE:
             self.robot_backend = solo12.create_fake_backend(robot_data, config)
+        elif backend_mode == BackendMode.PYBULLET:
+            self.robot_backend = solo12.create_pybullet_backend(robot_data, config)
         else:
-            self.robot_backend = solo12.create_backend(robot_data, config)
+            raise ValueError(f"Unexpected value {backend_mode} for backend_mode.")
+
         self.robot_frontend = solo12.Frontend(robot_data)
 
         self.t = 0
@@ -384,14 +398,34 @@ def main():
         type=str,
         help="YAML file with Solo12 driver configuration.",
     )
-    parser.add_argument(
+
+    mode_options = parser.add_mutually_exclusive_group()
+    mode_options.add_argument(
+        "--real",
+        action="store_const",
+        dest="backend_mode",
+        const=BackendMode.REAL,
+        help="Use the real robot (default).",
+    )
+    mode_options.add_argument(
         "--fake",
-        action="store_true",
+        action="store_const",
+        dest="backend_mode",
+        const=BackendMode.FAKE,
         help="Use fake robot driver (for testing without actual robot).",
     )
+    mode_options.add_argument(
+        "--sim",
+        action="store_const",
+        dest="backend_mode",
+        const=BackendMode.PYBULLET,
+        help="Use PyBullet robot driver.",
+    )
+    mode_options.set_defaults(backend_mode=BackendMode.REAL)
+
     args = parser.parse_args()
 
-    robot = Robot(args.config_file, args.fake)
+    robot = Robot(args.config_file, args.backend_mode)
     robot.initialize()
 
     win = Window(robot)
