@@ -92,8 +92,19 @@ target_link_libraries(demo_solo12_hold
 )
 
 
-# Python Bindings
+## Python Bindings
+
+# TODO: NO_EXTRAS is needed as workaround for an lto-related internal compiler
+# error of gcc.  This disables some optimisations and is thus not a good
+# permanent solution!  Some proper fix for the gcc issue should be found.
+if(CMAKE_COMPILER_IS_GNUCXX)
+    message(WARNING
+        "Set NO_EXTRAS for Python modules to mitigate an internal error of GCC")
+    set(NO_EXTRAS "NO_EXTRAS")
+endif()
+
 add_pybind11_module(solo12 srcpy/solo12.cpp
+    ${NO_EXTRAS}
     LINK_LIBRARIES 
         solo12_driver
         solo12_pybullet_driver
