@@ -6,9 +6,8 @@ Solo12Action
 ============
 
 "Actions" are used to send commands to the robot.  The members are vectors with
-once field per joint.
-
-.. todo:: link docs of solo package for a mapping of index to joint
+once field per joint (see :cpp:class:`solo::Solo12` for a mapping of index to
+joint).
 
 .. doxygenstruct:: robot_interfaces_solo::Solo12Action
    :members: joint_torques,
