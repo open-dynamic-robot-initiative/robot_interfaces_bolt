@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- PyBullet driver for Solo12 for testing in simulation.
+- PyBullet driver for BoltHumanoid for testing in simulation.
 - New demo `demo_solo12_simulation` illustration how to use the PyBullet driver.
 - New option `--sim` for `solo12_show_data` to use the simulation backend. 
 
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.9.0] - 2022-11-11
 
-First beta release.  Contains the `Solo12Driver` with Python bindings, two
+First beta release.  Contains the `BoltHumanoidDriver` with Python bindings, two
 simple demo applications and a test application which shows sensor data.
 
 

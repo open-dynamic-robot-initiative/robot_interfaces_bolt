@@ -11,7 +11,7 @@ using namespace pybind11::literals;
 
 namespace robot_interfaces_solo
 {
-PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
+PyBulletBoltHumanoidDriver::PyBulletBoltHumanoidDriver(bool real_time_mode,
                                            bool visualize,
                                            bool use_fixed_base,
                                            const std::string &logger_level)
@@ -46,13 +46,13 @@ PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
         py::module solo12wrapper =
             py::module::import("robot_properties_solo.solo12wrapper");
 
-        py::object RPSSolo12Config = solo12wrapper.attr("Solo12Config");
+        py::object RPSBoltHumanoidConfig = solo12wrapper.attr("BoltHumanoidConfig");
 
         py::object pybullet_server =
             visualize ? pybullet.attr("GUI") : pybullet.attr("DIRECT");
         sim_env_ =
             bullet_utils_env.attr("BulletEnvWithGround")(pybullet_server);
-        sim_robot_ = solo12wrapper.attr("Solo12Robot")(
+        sim_robot_ = solo12wrapper.attr("BoltHumanoidRobot")(
             "useFixedBase"_a = py::cast(use_fixed_base));
         sim_env_.attr("add_robot")(sim_robot_);
 
@@ -60,12 +60,12 @@ PyBulletSolo12Driver::PyBulletSolo12Driver(bool real_time_mode,
     }
 }
 
-void PyBulletSolo12Driver::initialize()
+void PyBulletBoltHumanoidDriver::initialize()
 {
 }
 
 std::tuple<Vector12d, Vector12d>
-PyBulletSolo12Driver::get_position_and_velocity()
+PyBulletBoltHumanoidDriver::get_position_and_velocity()
 {
     py::gil_scoped_acquire acquire;
 
@@ -78,9 +78,9 @@ PyBulletSolo12Driver::get_position_and_velocity()
     return {joint_positions, joint_velocities};
 }
 
-Solo12Observation PyBulletSolo12Driver::get_latest_observation()
+BoltHumanoidObservation PyBulletBoltHumanoidDriver::get_latest_observation()
 {
-    Solo12Observation observation;
+    BoltHumanoidObservation observation;
 
     sensor_packet_counter_++;
 
@@ -118,8 +118,8 @@ Solo12Observation PyBulletSolo12Driver::get_latest_observation()
     return observation;
 }
 
-Solo12Action PyBulletSolo12Driver::apply_action(
-    const Solo12Action &desired_action)
+BoltHumanoidAction PyBulletBoltHumanoidDriver::apply_action(
+    const BoltHumanoidAction &desired_action)
 {
     auto start_time = std::chrono::system_clock::now();
 
@@ -156,27 +156,27 @@ Solo12Action PyBulletSolo12Driver::apply_action(
     return desired_action;
 }
 
-std::string PyBulletSolo12Driver::get_error()
+std::string PyBulletBoltHumanoidDriver::get_error()
 {
     return "";  // no errors
 }
 
-void PyBulletSolo12Driver::shutdown()
+void PyBulletBoltHumanoidDriver::shutdown()
 {
 }
 
-py::object PyBulletSolo12Driver::get_bullet_env()
+py::object PyBulletBoltHumanoidDriver::get_bullet_env()
 {
     return sim_env_;
 }
 
-Solo12Backend::Ptr create_pybullet_solo12_backend(
-    Solo12Data::Ptr robot_data,
-    const Solo12Config &driver_config,
+BoltHumanoidBackend::Ptr create_pybullet_solo12_backend(
+    BoltHumanoidData::Ptr robot_data,
+    const BoltHumanoidConfig &driver_config,
     const double first_action_timeout,
     const uint32_t max_number_of_actions)
 {
-    auto driver = std::make_shared<PyBulletSolo12Driver>(
+    auto driver = std::make_shared<PyBulletBoltHumanoidDriver>(
         true, true, false, driver_config.logger_level);
 
     constexpr bool enable_timing_watchdog = false;

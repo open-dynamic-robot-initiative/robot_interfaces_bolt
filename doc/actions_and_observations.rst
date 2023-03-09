@@ -2,14 +2,14 @@
 Actions and Observations
 ************************
 
-Solo12Action
+BoltHumanoidAction
 ============
 
 "Actions" are used to send commands to the robot.  The members are vectors with
-once field per joint (see :cpp:class:`solo::Solo12` for a mapping of index to
+once field per joint (see :cpp:class:`solo::BoltHumanoid` for a mapping of index to
 joint).
 
-.. doxygenstruct:: robot_interfaces_solo::Solo12Action
+.. doxygenstruct:: robot_interfaces_solo::BoltHumanoidAction
    :members: joint_torques,
              joint_positions,
              joint_velocities,
@@ -18,14 +18,14 @@ joint).
              Zero
 
 
-Solo12Observation
+BoltHumanoidObservation
 =================
 
 "Observations" contain the sensor data that is provided by the robot.  The
 ``joint_*`` members follow the same order as in the action (see above).
 
 
-.. doxygenstruct:: robot_interfaces_solo::Solo12Observation
+.. doxygenstruct:: robot_interfaces_solo::BoltHumanoidObservation
    :members: joint_positions,
              joint_velocities,
              joint_torques,

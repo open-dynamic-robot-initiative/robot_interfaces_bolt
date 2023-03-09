@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Demo using Solo12 that holds all joints at their current positions.
+ * \brief Demo using BoltHumanoid that holds all joints at their current positions.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #include <memory>
@@ -21,7 +21,7 @@ public:
 
     std::string help() const override
     {
-        return R"(Demo using Solo12 that holds all joints at their current positions.
+        return R"(Demo using BoltHumanoid that holds all joints at their current positions.
 
 Usage:  demo_solo12_hold <network-interface> [<serial-port>]
 
@@ -60,24 +60,24 @@ int main(int argc, char *argv[])
     }
 
     // load the driver configuration from a YAML file
-    ris::Solo12Config config = ris::Solo12Config::from_file(args.config_file);
+    ris::BoltHumanoidConfig config = ris::BoltHumanoidConfig::from_file(args.config_file);
 
     // create a robot data instance, robot backend and frontend.
-    auto data = std::make_shared<ris::Solo12SingleProcessData>();
-    ris::Solo12Backend::Ptr backend = create_real_solo12_backend(data, config);
-    ris::Solo12Frontend frontend(data);
+    auto data = std::make_shared<ris::BoltHumanoidSingleProcessData>();
+    ris::BoltHumanoidBackend::Ptr backend = create_real_solo12_backend(data, config);
+    ris::BoltHumanoidFrontend frontend(data);
 
     // initialise the robot (this also runs the homing)
     backend->initialize();
 
     // start with a zero-torque action (we need to send an initial action first,
     // before we can access the observation)
-    auto t = frontend.append_desired_action(ris::Solo12Action::Zero());
-    ris::Solo12Observation obs = frontend.get_observation(t);
+    auto t = frontend.append_desired_action(ris::BoltHumanoidAction::Zero());
+    ris::BoltHumanoidObservation obs = frontend.get_observation(t);
 
     // construct a simple position control action, using the current position
     // from the observation as target position.
-    ris::Solo12Action action;
+    ris::BoltHumanoidAction action;
     action.joint_position_gains.fill(args.kp);
     action.joint_velocity_gains.fill(args.kd);
     action.joint_positions = obs.joint_positions;

@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Action for Solo12.
+ * \brief Action for BoltHumanoid.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #pragma once
@@ -19,15 +19,15 @@
 namespace robot_interfaces_solo
 {
 /**
- * @brief Action for the Solo12 robot.
+ * @brief Action for the BoltHumanoid robot.
  *
- * Solo12 has an on-board PD+ controller which can be used by setting the P and
+ * BoltHumanoid has an on-board PD+ controller which can be used by setting the P and
  * D control gains per joint to the fields @ref joint_position_gains and @ref
  * joint_velocity_gains.
  * If the gains are zero, @ref joint_positions and @ref joint_velocities are
  * ignored and only the torque commands in @ref joint_torques are executed.
  */
-struct Solo12Action : public robot_interfaces::Loggable
+struct BoltHumanoidAction : public robot_interfaces::Loggable
 {
     //! Desired joint torques.
     Vector12d joint_torques = Vector12d::Zero();
@@ -48,9 +48,9 @@ struct Solo12Action : public robot_interfaces::Loggable
      * This is equivalent to just using the default constructor but can be used
      * to more explicitly show intend in the code.
      */
-    static Solo12Action Zero()
+    static BoltHumanoidAction Zero()
     {
-        return Solo12Action();
+        return BoltHumanoidAction();
     }
 
     template <class Archive>

@@ -1,5 +1,5 @@
 [mainpage]
-title = "Solo12 drivers for robot_interfaces"
+title = "BoltHumanoid drivers for robot_interfaces"
 auto_general_docs = false
 
 [intersphinx.mapping]

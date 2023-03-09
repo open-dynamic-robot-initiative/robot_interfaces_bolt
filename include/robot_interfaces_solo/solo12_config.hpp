@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Config for Solo12 drivers.
+ * \brief Config for BoltHumanoid drivers.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #pragma once
@@ -12,9 +12,9 @@
 namespace robot_interfaces_solo
 {
 /**
- * @brief Configuration for the Solo12 driver.
+ * @brief Configuration for the BoltHumanoid driver.
  */
-struct Solo12Config
+struct BoltHumanoidConfig
 {
     /**
      * @brief Name of the network interface to which the robot is connected
@@ -59,7 +59,7 @@ struct Solo12Config
      * @return Configuration instance.  For parameters not provided in the file
      *         the default values are kept.
      */
-    static Solo12Config from_file(const std::filesystem::path &file);
+    static BoltHumanoidConfig from_file(const std::filesystem::path &file);
 };
 
 }  // namespace robot_interfaces_solo

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Basic demo on how to control Solo12 in simulation."""
+"""Basic demo on how to control BoltHumanoid in simulation."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -8,7 +8,7 @@ import typing
 import numpy as np
 
 from bullet_utils.env import BulletEnvWithGround
-from robot_properties_solo.solo12wrapper import Solo12Robot
+from robot_properties_solo.solo12wrapper import BoltHumanoidRobot
 
 from robot_interfaces_solo import solo12
 
@@ -62,7 +62,7 @@ def main() -> None:
     observation = robot_frontend.get_observation(t)
     initial_positions = observation.joint_positions
 
-    sim_robot: Solo12Robot = sim_env.robots[0]
+    sim_robot: BoltHumanoidRobot = sim_env.robots[0]
 
     while True:
         # compute target positions and velocities for the joints

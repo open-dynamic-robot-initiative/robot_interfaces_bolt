@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Show all sensor data of Solo12.
+"""Show all sensor data of BoltHumanoid.
 
 Show all data from observation, status and applied action in a simple TUI.  Press M to
 toggle between position control mode (holding all joints at their current position) and
@@ -256,7 +256,7 @@ class Window:
 
         body = u.Filler(u.Pile([observation, status, applied_action]))
         header = u.Padding(
-            u.BigText("Solo12 Sensor Data", u.font.HalfBlock5x4Font()),
+            u.BigText("BoltHumanoid Sensor Data", u.font.HalfBlock5x4Font()),
             align="center",
             width="clip",
         )
@@ -396,7 +396,7 @@ def main():
     parser.add_argument(
         "config_file",
         type=str,
-        help="YAML file with Solo12 driver configuration.",
+        help="YAML file with BoltHumanoid driver configuration.",
     )
 
     mode_options = parser.add_mutually_exclusive_group()

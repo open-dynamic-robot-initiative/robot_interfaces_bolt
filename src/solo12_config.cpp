@@ -28,10 +28,10 @@ void _set_optional_config_value(const YAML::Node &user_config,
     };
 }
 
-Solo12Config Solo12Config::from_file(
+BoltHumanoidConfig BoltHumanoidConfig::from_file(
     const std::filesystem::path &config_file_name)
 {
-    Solo12Config config;
+    BoltHumanoidConfig config;
     YAML::Node user_config;
 
     try

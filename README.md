@@ -1,7 +1,7 @@
 robot_interfaces Driver for Solo Robots
 =======================================
 
-This package provides the necessary types and driver to operate a Solo12 robot
+This package provides the necessary types and driver to operate a BoltHumanoid robot
 with [robot_interfaces](https://github.com/open-dynamic-robot-initiative/robot_interfaces).
 
 For instructions on installation, usage, etc, see the packages's

@@ -1,5 +1,5 @@
 ``robot_interfaces_solo`` provides the necessary types and driver to operate a
-Solo12 robot with :doc:`robot_interfaces <robot_interfaces:index>`.
+BoltHumanoid robot with :doc:`robot_interfaces <robot_interfaces:index>`.
 
 
 .. toctree::

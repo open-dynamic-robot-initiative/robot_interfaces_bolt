@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Observation for Solo12.
+ * \brief Observation for BoltHumanoid.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #pragma once
@@ -20,15 +20,15 @@
 namespace robot_interfaces_solo
 {
 /**
- * @brief Observation of the Solo12 robot.
+ * @brief Observation of the BoltHumanoid robot.
  *
- * This observation class contains all the sensor data provided by the Solo12
+ * This observation class contains all the sensor data provided by the BoltHumanoid
  * robot.
- * The names of the attributes correspond to the names used in ``solo::Solo12``
+ * The names of the attributes correspond to the names used in ``solo::BoltHumanoid``
  * of the solo package (for each attribute X, there is a method ``get_X()``).
  * See there for more information.
  */
-struct Solo12Observation : public robot_interfaces::Loggable
+struct BoltHumanoidObservation : public robot_interfaces::Loggable
 {
     //! Measured joint positions.
     Vector12d joint_positions;

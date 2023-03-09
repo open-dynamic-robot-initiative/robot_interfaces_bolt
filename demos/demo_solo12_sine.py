@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Basic demo on how to control Solo12.
+"""Basic demo on how to control BoltHumanoid.
 
 This demo uses the on-board PD controller to move the joints with a sine-wave position
 profile.
@@ -16,7 +16,7 @@ def main():
     parser.add_argument(
         "config_file",
         type=str,
-        help="YAML file with Solo12 driver configuration.",
+        help="YAML file with BoltHumanoid driver configuration.",
     )
     args = parser.parse_args()
 

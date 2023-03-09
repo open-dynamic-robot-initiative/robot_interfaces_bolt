@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief robot_interfaces types for Solo12.
+ * \brief robot_interfaces types for BoltHumanoid.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #pragma once
@@ -17,24 +17,24 @@
 
 namespace robot_interfaces_solo
 {
-typedef robot_interfaces::RobotBackend<Solo12Action, Solo12Observation>
-    Solo12Backend;
-typedef robot_interfaces::RobotFrontend<Solo12Action, Solo12Observation>
-    Solo12Frontend;
-typedef robot_interfaces::RobotData<Solo12Action, Solo12Observation> Solo12Data;
-typedef robot_interfaces::SingleProcessRobotData<Solo12Action,
-                                                 Solo12Observation>
-    Solo12SingleProcessData;
-typedef robot_interfaces::MultiProcessRobotData<Solo12Action, Solo12Observation>
-    Solo12MultiProcessData;
+typedef robot_interfaces::RobotBackend<BoltHumanoidAction, BoltHumanoidObservation>
+    BoltHumanoidBackend;
+typedef robot_interfaces::RobotFrontend<BoltHumanoidAction, BoltHumanoidObservation>
+    BoltHumanoidFrontend;
+typedef robot_interfaces::RobotData<BoltHumanoidAction, BoltHumanoidObservation> BoltHumanoidData;
+typedef robot_interfaces::SingleProcessRobotData<BoltHumanoidAction,
+                                                 BoltHumanoidObservation>
+    BoltHumanoidSingleProcessData;
+typedef robot_interfaces::MultiProcessRobotData<BoltHumanoidAction, BoltHumanoidObservation>
+    BoltHumanoidMultiProcessData;
 
-//! Base class for Solo12 drivers
-class BaseSolo12Driver
-    : public robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>
+//! Base class for BoltHumanoid drivers
+class BaseBoltHumanoidDriver
+    : public robot_interfaces::RobotDriver<BoltHumanoidAction, BoltHumanoidObservation>
 {
 public:
-    typedef std::shared_ptr<BaseSolo12Driver> Ptr;
-    typedef std::shared_ptr<const BaseSolo12Driver> ConstPtr;
+    typedef std::shared_ptr<BaseBoltHumanoidDriver> Ptr;
+    typedef std::shared_ptr<const BaseBoltHumanoidDriver> ConstPtr;
 };
 
 }  // namespace robot_interfaces_solo

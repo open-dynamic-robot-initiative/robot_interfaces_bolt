@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Python bindings for Solo12
+ * \brief Python bindings for BoltHumanoid
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #include <limits>
@@ -28,33 +28,33 @@ PYBIND11_MODULE(solo12, m)
     // import robot_interfaces to provide bindings for Status
     pybind11::module::import("robot_interfaces");
 
-    robot_interfaces::create_interface_python_bindings<ris::Solo12Action,
-                                                       ris::Solo12Observation>(
+    robot_interfaces::create_interface_python_bindings<ris::BoltHumanoidAction,
+                                                       ris::BoltHumanoidObservation>(
         m);
 
-    pybind11::class_<ris::Solo12Action>(m, "Action", "Action for Solo12")
+    pybind11::class_<ris::BoltHumanoidAction>(m, "Action", "Action for BoltHumanoid")
         .def(pybind11::init<>())
         .def_readwrite("joint_torques",
-                       &ris::Solo12Action::joint_torques,
+                       &ris::BoltHumanoidAction::joint_torques,
                        "List of desired torques, one per joint.")
         .def_readwrite("joint_positions",
-                       &ris::Solo12Action::joint_positions,
+                       &ris::BoltHumanoidAction::joint_positions,
                        "Desired joint positions of the P controller running on "
                        "the card.  For this to have an effect "
                        ":attr:`joint_position_gains` needs to be set as well.")
         .def_readwrite("joint_velocities",
-                       &ris::Solo12Action::joint_velocities,
+                       &ris::BoltHumanoidAction::joint_velocities,
                        "desired joint velocity of the D controller running on "
                        "the card.  For this to have an effect, "
                        ":attr:`joint_velocity_gains` needs to be set as well.")
         .def_readwrite("joint_position_gains",
-                       &ris::Solo12Action::joint_position_gains,
+                       &ris::BoltHumanoidAction::joint_position_gains,
                        "P-gains for the on-board controller, one per joint.")
         .def_readwrite("joint_velocity_gains",
-                       &ris::Solo12Action::joint_velocity_gains,
+                       &ris::BoltHumanoidAction::joint_velocity_gains,
                        "D-gains for the on-barod controller, one per joint.")
         .def(pybind11::pickle(
-            [](const ris::Solo12Action &a) {  // __getstate__
+            [](const ris::BoltHumanoidAction &a) {  // __getstate__
                 // Return a tuple that fully encodes the state of the object
                 return pybind11::make_tuple(a.joint_torques,
                                             a.joint_positions,
@@ -69,7 +69,7 @@ PYBIND11_MODULE(solo12, m)
                 }
 
                 // Create a new C++ instance
-                ris::Solo12Action action;
+                ris::BoltHumanoidAction action;
                 action.joint_torques = t[0].cast<ris::Vector12d>();
                 action.joint_positions = t[1].cast<ris::Vector12d>();
                 action.joint_velocities = t[2].cast<ris::Vector12d>();
@@ -78,74 +78,74 @@ PYBIND11_MODULE(solo12, m)
 
                 return action;
             }))
-        .def("Zero", &ris::Solo12Action::Zero, "Create a zero-torque action");
+        .def("Zero", &ris::BoltHumanoidAction::Zero, "Create a zero-torque action");
 
-    pybind11::class_<ris::Solo12Observation>(m, "Observation")
+    pybind11::class_<ris::BoltHumanoidObservation>(m, "Observation")
         .def(pybind11::init<>())
         .def_readwrite("joint_positions",
-                       &ris::Solo12Observation::joint_positions)
+                       &ris::BoltHumanoidObservation::joint_positions)
         .def_readwrite("joint_velocities",
-                       &ris::Solo12Observation::joint_velocities)
-        .def_readwrite("joint_torques", &ris::Solo12Observation::joint_torques)
+                       &ris::BoltHumanoidObservation::joint_velocities)
+        .def_readwrite("joint_torques", &ris::BoltHumanoidObservation::joint_torques)
         .def_readwrite("joint_target_torques",
-                       &ris::Solo12Observation::joint_target_torques)
+                       &ris::BoltHumanoidObservation::joint_target_torques)
         .def_readwrite("joint_encoder_index",
-                       &ris::Solo12Observation::joint_encoder_index)
+                       &ris::BoltHumanoidObservation::joint_encoder_index)
         .def_readwrite("slider_positions",
-                       &ris::Solo12Observation::slider_positions)
+                       &ris::BoltHumanoidObservation::slider_positions)
         .def_readwrite("imu_accelerometer",
-                       &ris::Solo12Observation::imu_accelerometer)
-        .def_readwrite("imu_gyroscope", &ris::Solo12Observation::imu_gyroscope)
+                       &ris::BoltHumanoidObservation::imu_accelerometer)
+        .def_readwrite("imu_gyroscope", &ris::BoltHumanoidObservation::imu_gyroscope)
         .def_readwrite("imu_linear_acceleration",
-                       &ris::Solo12Observation::imu_linear_acceleration)
-        .def_readwrite("imu_attitude", &ris::Solo12Observation::imu_attitude)
+                       &ris::BoltHumanoidObservation::imu_linear_acceleration)
+        .def_readwrite("imu_attitude", &ris::BoltHumanoidObservation::imu_attitude)
         .def_readwrite("num_sent_command_packets",
-                       &ris::Solo12Observation::num_sent_command_packets)
+                       &ris::BoltHumanoidObservation::num_sent_command_packets)
         .def_readwrite("num_lost_command_packets",
-                       &ris::Solo12Observation::num_lost_command_packets)
+                       &ris::BoltHumanoidObservation::num_lost_command_packets)
         .def_readwrite("num_sent_sensor_packets",
-                       &ris::Solo12Observation::num_sent_sensor_packets)
+                       &ris::BoltHumanoidObservation::num_sent_sensor_packets)
         .def_readwrite("num_lost_sensor_packets",
-                       &ris::Solo12Observation::num_lost_sensor_packets);
+                       &ris::BoltHumanoidObservation::num_lost_sensor_packets);
 
-    pybind11::class_<ris::Solo12Config, std::shared_ptr<ris::Solo12Config>>(
+    pybind11::class_<ris::BoltHumanoidConfig, std::shared_ptr<ris::BoltHumanoidConfig>>(
         m, "Config")
         .def(pybind11::init<>())
         .def_readwrite("network_interface",
-                       &ris::Solo12Config::network_interface,
+                       &ris::BoltHumanoidConfig::network_interface,
                        "Name of the network interface to which the robot is "
                        "connected (e.g. 'eth0')")
         .def_readwrite("slider_serial_port",
-                       &ris::Solo12Config::slider_serial_port,
+                       &ris::BoltHumanoidConfig::slider_serial_port,
                        "Name of the serial port to which the hardware slider "
                        "is connected. This can typically be left empty, in "
                        "which case the port is auto-detected.")
         .def_readwrite(
             "max_motor_current_A",
-            &ris::Solo12Config::max_motor_current_A,
+            &ris::BoltHumanoidConfig::max_motor_current_A,
             "Maximum current that can be applied to the motors (in Ampere).")
         .def_readwrite("home_offset_rad",
-                       &ris::Solo12Config::home_offset_rad,
+                       &ris::BoltHumanoidConfig::home_offset_rad,
                        "Offset between home position (=encoder index) and zero "
                        "position.\n\nAngles (in radian) between the encoder "
                        "index and the zero position of each joint.")
         .def("from_file",
-             &ris::Solo12Config::from_file,
+             &ris::BoltHumanoidConfig::from_file,
              "Load configuration from a YAML file (using default values for "
              "parameters missing in the file).");
 
-    pybind11::class_<ris::BaseSolo12Driver, ris::BaseSolo12Driver::Ptr>
-        base_driver(m, "BaseSolo12Driver");
+    pybind11::class_<ris::BaseBoltHumanoidDriver, ris::BaseBoltHumanoidDriver::Ptr>
+        base_driver(m, "BaseBoltHumanoidDriver");
 
-    pybind11::class_<ris::PyBulletSolo12Driver,
-                     std::shared_ptr<ris::PyBulletSolo12Driver>,
-                     ris::BaseSolo12Driver>(m, "PyBulletDriver")
+    pybind11::class_<ris::PyBulletBoltHumanoidDriver,
+                     std::shared_ptr<ris::PyBulletBoltHumanoidDriver>,
+                     ris::BaseBoltHumanoidDriver>(m, "PyBulletDriver")
         .def(pybind11::init<bool, bool, bool, const std::string &>(),
              pybind11::arg("real_time_mode") = true,
              pybind11::arg("visualize") = true,
              pybind11::arg("use_fixed_base") = false,
              pybind11::arg("logger_level") = "debug")
-        .def("get_bullet_env", &ris::PyBulletSolo12Driver::get_bullet_env);
+        .def("get_bullet_env", &ris::PyBulletBoltHumanoidDriver::get_bullet_env);
 
     m.def("create_backend",
           &ris::create_solo12_backend,

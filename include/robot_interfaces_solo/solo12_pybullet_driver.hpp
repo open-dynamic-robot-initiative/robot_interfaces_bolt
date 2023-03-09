@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Driver for using simulated Solo12 in robot_interfaces::RobotBackend.
+ * \brief Driver for using simulated BoltHumanoid in robot_interfaces::RobotBackend.
  * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #pragma once
@@ -17,9 +17,9 @@ namespace robot_interfaces_solo
 namespace py = pybind11;
 
 /**
- * @brief Driver for Solo12 in PyBullet simulation.
+ * @brief Driver for BoltHumanoid in PyBullet simulation.
  *
- * This driver can be used as a replacement for the "real" Solo12 driver for
+ * This driver can be used as a replacement for the "real" BoltHumanoid driver for
  * testing things in simulation.
  *
  * @warning
@@ -27,7 +27,7 @@ namespace py = pybind11;
  *   observation are not set by this driver, as the corresponding values are not
  *   provided by the simulation.
  */
-class PyBulletSolo12Driver : public BaseSolo12Driver
+class PyBulletBoltHumanoidDriver : public BaseBoltHumanoidDriver
 {
 private:
     std::shared_ptr<spdlog::logger> log_;
@@ -53,7 +53,7 @@ private:
     //! Instance of ``bullet_utils.env.BulletEnvWithGround`` used to set up the
     //! simulation.
     py::object sim_env_;
-    //! Instance of ``robot_properties_solo.solo12wrapper.Solo12Robot`` for
+    //! Instance of ``robot_properties_solo.solo12wrapper.BoltHumanoidRobot`` for
     //! controlling the simulated robot.
     py::object sim_robot_;
 
@@ -62,7 +62,7 @@ private:
 
 public:
     //! @brief Name of the spdlog logger used.
-    inline static const std::string LOGGER_NAME = "PyBulletSolo12Driver";
+    inline static const std::string LOGGER_NAME = "PyBulletBoltHumanoidDriver";
 
     /**
      * @param real_time_mode  If true, sleep when stepping the simulation, so it
@@ -77,16 +77,16 @@ public:
      *     level supported by spdlog (e.g. "debug", "info", ...).  This is only
      *     considered if a new logger is initialised, i.e. the level is not
      *     changed, if a logger with the name stored in @ref
-     *     PyBulletSolo12Driver::LOGGER_NAME does already exist.
+     *     PyBulletBoltHumanoidDriver::LOGGER_NAME does already exist.
      */
-    PyBulletSolo12Driver(bool real_time_mode = true,
+    PyBulletBoltHumanoidDriver(bool real_time_mode = true,
                          bool visualize = true,
                          bool use_fixed_base = false,
                          const std::string &logger_level = "debug");
 
     void initialize() override;
-    Solo12Observation get_latest_observation() override;
-    Solo12Action apply_action(const Solo12Action &desired_action) override;
+    BoltHumanoidObservation get_latest_observation() override;
+    BoltHumanoidAction apply_action(const BoltHumanoidAction &desired_action) override;
     std::string get_error() override;
     void shutdown() override;
 
@@ -95,7 +95,7 @@ public:
 };
 
 /**
- * @brief Create robot backend using the PyBullet Solo12 driver (for testing).
+ * @brief Create robot backend using the PyBullet BoltHumanoid driver (for testing).
  *
  * Arguments are the same as for @ref create_real_solo12_backend.
  *
@@ -104,13 +104,13 @@ public:
  * simulation environment), create a driver instance yourself and use @ref
  * create_solo12_backend.
  *
- * @see PyBulletSolo12Driver
+ * @see PyBulletBoltHumanoidDriver
  * @see create_solo12_backend
  * @see create_real_solo12_backend
  */
-Solo12Backend::Ptr create_pybullet_solo12_backend(
-    Solo12Data::Ptr robot_data,
-    const Solo12Config &driver_config,
+BoltHumanoidBackend::Ptr create_pybullet_solo12_backend(
+    BoltHumanoidData::Ptr robot_data,
+    const BoltHumanoidConfig &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),
     const uint32_t max_number_of_actions = 0);
 

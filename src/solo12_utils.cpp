@@ -6,8 +6,8 @@
 
 namespace robot_interfaces_solo
 {
-Solo12Backend::Ptr create_solo12_backend(Solo12Data::Ptr robot_data,
-                                         BaseSolo12Driver::Ptr robot_driver,
+BoltHumanoidBackend::Ptr create_solo12_backend(BoltHumanoidData::Ptr robot_data,
+                                         BaseBoltHumanoidDriver::Ptr robot_driver,
                                          const double first_action_timeout,
                                          const uint32_t max_number_of_actions,
                                          bool enable_timing_watchdog)
@@ -16,14 +16,14 @@ Solo12Backend::Ptr create_solo12_backend(Solo12Data::Ptr robot_data,
     constexpr double MAX_INTER_ACTION_DURATION_S = 0.005;
 
     std::shared_ptr<
-        robot_interfaces::RobotDriver<Solo12Action, Solo12Observation>>
+        robot_interfaces::RobotDriver<BoltHumanoidAction, BoltHumanoidObservation>>
         wrapped_driver;
 
     if (enable_timing_watchdog)
     {
         // wrap the actual robot driver directly in a MonitoredRobotDriver
         wrapped_driver = std::make_shared<
-            robot_interfaces::MonitoredRobotDriver<BaseSolo12Driver>>(
+            robot_interfaces::MonitoredRobotDriver<BaseBoltHumanoidDriver>>(
             robot_driver, MAX_ACTION_DURATION_S, MAX_INTER_ACTION_DURATION_S);
     }
     else
@@ -33,7 +33,7 @@ Solo12Backend::Ptr create_solo12_backend(Solo12Data::Ptr robot_data,
     }
 
     constexpr bool real_time_mode = true;
-    auto backend = std::make_shared<Solo12Backend>(wrapped_driver,
+    auto backend = std::make_shared<BoltHumanoidBackend>(wrapped_driver,
                                                    robot_data,
                                                    real_time_mode,
                                                    first_action_timeout,

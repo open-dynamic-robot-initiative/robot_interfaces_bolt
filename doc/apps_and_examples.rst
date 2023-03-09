@@ -50,5 +50,5 @@ There are a few demos/examples showing the basic usage:
 
       ros2 run robot_interfaces_solo demo_solo12_simulation
 
-These demos should give an idea on how to use robot_interfaces with the Solo12
+These demos should give an idea on how to use robot_interfaces with the BoltHumanoid
 driver.

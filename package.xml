@@ -3,7 +3,7 @@
 <package format="3">
   <name>robot_interfaces_solo</name>
   <version>0.9.0</version>
-  <description>Driver for using robot_interfaces with Solo12.</description>
+  <description>Driver for using robot_interfaces with BoltHumanoid.</description>
   <maintainer email="felix.widmaier@tuebingen.mpg.de">Felix Widmaier</maintainer>
   <license>BSD 3-clause</license>
 
