@@ -16,7 +16,8 @@
 
 namespace robot_interfaces_bolt
 {
-BoltHumanoidDriver::BoltHumanoidDriver(const BoltHumanoidConfig &config) : config_(config)
+BoltHumanoidDriver::BoltHumanoidDriver(const BoltHumanoidConfig &config)
+    : config_(config)
 {
     // initialise logger and set level based on config
     log_ = spdlog::get(LOGGER_NAME);
@@ -31,7 +32,8 @@ BoltHumanoidDriver::BoltHumanoidDriver(const BoltHumanoidConfig &config) : confi
 void BoltHumanoidDriver::initialize()
 {
     log_->debug("Initialize BoltHumanoid");
-    bolthumanoid_.initialize(config_.network_interface, config_.slider_serial_port);
+    bolthumanoid_.initialize(config_.network_interface,
+                             config_.slider_serial_port);
     bolthumanoid_.set_max_current(config_.max_motor_current_A);
 
     real_time_tools::Spinner spinner;
@@ -66,7 +68,8 @@ void BoltHumanoidDriver::initialize()
     log_->debug("Initialization finished");
 }
 
-BoltHumanoidDriver::Action BoltHumanoidDriver::apply_action(const Action &desired_action)
+BoltHumanoidDriver::Action BoltHumanoidDriver::apply_action(
+    const Action &desired_action)
 {
     double start_time_sec = real_time_tools::Timer::get_current_time_sec();
 
@@ -113,18 +116,24 @@ BoltHumanoidDriver::Observation BoltHumanoidDriver::get_latest_observation()
     obs.joint_velocities = bolthumanoid_.get_joint_velocities();
     obs.joint_torques = bolthumanoid_.get_joint_torques();
     obs.joint_target_torques = bolthumanoid_.get_joint_target_torques();
-    obs.joint_encoder_index = bolthumanoid_.get_joint_encoder_index();
+    // obs.joint_encoder_index = bolthumanoid_.get_joint_encoder_index();
 
     obs.slider_positions = bolthumanoid_.get_slider_positions();
-    obs.imu_accelerometer = bolthumanoid_.get_imu_accelerometer();
-    obs.imu_gyroscope = bolthumanoid_.get_imu_gyroscope();
-    obs.imu_linear_acceleration = bolthumanoid_.get_imu_linear_acceleration();
-    obs.imu_attitude = bolthumanoid_.get_imu_attitude();
+    // FIXME
+    // obs.imu_accelerometer = bolthumanoid_.get_imu_accelerometer();
+    // obs.imu_gyroscope = bolthumanoid_.get_imu_gyroscope();
+    // obs.imu_linear_acceleration =
+    // bolthumanoid_.get_imu_linear_acceleration(); obs.imu_attitude =
+    // bolthumanoid_.get_imu_attitude();
 
-    obs.num_sent_command_packets = bolthumanoid_.get_num_sent_command_packets();
-    obs.num_lost_command_packets = bolthumanoid_.get_num_lost_command_packets();
-    obs.num_sent_sensor_packets = bolthumanoid_.get_num_sent_sensor_packets();
-    obs.num_lost_sensor_packets = bolthumanoid_.get_num_lost_sensor_packets();
+    // FIXME
+    // obs.num_sent_command_packets =
+    // bolthumanoid_.get_num_sent_command_packets();
+    // obs.num_lost_command_packets =
+    // bolthumanoid_.get_num_lost_command_packets(); obs.num_sent_sensor_packets
+    // = bolthumanoid_.get_num_sent_sensor_packets();
+    // obs.num_lost_sensor_packets =
+    // bolthumanoid_.get_num_lost_sensor_packets();
 
     return obs;
 }
@@ -179,7 +188,8 @@ void BoltHumanoidDriver::shutdown()
     }
 }
 
-FakeBoltHumanoidDriver::FakeBoltHumanoidDriver(const BoltHumanoidConfig &config) : config_(config)
+FakeBoltHumanoidDriver::FakeBoltHumanoidDriver(const BoltHumanoidConfig &config)
+    : config_(config)
 {
     // initialise logger and set level based on config
     log_ = spdlog::get(LOGGER_NAME);
@@ -215,7 +225,8 @@ FakeBoltHumanoidDriver::Action FakeBoltHumanoidDriver::apply_action(
     return desired_action;
 }
 
-FakeBoltHumanoidDriver::Observation FakeBoltHumanoidDriver::get_latest_observation()
+FakeBoltHumanoidDriver::Observation
+FakeBoltHumanoidDriver::get_latest_observation()
 {
     if (!is_initialized_)
     {
@@ -269,11 +280,12 @@ BoltHumanoidBackend::Ptr create_real_bolthumanoid_backend(
     const uint32_t max_number_of_actions)
 {
     constexpr bool enable_timing_watchdog = true;
-    return create_bolthumanoid_backend(robot_data,
-                                 std::make_shared<BoltHumanoidDriver>(driver_config),
-                                 first_action_timeout,
-                                 max_number_of_actions,
-                                 enable_timing_watchdog);
+    return create_bolthumanoid_backend(
+        robot_data,
+        std::make_shared<BoltHumanoidDriver>(driver_config),
+        first_action_timeout,
+        max_number_of_actions,
+        enable_timing_watchdog);
 }
 
 BoltHumanoidBackend::Ptr create_fake_bolthumanoid_backend(
@@ -286,10 +298,10 @@ BoltHumanoidBackend::Ptr create_fake_bolthumanoid_backend(
 
     constexpr bool enable_timing_watchdog = false;
     return create_bolthumanoid_backend(robot_data,
-                                 driver,
-                                 first_action_timeout,
-                                 max_number_of_actions,
-                                 enable_timing_watchdog);
+                                       driver,
+                                       first_action_timeout,
+                                       max_number_of_actions,
+                                       enable_timing_watchdog);
 }
 
 }  // namespace robot_interfaces_bolt
