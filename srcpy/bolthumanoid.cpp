@@ -89,8 +89,6 @@ PYBIND11_MODULE(bolthumanoid, m)
         .def_readwrite("joint_torques", &ris::BoltHumanoidObservation::joint_torques)
         .def_readwrite("joint_target_torques",
                        &ris::BoltHumanoidObservation::joint_target_torques)
-        .def_readwrite("joint_encoder_index",
-                       &ris::BoltHumanoidObservation::joint_encoder_index)
         .def_readwrite("slider_positions",
                        &ris::BoltHumanoidObservation::slider_positions)
         .def_readwrite("imu_accelerometer",
@@ -98,15 +96,7 @@ PYBIND11_MODULE(bolthumanoid, m)
         .def_readwrite("imu_gyroscope", &ris::BoltHumanoidObservation::imu_gyroscope)
         .def_readwrite("imu_linear_acceleration",
                        &ris::BoltHumanoidObservation::imu_linear_acceleration)
-        .def_readwrite("imu_attitude", &ris::BoltHumanoidObservation::imu_attitude)
-        .def_readwrite("num_sent_command_packets",
-                       &ris::BoltHumanoidObservation::num_sent_command_packets)
-        .def_readwrite("num_lost_command_packets",
-                       &ris::BoltHumanoidObservation::num_lost_command_packets)
-        .def_readwrite("num_sent_sensor_packets",
-                       &ris::BoltHumanoidObservation::num_sent_sensor_packets)
-        .def_readwrite("num_lost_sensor_packets",
-                       &ris::BoltHumanoidObservation::num_lost_sensor_packets);
+        .def_readwrite("imu_attitude", &ris::BoltHumanoidObservation::imu_attitude);
 
     pybind11::class_<ris::BoltHumanoidConfig, std::shared_ptr<ris::BoltHumanoidConfig>>(
         m, "Config")

@@ -22,11 +22,10 @@ namespace robot_interfaces_bolt
 /**
  * @brief Observation of the BoltHumanoid robot.
  *
- * This observation class contains all the sensor data provided by the BoltHumanoid
- * robot.
- * The names of the attributes correspond to the names used in ``bolt::BoltHumanoid``
- * of the bolt package (for each attribute X, there is a method ``get_X()``).
- * See there for more information.
+ * This observation class contains all the sensor data provided by the
+ * BoltHumanoid robot. The names of the attributes correspond to the names used
+ * in ``bolt::BoltHumanoid`` of the bolt package (for each attribute X, there is
+ * a method ``get_X()``). See there for more information.
  */
 struct BoltHumanoidObservation : public robot_interfaces::Loggable
 {
@@ -38,8 +37,6 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
     Vector9d joint_torques;
     //! Target joint torques applied by the controller.
     Vector9d joint_target_torques;
-    //! Currently not set!
-    Vector9d joint_encoder_index;
 
     //! Positions of the hardware sliders, if connected (range: 0 to 1)
     Eigen::Vector4d slider_positions;
@@ -53,17 +50,6 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
     //! Attitude measured by the IMU.
     Eigen::Vector4d imu_attitude;
 
-    //! Total number of command packets sent to the robot.
-    uint32_t num_sent_command_packets;
-    //! Number of command packets that were sent to the robot but were lost in
-    //! transmission.
-    uint32_t num_lost_command_packets;
-    //! Total number of sensor packets sent from the robot.
-    uint32_t num_sent_sensor_packets;
-    //! Number of sensor packets that were sent from the robot but were lost in
-    //! transmission.
-    uint32_t num_lost_sensor_packets;
-
     template <class Archive>
     void serialize(Archive& archive)
     {
@@ -73,16 +59,11 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
             CEREAL_NVP(joint_velocities),
             CEREAL_NVP(joint_torques),
             CEREAL_NVP(joint_target_torques),
-            CEREAL_NVP(joint_encoder_index),
             CEREAL_NVP(slider_positions),
             CEREAL_NVP(imu_accelerometer),
             CEREAL_NVP(imu_gyroscope),
             CEREAL_NVP(imu_linear_acceleration),
-            CEREAL_NVP(imu_attitude),
-            CEREAL_NVP(num_sent_command_packets),
-            CEREAL_NVP(num_lost_command_packets),
-            CEREAL_NVP(num_sent_sensor_packets),
-            CEREAL_NVP(num_lost_sensor_packets)
+            CEREAL_NVP(imu_attitude)
 
         );
     }
@@ -93,16 +74,11 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
                 "joint_velocities",
                 "joint_torques",
                 "joint_target_torques",
-                "joint_encoder_index",
                 "slider_positions",
                 "imu_accelerometer",
                 "imu_gyroscope",
                 "imu_linear_acceleration",
-                "imu_attitude",
-                "num_sent_command_packets",
-                "num_lost_command_packets",
-                "num_sent_sensor_packets",
-                "num_lost_sensor_packets"};
+                "imu_attitude"};
     }
 
     std::vector<std::vector<double>> get_data() override
@@ -121,18 +97,12 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
 
         std::vector<double> _joint_torques;
         _joint_torques.resize(joint_torques.size());
-        Vector9d::Map(&_joint_torques[0], joint_torques.size()) =
-            joint_torques;
+        Vector9d::Map(&_joint_torques[0], joint_torques.size()) = joint_torques;
 
         std::vector<double> _joint_target_torques;
         _joint_target_torques.resize(joint_target_torques.size());
         Vector9d::Map(&_joint_target_torques[0], joint_target_torques.size()) =
             joint_target_torques;
-
-        std::vector<double> _joint_encoder_index;
-        _joint_encoder_index.resize(joint_encoder_index.size());
-        Vector9d::Map(&_joint_encoder_index[0], joint_encoder_index.size()) =
-            joint_encoder_index;
 
         std::vector<double> _slider_positions;
         _slider_positions.resize(slider_positions.size());
@@ -167,16 +137,11 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
                   _joint_velocities,
                   _joint_torques,
                   _joint_target_torques,
-                  _joint_encoder_index,
                   _slider_positions,
                   _imu_accelerometer,
                   _imu_gyroscope,
                   _imu_linear_acceleration,
-                  _imu_attitude,
-                  {static_cast<double>(num_sent_command_packets)},
-                  {static_cast<double>(num_lost_command_packets)},
-                  {static_cast<double>(num_sent_sensor_packets)},
-                  {static_cast<double>(num_lost_sensor_packets)}};
+                  _imu_attitude};
 
         return result;
     }

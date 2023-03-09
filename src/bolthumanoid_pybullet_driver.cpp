@@ -11,10 +11,11 @@ using namespace pybind11::literals;
 
 namespace robot_interfaces_bolt
 {
-PyBulletBoltHumanoidDriver::PyBulletBoltHumanoidDriver(bool real_time_mode,
-                                           bool visualize,
-                                           bool use_fixed_base,
-                                           const std::string &logger_level)
+PyBulletBoltHumanoidDriver::PyBulletBoltHumanoidDriver(
+    bool real_time_mode,
+    bool visualize,
+    bool use_fixed_base,
+    const std::string &logger_level)
     : real_time_mode_(real_time_mode)
 {
     // initialise logger and set level based on config
@@ -46,7 +47,8 @@ PyBulletBoltHumanoidDriver::PyBulletBoltHumanoidDriver(bool real_time_mode,
         py::module bolthumanoidwrapper =
             py::module::import("robot_properties_bolt.bolthumanoidwrapper");
 
-        py::object RPSBoltHumanoidConfig = bolthumanoidwrapper.attr("BoltHumanoidConfig");
+        py::object RPSBoltHumanoidConfig =
+            bolthumanoidwrapper.attr("BoltHumanoidConfig");
 
         py::object pybullet_server =
             visualize ? pybullet.attr("GUI") : pybullet.attr("DIRECT");
@@ -81,14 +83,6 @@ PyBulletBoltHumanoidDriver::get_position_and_velocity()
 BoltHumanoidObservation PyBulletBoltHumanoidDriver::get_latest_observation()
 {
     BoltHumanoidObservation observation;
-
-    sensor_packet_counter_++;
-
-    // these fields can already be set before acquiring the GIL
-    observation.num_sent_command_packets = command_packet_counter_;
-    observation.num_lost_command_packets = 0;
-    observation.num_sent_sensor_packets = sensor_packet_counter_;
-    observation.num_lost_sensor_packets = 0;
 
     observation.joint_torques = applied_torques_;
     observation.joint_target_torques = desired_torques_;
@@ -151,8 +145,6 @@ BoltHumanoidAction PyBulletBoltHumanoidDriver::apply_action(
         std::this_thread::sleep_until(start_time + 1ms);
     }
 
-    command_packet_counter_++;
-
     return desired_action;
 }
 
@@ -181,9 +173,9 @@ BoltHumanoidBackend::Ptr create_pybullet_bolthumanoid_backend(
 
     constexpr bool enable_timing_watchdog = false;
     return create_bolthumanoid_backend(robot_data,
-                                 driver,
-                                 first_action_timeout,
-                                 max_number_of_actions,
-                                 enable_timing_watchdog);
+                                       driver,
+                                       first_action_timeout,
+                                       max_number_of_actions,
+                                       enable_timing_watchdog);
 }
 }  // namespace robot_interfaces_bolt

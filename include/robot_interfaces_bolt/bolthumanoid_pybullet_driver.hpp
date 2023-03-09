@@ -1,7 +1,8 @@
 /**
- * \file
- * \brief Driver for using simulated BoltHumanoid in robot_interfaces::RobotBackend.
- * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
+ * @file
+ * @brief Driver for using simulated BoltHumanoid in
+ *      robot_interfaces::RobotBackend.
+ * @copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #pragma once
 
@@ -19,8 +20,8 @@ namespace py = pybind11;
 /**
  * @brief Driver for BoltHumanoid in PyBullet simulation.
  *
- * This driver can be used as a replacement for the "real" BoltHumanoid driver for
- * testing things in simulation.
+ * This driver can be used as a replacement for the "real" BoltHumanoid driver
+ * for testing things in simulation.
  *
  * @warning
  *   The fields ``imu_linear_acceleration`` and ``imu_attitude`` of the
@@ -35,11 +36,6 @@ private:
     //! @brief If true, step simulation at 1 kHz, otherwise as fast as possible
     bool real_time_mode_;
 
-    //! @brief Number of received commands (=actions).
-    int command_packet_counter_ = 0;
-    //! @brief Number of provided observations.
-    int sensor_packet_counter_ = 0;
-
     //! @brief The torque-part of the last desired action.
     Vector9d desired_torques_ = Vector9d::Zero();
     /**
@@ -53,7 +49,8 @@ private:
     //! Instance of ``bullet_utils.env.BulletEnvWithGround`` used to set up the
     //! simulation.
     py::object sim_env_;
-    //! Instance of ``robot_properties_bolt.bolthumanoidwrapper.BoltHumanoidRobot`` for
+    //! Instance of
+    //! ``robot_properties_bolt.bolthumanoidwrapper.BoltHumanoidRobot`` for
     //! controlling the simulated robot.
     py::object sim_robot_;
 
@@ -80,13 +77,14 @@ public:
      *     PyBulletBoltHumanoidDriver::LOGGER_NAME does already exist.
      */
     PyBulletBoltHumanoidDriver(bool real_time_mode = true,
-                         bool visualize = true,
-                         bool use_fixed_base = false,
-                         const std::string &logger_level = "debug");
+                               bool visualize = true,
+                               bool use_fixed_base = false,
+                               const std::string &logger_level = "debug");
 
     void initialize() override;
     BoltHumanoidObservation get_latest_observation() override;
-    BoltHumanoidAction apply_action(const BoltHumanoidAction &desired_action) override;
+    BoltHumanoidAction apply_action(
+        const BoltHumanoidAction &desired_action) override;
     std::string get_error() override;
     void shutdown() override;
 
@@ -95,7 +93,8 @@ public:
 };
 
 /**
- * @brief Create robot backend using the PyBullet BoltHumanoid driver (for testing).
+ * @brief Create robot backend using the PyBullet BoltHumanoid driver (for
+ * testing).
  *
  * Arguments are the same as for @ref create_real_bolthumanoid_backend.
  *
