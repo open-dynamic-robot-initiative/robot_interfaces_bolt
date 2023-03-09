@@ -44,7 +44,7 @@ PyBulletBoltHumanoidDriver::PyBulletBoltHumanoidDriver(bool real_time_mode,
         py::module pybullet = py::module::import("pybullet");
         py::module bullet_utils_env = py::module::import("bullet_utils.env");
         py::module bolthumanoidwrapper =
-            py::module::import("robot_properties_solo.bolthumanoidwrapper");
+            py::module::import("robot_properties_bolt.bolthumanoidwrapper");
 
         py::object RPSBoltHumanoidConfig = bolthumanoidwrapper.attr("BoltHumanoidConfig");
 

@@ -13,7 +13,7 @@
 #include <spdlog/spdlog.h>
 
 #include <robot_interfaces/robot_frontend.hpp>
-#include <solo/bolthumanoid.hpp>
+#include <bolt/bolthumanoid.hpp>
 
 #include "bolthumanoid_types.hpp"
 
@@ -37,7 +37,7 @@ public:
 private:
     std::shared_ptr<spdlog::logger> log_;
     const BoltHumanoidConfig config_;
-    solo::BoltHumanoid bolthumanoid_;
+    bolt::BoltHumanoid bolthumanoid_;
     Action applied_action_;
     bool is_initialized_ = false;
 };

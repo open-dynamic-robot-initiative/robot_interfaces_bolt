@@ -14,7 +14,7 @@
 
   <depend>cli_utils</depend>
   <depend>yaml_utils</depend>
-  <depend>solo</depend>
+  <depend>bolt</depend>
   <depend>real_time_tools</depend>
 
   <export>

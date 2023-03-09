@@ -6,7 +6,7 @@ BoltHumanoidAction
 ============
 
 "Actions" are used to send commands to the robot.  The members are vectors with
-once field per joint (see :cpp:class:`solo::BoltHumanoid` for a mapping of index to
+once field per joint (see :cpp:class:`bolt::BoltHumanoid` for a mapping of index to
 joint).
 
 .. doxygenstruct:: robot_interfaces_bolt::BoltHumanoidAction

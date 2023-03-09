@@ -10,7 +10,7 @@ done in the following way:
 
    .. code-block:: bash
 
-      ros2 run solo bolthumanoid_hardware_calibration <network-interface>
+      ros2 run bolt bolthumanoid_hardware_calibration <network-interface>
 
    This will find the next encoder indices (this is the 'home position') and
    then start printing the offset.

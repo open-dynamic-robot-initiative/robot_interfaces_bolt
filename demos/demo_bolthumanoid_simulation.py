@@ -8,7 +8,7 @@ import typing
 import numpy as np
 
 from bullet_utils.env import BulletEnvWithGround
-from robot_properties_solo.bolthumanoidwrapper import BoltHumanoidRobot
+from robot_properties_bolt.bolthumanoidwrapper import BoltHumanoidRobot
 
 from robot_interfaces_bolt import bolthumanoid
 

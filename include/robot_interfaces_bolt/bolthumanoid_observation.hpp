@@ -24,8 +24,8 @@ namespace robot_interfaces_bolt
  *
  * This observation class contains all the sensor data provided by the BoltHumanoid
  * robot.
- * The names of the attributes correspond to the names used in ``solo::BoltHumanoid``
- * of the solo package (for each attribute X, there is a method ``get_X()``).
+ * The names of the attributes correspond to the names used in ``bolt::BoltHumanoid``
+ * of the bolt package (for each attribute X, there is a method ``get_X()``).
  * See there for more information.
  */
 struct BoltHumanoidObservation : public robot_interfaces::Loggable

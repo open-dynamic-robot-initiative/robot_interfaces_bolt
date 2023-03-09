@@ -4,4 +4,4 @@ auto_general_docs = false
 
 [intersphinx.mapping]
 robot_interfaces = "https://open-dynamic-robot-initiative.github.io/robot_interfaces"
-solo = "https://open-dynamic-robot-initiative.github.io/solo"
+bolt = "https://open-dynamic-robot-initiative.github.io/bolt"

@@ -2,7 +2,7 @@
 module = [
     "robot_interfaces_bolt",  # there are no stubs for pybind11 modules
     "bullet_utils.*",
-    "robot_properties_solo.*",
+    "robot_properties_bolt.*",
     "urwid",
 ]
 ignore_missing_imports = true

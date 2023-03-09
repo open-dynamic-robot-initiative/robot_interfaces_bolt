@@ -53,7 +53,7 @@ private:
     //! Instance of ``bullet_utils.env.BulletEnvWithGround`` used to set up the
     //! simulation.
     py::object sim_env_;
-    //! Instance of ``robot_properties_solo.bolthumanoidwrapper.BoltHumanoidRobot`` for
+    //! Instance of ``robot_properties_bolt.bolthumanoidwrapper.BoltHumanoidRobot`` for
     //! controlling the simulated robot.
     py::object sim_robot_;
 
