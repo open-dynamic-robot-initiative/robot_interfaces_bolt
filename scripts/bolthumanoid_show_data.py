@@ -191,8 +191,6 @@ class Window:
         self.obs_imu_gyro_texts = u.Text("")
         self.obs_imu_linacc_texts = u.Text("")
         self.obs_imu_att_texts = u.Text("")
-        self.obs_packet_loss_command_text = u.Text("")
-        self.obs_packet_loss_sensor_text = u.Text("")
         self.obs_slider_bars = [SliderBar(i) for i in range(4)]
         self.status_action_repetitions_text = u.Text("")
         self.status_error_state_text = u.Text("")
@@ -218,26 +216,13 @@ class Window:
             title="IMU",
         )
 
-        packet_loss_box = u.LineBox(
-            u.BoxAdapter(
-                u.ListBox(
-                    [
-                        self.obs_packet_loss_command_text,
-                        self.obs_packet_loss_sensor_text,
-                    ]
-                ),
-                height=4,  # to match height of IMU box
-            ),
-            title="Packet Loss",
-        )
-
         sliders_box = u.LineBox(
             u.Pile(self.obs_slider_bars),
             title="slider_positions",
         )
 
         observation_rows = u.Pile(
-            [motor_data_box, sliders_box, u.Columns([imu_data_box, packet_loss_box])]
+            [motor_data_box, sliders_box, u.Columns([imu_data_box])]
         )
         observation = u.LineBox(observation_rows, title="Observation")
 
@@ -325,7 +310,6 @@ class Window:
             ["joint_velocities"] + list(obs.joint_velocities),
             ["joint_torques"] + list(obs.joint_torques),
             ["joint_target_torques"] + list(obs.joint_target_torques),
-            ["joint_encoder_index"] + list(obs.joint_encoder_index),
         ]
         self.obs_motor_data_text.set_text(
             tabulate.tabulate(motor_data, headers="firstrow", floatfmt=" .4f")
@@ -345,32 +329,6 @@ class Window:
         )
         self.obs_imu_att_texts.set_text(
             labeled_vector("imu_attitude:           ", obs.imu_attitude)
-        )
-
-        packet_loss_fmt = "{label}: {lost}/{total} ({ratio:.0f} %)"
-        self.obs_packet_loss_command_text.set_text(
-            packet_loss_fmt.format(
-                label="Command packet loss",
-                lost=obs.num_lost_command_packets,
-                total=obs.num_sent_command_packets,
-                ratio=(
-                    obs.num_lost_command_packets / obs.num_sent_command_packets * 100
-                    if obs.num_sent_command_packets
-                    else 0
-                ),
-            )
-        )
-        self.obs_packet_loss_sensor_text.set_text(
-            packet_loss_fmt.format(
-                label="Sensor  packet loss",
-                lost=obs.num_lost_sensor_packets,
-                total=obs.num_sent_sensor_packets,
-                ratio=(
-                    obs.num_lost_sensor_packets / obs.num_sent_sensor_packets * 100
-                    if obs.num_sent_sensor_packets
-                    else 0
-                ),
-            )
         )
 
         # Status
