@@ -116,15 +116,14 @@ BoltHumanoidDriver::Observation BoltHumanoidDriver::get_latest_observation()
     obs.joint_velocities = bolthumanoid_.get_joint_velocities();
     obs.joint_torques = bolthumanoid_.get_joint_torques();
     obs.joint_target_torques = bolthumanoid_.get_joint_target_torques();
+    // FIXME
     // obs.joint_encoder_index = bolthumanoid_.get_joint_encoder_index();
 
     obs.slider_positions = bolthumanoid_.get_slider_positions();
-    // FIXME
-    // obs.imu_accelerometer = bolthumanoid_.get_imu_accelerometer();
-    // obs.imu_gyroscope = bolthumanoid_.get_imu_gyroscope();
-    // obs.imu_linear_acceleration =
-    // bolthumanoid_.get_imu_linear_acceleration(); obs.imu_attitude =
-    // bolthumanoid_.get_imu_attitude();
+    obs.imu_accelerometer = bolthumanoid_.get_base_accelerometer();
+    obs.imu_gyroscope = bolthumanoid_.get_base_gyroscope();
+    obs.imu_linear_acceleration = bolthumanoid_.get_base_linear_acceleration();
+    obs.imu_attitude = bolthumanoid_.get_base_attitude();
 
     // FIXME
     // obs.num_sent_command_packets =
