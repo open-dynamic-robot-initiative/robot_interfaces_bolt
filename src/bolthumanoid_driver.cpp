@@ -10,6 +10,8 @@
 #include <yaml-cpp/yaml.h>
 #include <boost/range/adaptor/indexed.hpp>
 
+#include <real_time_tools/spinner.hpp>
+
 #include <robot_interfaces_bolt/bolthumanoid_utils.hpp>
 
 namespace robot_interfaces_bolt
@@ -131,7 +133,11 @@ std::string BoltHumanoidDriver::get_error()
 {
     std::string error_msg = "";
 
-    auto board_errors = bolthumanoid_.get_motor_board_errors();
+    auto board_errors_mat = bolthumanoid_.get_motor_board_errors();
+    // copy Eigen matrix to std::vector
+    std::vector<int> board_errors(
+        board_errors_mat.data(),
+        board_errors_mat.data() + board_errors_mat.size());
 
     if (bolthumanoid_.has_error())
     {
