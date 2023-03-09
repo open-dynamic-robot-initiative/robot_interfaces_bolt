@@ -12,4 +12,5 @@ Copyright and License
 ---------------------
 
 Copyright (c) 2022 Max Planck Gesellschaft.  All rights reserved.
+
 License: BSD 3-clause (see [LICENSE](LICENSE)).
