@@ -13,6 +13,9 @@ from robot_properties_bolt.bolthumanoidwrapper import BoltHumanoidRobot
 from robot_interfaces_bolt import bolthumanoid
 
 
+N_JOINTS = 9
+
+
 @dataclass
 class BaseState:
     position: np.ndarray
@@ -72,14 +75,14 @@ def main() -> None:
         )
         target_velocities = [
             2.0 * np.pi * freq * amplitude * np.cos(2 * np.pi * freq * t_ms)
-        ] * 12
+        ] * N_JOINTS
 
         action = bolthumanoid.Action()
-        action.joint_torques = np.array([0.0] * 12)
+        action.joint_torques = np.array([0.0] * N_JOINTS)
         action.joint_positions = np.array(target_positions)
         action.joint_velocities = np.array(target_velocities)
-        action.joint_position_gains = np.array([kp] * 12)
-        action.joint_velocity_gains = np.array([kd] * 12)
+        action.joint_position_gains = np.array([kp] * N_JOINTS)
+        action.joint_velocity_gains = np.array([kd] * N_JOINTS)
 
         t = robot_frontend.append_desired_action(action)
         observation = robot_frontend.get_observation(t)

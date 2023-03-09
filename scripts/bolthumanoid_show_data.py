@@ -16,6 +16,9 @@ import tabulate
 from robot_interfaces_bolt import bolthumanoid
 
 
+N_JOINTS = 9
+
+
 class BackendMode(enum.Enum):
     REAL = 0
     FAKE = 1
@@ -82,11 +85,11 @@ class Robot:
         observation = self.robot_frontend.get_observation(self.t)
 
         self.desired_action = bolthumanoid.Action()
-        self.desired_action.joint_torques = np.array([0.0] * 12)
+        self.desired_action.joint_torques = np.array([0.0] * N_JOINTS)
         self.desired_action.joint_positions = observation.joint_positions
-        self.desired_action.joint_velocities = np.array([0.0] * 12)
-        self.desired_action.joint_position_gains = np.array([self.kp] * 12)
-        self.desired_action.joint_velocity_gains = np.array([self.kd] * 12)
+        self.desired_action.joint_velocities = np.array([0.0] * N_JOINTS)
+        self.desired_action.joint_position_gains = np.array([self.kp] * N_JOINTS)
+        self.desired_action.joint_velocity_gains = np.array([self.kd] * N_JOINTS)
 
     def update(self):
         """Get robot data and send a new command to the robot.
@@ -116,11 +119,11 @@ class Robot:
         elif self.control_mode == Robot.ControlMode.HOLD_POSITION:
             observation = self.robot_frontend.get_observation(self.t)
             self.desired_action = bolthumanoid.Action()
-            self.desired_action.joint_torques = np.array([0.0] * 12)
+            self.desired_action.joint_torques = np.array([0.0] * N_JOINTS)
             self.desired_action.joint_positions = observation.joint_positions
-            self.desired_action.joint_velocities = np.array([0.0] * 12)
-            self.desired_action.joint_position_gains = np.array([self.kp] * 12)
-            self.desired_action.joint_velocity_gains = np.array([self.kd] * 12)
+            self.desired_action.joint_velocities = np.array([0.0] * N_JOINTS)
+            self.desired_action.joint_position_gains = np.array([self.kp] * N_JOINTS)
+            self.desired_action.joint_velocity_gains = np.array([self.kd] * N_JOINTS)
 
 
 class SliderBar(u.ProgressBar):
@@ -317,7 +320,7 @@ class Window:
         obs = observation
 
         motor_data = [
-            ["Joint Index"] + list(map(str, range(12))),
+            ["Joint Index"] + list(map(str, range(N_JOINTS))),
             ["joint_positions"] + list(obs.joint_positions),
             ["joint_velocities"] + list(obs.joint_velocities),
             ["joint_torques"] + list(obs.joint_torques),
@@ -379,7 +382,7 @@ class Window:
 
         # Applied Action
         applied_action_data = [
-            ["Joint Index"] + list(map(str, range(12))),
+            ["Joint Index"] + list(map(str, range(N_JOINTS))),
             ["joint_torques"] + list(applied_action.joint_torques),
             ["joint_positions"] + list(applied_action.joint_positions),
             ["joint_velocities"] + list(applied_action.joint_velocities),

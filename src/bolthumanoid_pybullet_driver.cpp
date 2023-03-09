@@ -73,9 +73,9 @@ PyBulletBoltHumanoidDriver::get_position_and_velocity()
 
     py::tuple py_state = sim_robot_.attr("get_state")();
     Vector9d joint_positions =
-        py_state[0][py::slice(-12, std::nullopt, 1)].cast<Vector9d>();
+        py_state[0][py::slice(-9, std::nullopt, 1)].cast<Vector9d>();
     Vector9d joint_velocities =
-        py_state[1][py::slice(-12, std::nullopt, 1)].cast<Vector9d>();
+        py_state[1][py::slice(-9, std::nullopt, 1)].cast<Vector9d>();
 
     return {joint_positions, joint_velocities};
 }

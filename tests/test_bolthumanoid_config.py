@@ -32,7 +32,7 @@ def test_load_config_full(tmp_path):
             network_interface: eth0
             slider_serial_port: foo
             max_motor_current_A: 5.3
-            home_offset_rad: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            home_offset_rad: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             """
         )
     )
@@ -43,7 +43,7 @@ def test_load_config_full(tmp_path):
     assert cfg.max_motor_current_A == 5.3
     np.testing.assert_array_equal(
         cfg.home_offset_rad,
-        np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0]),
+        np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]),
     )
 
 
@@ -53,7 +53,7 @@ def test_load_config_partial(tmp_path):
         textwrap.dedent(
             """
             network_interface: eth0
-            home_offset_rad: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            home_offset_rad: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             """
         )
     )
@@ -65,7 +65,7 @@ def test_load_config_partial(tmp_path):
     assert cfg.max_motor_current_A == default_cfg.max_motor_current_A
     np.testing.assert_array_equal(
         cfg.home_offset_rad,
-        np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0]),
+        np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]),
     )
 
 
