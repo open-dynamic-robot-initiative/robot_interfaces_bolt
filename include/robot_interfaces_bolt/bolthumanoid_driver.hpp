@@ -13,9 +13,9 @@
 #include <spdlog/spdlog.h>
 
 #include <robot_interfaces/robot_frontend.hpp>
-#include <solo/solo12.hpp>
+#include <solo/bolthumanoid.hpp>
 
-#include "solo12_types.hpp"
+#include "bolthumanoid_types.hpp"
 
 namespace robot_interfaces_bolt
 {
@@ -37,7 +37,7 @@ public:
 private:
     std::shared_ptr<spdlog::logger> log_;
     const BoltHumanoidConfig config_;
-    solo::BoltHumanoid solo12_;
+    solo::BoltHumanoid bolthumanoid_;
     Action applied_action_;
     bool is_initialized_ = false;
 };
@@ -80,7 +80,7 @@ private:
  *
  * @return A RobotBackend instances which uses a BoltHumanoid driver.
  */
-BoltHumanoidBackend::Ptr create_real_solo12_backend(
+BoltHumanoidBackend::Ptr create_real_bolthumanoid_backend(
     BoltHumanoidData::Ptr robot_data,
     const BoltHumanoidConfig &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),
@@ -89,12 +89,12 @@ BoltHumanoidBackend::Ptr create_real_solo12_backend(
 /**
  * @brief Create robot backend using the fake BoltHumanoid driver (for testing).
  *
- * Arguments are the same as for @ref create_real_solo12_backend.
+ * Arguments are the same as for @ref create_real_bolthumanoid_backend.
  *
  * @see FakeBoltHumanoidDriver
- * @see create_real_solo12_backend
+ * @see create_real_bolthumanoid_backend
  */
-BoltHumanoidBackend::Ptr create_fake_solo12_backend(
+BoltHumanoidBackend::Ptr create_fake_bolthumanoid_backend(
     BoltHumanoidData::Ptr robot_data,
     const BoltHumanoidConfig &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),

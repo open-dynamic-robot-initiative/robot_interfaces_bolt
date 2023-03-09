@@ -3,20 +3,20 @@ import textwrap
 import pytest
 import numpy as np
 
-from robot_interfaces_bolt import solo12
+from robot_interfaces_bolt import bolthumanoid
 
 
 def test_load_config_file_not_found():
     with pytest.raises(RuntimeError):
-        solo12.Config.from_file("a_file_that_does_not_exist.yml")
+        bolthumanoid.Config.from_file("a_file_that_does_not_exist.yml")
 
 
 def test_load_config_empty_file(tmp_path):
     yml_file = tmp_path / "foo.yml"
     yml_file.touch()
 
-    default_cfg = solo12.Config()
-    cfg = solo12.Config.from_file(yml_file)
+    default_cfg = bolthumanoid.Config()
+    cfg = bolthumanoid.Config.from_file(yml_file)
 
     assert cfg.network_interface == default_cfg.network_interface
     assert cfg.slider_serial_port == default_cfg.slider_serial_port
@@ -37,7 +37,7 @@ def test_load_config_full(tmp_path):
         )
     )
 
-    cfg = solo12.Config.from_file(yml_file)
+    cfg = bolthumanoid.Config.from_file(yml_file)
     assert cfg.network_interface == "eth0"
     assert cfg.slider_serial_port == "foo"
     assert cfg.max_motor_current_A == 5.3
@@ -58,8 +58,8 @@ def test_load_config_partial(tmp_path):
         )
     )
 
-    default_cfg = solo12.Config()
-    cfg = solo12.Config.from_file(yml_file)
+    default_cfg = bolthumanoid.Config()
+    cfg = bolthumanoid.Config.from_file(yml_file)
     assert cfg.network_interface == "eth0"
     assert cfg.slider_serial_port == default_cfg.slider_serial_port
     assert cfg.max_motor_current_A == default_cfg.max_motor_current_A
@@ -80,7 +80,7 @@ def test_load_config_strpath(tmp_path):
     )
 
     # verify that using string instead of Path for the file name works as well
-    cfg = solo12.Config.from_file(str(yml_file))
+    cfg = bolthumanoid.Config.from_file(str(yml_file))
     assert cfg.network_interface == "eth0"
 
 
@@ -95,4 +95,4 @@ def test_load_config_invalid_type(tmp_path):
     )
 
     with pytest.raises(RuntimeError):
-        solo12.Config.from_file(yml_file)
+        bolthumanoid.Config.from_file(yml_file)

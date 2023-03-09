@@ -1,4 +1,4 @@
-#include <robot_interfaces_bolt/solo12_config.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_config.hpp>
 
 #include <fmt/format.h>
 #include <yaml-cpp/yaml.h>

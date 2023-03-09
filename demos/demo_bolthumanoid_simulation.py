@@ -8,9 +8,9 @@ import typing
 import numpy as np
 
 from bullet_utils.env import BulletEnvWithGround
-from robot_properties_solo.solo12wrapper import BoltHumanoidRobot
+from robot_properties_solo.bolthumanoidwrapper import BoltHumanoidRobot
 
-from robot_interfaces_bolt import solo12
+from robot_interfaces_bolt import bolthumanoid
 
 
 @dataclass
@@ -40,22 +40,22 @@ def main() -> None:
     amplitude = 0.2
 
     # Storage for all observations, actions, etc.
-    robot_data = solo12.SingleProcessData()
+    robot_data = bolthumanoid.SingleProcessData()
 
     # Create a backend with a PyBullet driver.  Here we need to instantiate the driver
     # on our own, so we have a handle to access the simulation.
-    sim_driver = solo12.PyBulletDriver(real_time_mode=True, visualize=True)
+    sim_driver = bolthumanoid.PyBulletDriver(real_time_mode=True, visualize=True)
     sim_env: BulletEnvWithGround = sim_driver.get_bullet_env()
-    robot_backend = solo12.create_backend(
+    robot_backend = bolthumanoid.create_backend(
         robot_data, sim_driver, enable_timing_watchdog=False
     )
     robot_backend.initialize()
 
     # The front end is used by the user to get observations and send actions
-    robot_frontend = solo12.Frontend(robot_data)
+    robot_frontend = bolthumanoid.Frontend(robot_data)
 
     # start by sending a zero-torque action (this is needed to start the backend loop)
-    action = solo12.Action.Zero()
+    action = bolthumanoid.Action.Zero()
     t = robot_frontend.append_desired_action(action)
 
     # get the initial joint positions
@@ -74,7 +74,7 @@ def main() -> None:
             2.0 * np.pi * freq * amplitude * np.cos(2 * np.pi * freq * t_ms)
         ] * 12
 
-        action = solo12.Action()
+        action = bolthumanoid.Action()
         action.joint_torques = np.array([0.0] * 12)
         action.joint_positions = np.array(target_positions)
         action.joint_velocities = np.array(target_velocities)

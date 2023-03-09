@@ -13,7 +13,7 @@ import numpy as np
 import urwid as u
 import tabulate
 
-from robot_interfaces_bolt import solo12
+from robot_interfaces_bolt import bolthumanoid
 
 
 class BackendMode(enum.Enum):
@@ -52,19 +52,19 @@ class Robot:
         self.kd = 0.05
         self.control_mode = Robot.ControlMode.HOLD_POSITION
 
-        config = solo12.Config.from_file(config_file)
-        robot_data = solo12.SingleProcessData()
+        config = bolthumanoid.Config.from_file(config_file)
+        robot_data = bolthumanoid.SingleProcessData()
 
         if backend_mode == BackendMode.REAL:
-            self.robot_backend = solo12.create_real_backend(robot_data, config)
+            self.robot_backend = bolthumanoid.create_real_backend(robot_data, config)
         elif backend_mode == BackendMode.FAKE:
-            self.robot_backend = solo12.create_fake_backend(robot_data, config)
+            self.robot_backend = bolthumanoid.create_fake_backend(robot_data, config)
         elif backend_mode == BackendMode.PYBULLET:
-            self.robot_backend = solo12.create_pybullet_backend(robot_data, config)
+            self.robot_backend = bolthumanoid.create_pybullet_backend(robot_data, config)
         else:
             raise ValueError(f"Unexpected value {backend_mode} for backend_mode.")
 
-        self.robot_frontend = solo12.Frontend(robot_data)
+        self.robot_frontend = bolthumanoid.Frontend(robot_data)
 
         self.t = 0
 
@@ -75,13 +75,13 @@ class Robot:
 
         # start by sending a zero-torque action (this is needed to start the backend
         # loop)
-        action = solo12.Action.Zero()
+        action = bolthumanoid.Action.Zero()
         self.t = self.robot_frontend.append_desired_action(action)
 
         # get the initial joint positions to construct the desired action
         observation = self.robot_frontend.get_observation(self.t)
 
-        self.desired_action = solo12.Action()
+        self.desired_action = bolthumanoid.Action()
         self.desired_action.joint_torques = np.array([0.0] * 12)
         self.desired_action.joint_positions = observation.joint_positions
         self.desired_action.joint_velocities = np.array([0.0] * 12)
@@ -112,10 +112,10 @@ class Robot:
         self.control_mode = mode
 
         if self.control_mode == Robot.ControlMode.ZERO_TORQUE:
-            self.desired_action = solo12.Action.Zero()
+            self.desired_action = bolthumanoid.Action.Zero()
         elif self.control_mode == Robot.ControlMode.HOLD_POSITION:
             observation = self.robot_frontend.get_observation(self.t)
-            self.desired_action = solo12.Action()
+            self.desired_action = bolthumanoid.Action()
             self.desired_action.joint_torques = np.array([0.0] * 12)
             self.desired_action.joint_positions = observation.joint_positions
             self.desired_action.joint_velocities = np.array([0.0] * 12)

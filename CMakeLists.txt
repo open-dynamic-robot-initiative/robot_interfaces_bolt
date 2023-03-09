@@ -30,65 +30,65 @@ ament_export_dependencies(cli_utils real_time_tools robot_interfaces solo)
 
 
 
-add_library(solo12_config
-    src/solo12_config.cpp
+add_library(bolthumanoid_config
+    src/bolthumanoid_config.cpp
 )
-target_include_directories(solo12_config PUBLIC
+target_include_directories(bolthumanoid_config PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(solo12_config
+target_link_libraries(bolthumanoid_config
     Eigen3::Eigen
     yaml_utils::yaml_utils
     fmt::fmt
 )
 
-add_library(solo12_driver
-    src/solo12_driver.cpp
-    src/solo12_utils.cpp
+add_library(bolthumanoid_driver
+    src/bolthumanoid_driver.cpp
+    src/bolthumanoid_utils.cpp
 )
-target_include_directories(solo12_driver PUBLIC
+target_include_directories(bolthumanoid_driver PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(solo12_driver
+target_link_libraries(bolthumanoid_driver
     Eigen3::Eigen
     real_time_tools::real_time_tools
     robot_interfaces::robot_interfaces
-    solo::solo12
+    solo::bolthumanoid
     spdlog::spdlog
 
-    solo12_config
+    bolthumanoid_config
 )
 
-add_library(solo12_pybullet_driver
-    src/solo12_pybullet_driver.cpp
-    src/solo12_utils.cpp
+add_library(bolthumanoid_pybullet_driver
+    src/bolthumanoid_pybullet_driver.cpp
+    src/bolthumanoid_utils.cpp
 )
-target_include_directories(solo12_pybullet_driver PUBLIC
+target_include_directories(bolthumanoid_pybullet_driver PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(solo12_pybullet_driver
+target_link_libraries(bolthumanoid_pybullet_driver
     Eigen3::Eigen
     real_time_tools::real_time_tools
     robot_interfaces::robot_interfaces
     spdlog::spdlog
     pybind11::pybind11
 
-    solo12_config
+    bolthumanoid_config
 )
 # using pybind11 types, therefore visibility needs to be hidden
 # https://pybind11.readthedocs.io/en/stable/faq.html#someclass-declared-with-greater-visibility-than-the-type-of-its-field-someclass-member-wattributes
-set_target_properties(solo12_pybullet_driver
+set_target_properties(bolthumanoid_pybullet_driver
     PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 
 
-add_executable(demo_solo12_hold demos/demo_solo12_hold.cpp)
-target_link_libraries(demo_solo12_hold
+add_executable(demo_bolthumanoid_hold demos/demo_bolthumanoid_hold.cpp)
+target_link_libraries(demo_bolthumanoid_hold
     cli_utils::program_options
-    solo12_driver
+    bolthumanoid_driver
 )
 
 
@@ -103,11 +103,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(NO_EXTRAS "NO_EXTRAS")
 endif()
 
-add_pybind11_module(solo12 srcpy/solo12.cpp
+add_pybind11_module(bolthumanoid srcpy/bolthumanoid.cpp
     ${NO_EXTRAS}
     LINK_LIBRARIES 
-        solo12_driver
-        solo12_pybullet_driver
+        bolthumanoid_driver
+        bolthumanoid_pybullet_driver
 )
 
 
@@ -115,10 +115,10 @@ install(DIRECTORY include/ DESTINATION include)
 
 install(
     TARGETS
-        solo12_config
-        solo12_driver
-        solo12_pybullet_driver
-        demo_solo12_hold
+        bolthumanoid_config
+        bolthumanoid_driver
+        bolthumanoid_pybullet_driver
+        demo_bolthumanoid_hold
     EXPORT export_${PROJECT_NAME}
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
@@ -127,9 +127,9 @@ install(
 )
 
 install_scripts(
-    demos/demo_solo12_sine.py
-    demos/demo_solo12_simulation.py
-    scripts/solo12_show_data.py
+    demos/demo_bolthumanoid_sine.py
+    demos/demo_bolthumanoid_simulation.py
+    scripts/bolthumanoid_show_data.py
 
     DESTINATION lib/${PROJECT_NAME}
 )
@@ -139,7 +139,7 @@ if(BUILD_TESTING)
     find_package(ament_cmake_pytest REQUIRED)
 
     # Python tests
-    ament_add_pytest_test(test_solo12_config tests/test_solo12_config.py)
+    ament_add_pytest_test(test_bolthumanoid_config tests/test_bolthumanoid_config.py)
 endif()
 
 

@@ -10,7 +10,7 @@
 
 #include <robot_interfaces/robot_driver.hpp>
 
-#include "solo12_types.hpp"
+#include "bolthumanoid_types.hpp"
 
 namespace robot_interfaces_bolt
 {
@@ -53,7 +53,7 @@ private:
     //! Instance of ``bullet_utils.env.BulletEnvWithGround`` used to set up the
     //! simulation.
     py::object sim_env_;
-    //! Instance of ``robot_properties_solo.solo12wrapper.BoltHumanoidRobot`` for
+    //! Instance of ``robot_properties_solo.bolthumanoidwrapper.BoltHumanoidRobot`` for
     //! controlling the simulated robot.
     py::object sim_robot_;
 
@@ -97,18 +97,18 @@ public:
 /**
  * @brief Create robot backend using the PyBullet BoltHumanoid driver (for testing).
  *
- * Arguments are the same as for @ref create_real_solo12_backend.
+ * Arguments are the same as for @ref create_real_bolthumanoid_backend.
  *
  * This function uses default values for initialising the simulation driver.  If
  * you want more control over the settings (including direct access to the
  * simulation environment), create a driver instance yourself and use @ref
- * create_solo12_backend.
+ * create_bolthumanoid_backend.
  *
  * @see PyBulletBoltHumanoidDriver
- * @see create_solo12_backend
- * @see create_real_solo12_backend
+ * @see create_bolthumanoid_backend
+ * @see create_real_bolthumanoid_backend
  */
-BoltHumanoidBackend::Ptr create_pybullet_solo12_backend(
+BoltHumanoidBackend::Ptr create_pybullet_bolthumanoid_backend(
     BoltHumanoidData::Ptr robot_data,
     const BoltHumanoidConfig &driver_config,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),

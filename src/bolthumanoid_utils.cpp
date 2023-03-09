@@ -1,4 +1,4 @@
-#include <robot_interfaces_bolt/solo12_utils.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_utils.hpp>
 
 #include <memory>
 
@@ -6,7 +6,7 @@
 
 namespace robot_interfaces_bolt
 {
-BoltHumanoidBackend::Ptr create_solo12_backend(BoltHumanoidData::Ptr robot_data,
+BoltHumanoidBackend::Ptr create_bolthumanoid_backend(BoltHumanoidData::Ptr robot_data,
                                          BaseBoltHumanoidDriver::Ptr robot_driver,
                                          const double first_action_timeout,
                                          const uint32_t max_number_of_actions,

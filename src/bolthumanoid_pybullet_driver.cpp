@@ -1,11 +1,11 @@
-#include <robot_interfaces_bolt/solo12_pybullet_driver.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_pybullet_driver.hpp>
 
 #include <pybind11/eigen.h>
 #include <pybind11/embed.h>
 #include <pybind11/stl_bind.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-#include <robot_interfaces_bolt/solo12_utils.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_utils.hpp>
 
 using namespace pybind11::literals;
 
@@ -43,16 +43,16 @@ PyBulletBoltHumanoidDriver::PyBulletBoltHumanoidDriver(bool real_time_mode,
 
         py::module pybullet = py::module::import("pybullet");
         py::module bullet_utils_env = py::module::import("bullet_utils.env");
-        py::module solo12wrapper =
-            py::module::import("robot_properties_solo.solo12wrapper");
+        py::module bolthumanoidwrapper =
+            py::module::import("robot_properties_solo.bolthumanoidwrapper");
 
-        py::object RPSBoltHumanoidConfig = solo12wrapper.attr("BoltHumanoidConfig");
+        py::object RPSBoltHumanoidConfig = bolthumanoidwrapper.attr("BoltHumanoidConfig");
 
         py::object pybullet_server =
             visualize ? pybullet.attr("GUI") : pybullet.attr("DIRECT");
         sim_env_ =
             bullet_utils_env.attr("BulletEnvWithGround")(pybullet_server);
-        sim_robot_ = solo12wrapper.attr("BoltHumanoidRobot")(
+        sim_robot_ = bolthumanoidwrapper.attr("BoltHumanoidRobot")(
             "useFixedBase"_a = py::cast(use_fixed_base));
         sim_env_.attr("add_robot")(sim_robot_);
 
@@ -170,7 +170,7 @@ py::object PyBulletBoltHumanoidDriver::get_bullet_env()
     return sim_env_;
 }
 
-BoltHumanoidBackend::Ptr create_pybullet_solo12_backend(
+BoltHumanoidBackend::Ptr create_pybullet_bolthumanoid_backend(
     BoltHumanoidData::Ptr robot_data,
     const BoltHumanoidConfig &driver_config,
     const double first_action_timeout,
@@ -180,7 +180,7 @@ BoltHumanoidBackend::Ptr create_pybullet_solo12_backend(
         true, true, false, driver_config.logger_level);
 
     constexpr bool enable_timing_watchdog = false;
-    return create_solo12_backend(robot_data,
+    return create_bolthumanoid_backend(robot_data,
                                  driver,
                                  first_action_timeout,
                                  max_number_of_actions,

@@ -11,9 +11,9 @@
 #include <robot_interfaces/robot_data.hpp>
 #include <robot_interfaces/robot_frontend.hpp>
 
-#include "solo12_action.hpp"
-#include "solo12_config.hpp"
-#include "solo12_observation.hpp"
+#include "bolthumanoid_action.hpp"
+#include "bolthumanoid_config.hpp"
+#include "bolthumanoid_observation.hpp"
 
 namespace robot_interfaces_bolt
 {

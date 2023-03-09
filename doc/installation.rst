@@ -48,7 +48,7 @@ You can run test/demo applications directly from that container:
 
 .. code:: bash
 
-   $ apptainer run -e solo_robot.sif ros2 run robot_interfaces_bolt solo12_show_data ./config.yml
+   $ apptainer run -e solo_robot.sif ros2 run robot_interfaces_bolt bolthumanoid_show_data ./config.yml
 
 Likewise, you can run custom scripts:
 
@@ -114,7 +114,7 @@ To run an application with Apptainer:
    $ apptainer shell -e path/to/trifinger_user.sif
    Apptainer> source install/setup.bash
    # now you can run applications (e.g. one of the demos):
-   Apptainer> ros2 run robot_interfaces_bolt demo_solo12_sine path/to/config.yml
+   Apptainer> ros2 run robot_interfaces_bolt demo_bolthumanoid_sine path/to/config.yml
 
 **Note:** When running commands in the following, it is always assumed that this
 is done in inside the container with the setup.bash of the workspace sourced.

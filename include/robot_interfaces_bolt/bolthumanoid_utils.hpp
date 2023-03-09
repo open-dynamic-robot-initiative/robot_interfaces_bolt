@@ -7,7 +7,7 @@
 
 #include <limits>
 
-#include "solo12_types.hpp"
+#include "bolthumanoid_types.hpp"
 
 namespace robot_interfaces_bolt
 {
@@ -27,7 +27,7 @@ namespace robot_interfaces_bolt
  *
  * @return A RobotBackend instances which uses a BoltHumanoid driver.
  */
-BoltHumanoidBackend::Ptr create_solo12_backend(
+BoltHumanoidBackend::Ptr create_bolthumanoid_backend(
     BoltHumanoidData::Ptr robot_data,
     BaseBoltHumanoidDriver::Ptr robot_driver,
     const double first_action_timeout = std::numeric_limits<double>::infinity(),

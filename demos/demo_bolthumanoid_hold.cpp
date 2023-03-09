@@ -8,7 +8,7 @@
 
 #include <cli_utils/program_options.hpp>
 
-#include <robot_interfaces_bolt/solo12_driver.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_driver.hpp>
 
 namespace ris = robot_interfaces_bolt;
 
@@ -23,7 +23,7 @@ public:
     {
         return R"(Demo using BoltHumanoid that holds all joints at their current positions.
 
-Usage:  demo_solo12_hold <network-interface> [<serial-port>]
+Usage:  demo_bolthumanoid_hold <network-interface> [<serial-port>]
 
 )";
     }
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     // create a robot data instance, robot backend and frontend.
     auto data = std::make_shared<ris::BoltHumanoidSingleProcessData>();
-    ris::BoltHumanoidBackend::Ptr backend = create_real_solo12_backend(data, config);
+    ris::BoltHumanoidBackend::Ptr backend = create_real_bolthumanoid_backend(data, config);
     ris::BoltHumanoidFrontend frontend(data);
 
     // initialise the robot (this also runs the homing)

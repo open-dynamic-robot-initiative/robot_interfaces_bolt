@@ -8,7 +8,7 @@ import argparse
 
 import numpy as np
 
-from robot_interfaces_bolt import solo12
+from robot_interfaces_bolt import bolthumanoid
 
 
 def main():
@@ -26,22 +26,22 @@ def main():
     amplitude = np.pi / 4
 
     # load robot configuration
-    config = solo12.Config.from_file(args.config_file)
+    config = bolthumanoid.Config.from_file(args.config_file)
 
     # Storage for all observations, actions, etc.
-    robot_data = solo12.SingleProcessData()
+    robot_data = bolthumanoid.SingleProcessData()
 
     # The backend takes care of communication with the robot hardware.
-    robot_backend = solo12.create_real_backend(robot_data, config)
+    robot_backend = bolthumanoid.create_real_backend(robot_data, config)
 
     # The frontend is used by the user to get observations and send actions
-    robot_frontend = solo12.Frontend(robot_data)
+    robot_frontend = bolthumanoid.Frontend(robot_data)
 
     # Initializes the robot (e.g. performs homing).
     robot_backend.initialize()
 
     # start by sending a zero-torque action (this is needed to start the backend loop)
-    action = solo12.Action.Zero()
+    action = bolthumanoid.Action.Zero()
     t = robot_frontend.append_desired_action(action)
 
     # get the initial joint positions
@@ -58,7 +58,7 @@ def main():
             2.0 * np.pi * freq * amplitude * np.cos(2 * np.pi * freq * t_ms)
         ] * 12
 
-        action = solo12.Action()
+        action = bolthumanoid.Action()
         action.joint_torques = np.array([0.0] * 12)
         action.joint_positions = np.array(target_positions)
         action.joint_velocities = np.array(target_velocities)

@@ -12,13 +12,13 @@
 #include <pybind11/stl/filesystem.h>
 
 #include <robot_interfaces/pybind_helper.hpp>
-#include <robot_interfaces_bolt/solo12_driver.hpp>
-#include <robot_interfaces_bolt/solo12_pybullet_driver.hpp>
-#include <robot_interfaces_bolt/solo12_utils.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_driver.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_pybullet_driver.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_utils.hpp>
 
 namespace ris = robot_interfaces_bolt;
 
-PYBIND11_MODULE(solo12, m)
+PYBIND11_MODULE(bolthumanoid, m)
 {
     pybind11::options options;
     // disable automatic function signature generation as this does not look too
@@ -148,7 +148,7 @@ PYBIND11_MODULE(solo12, m)
         .def("get_bullet_env", &ris::PyBulletBoltHumanoidDriver::get_bullet_env);
 
     m.def("create_backend",
-          &ris::create_solo12_backend,
+          &ris::create_bolthumanoid_backend,
           pybind11::arg("robot_data"),
           pybind11::arg("robot_driver"),
           pybind11::arg("first_action_timeout") =
@@ -157,7 +157,7 @@ PYBIND11_MODULE(solo12, m)
           pybind11::arg("enable_timing_watchdog") = true);
 
     m.def("create_real_backend",
-          &ris::create_real_solo12_backend,
+          &ris::create_real_bolthumanoid_backend,
           pybind11::arg("robot_data"),
           pybind11::arg("driver_config"),
           pybind11::arg("first_action_timeout") =
@@ -165,7 +165,7 @@ PYBIND11_MODULE(solo12, m)
           pybind11::arg("max_number_of_actions") = 0);
 
     m.def("create_fake_backend",
-          &ris::create_fake_solo12_backend,
+          &ris::create_fake_bolthumanoid_backend,
           pybind11::arg("robot_data"),
           pybind11::arg("driver_config"),
           pybind11::arg("first_action_timeout") =
@@ -173,7 +173,7 @@ PYBIND11_MODULE(solo12, m)
           pybind11::arg("max_number_of_actions") = 0);
 
     m.def("create_pybullet_backend",
-          &ris::create_pybullet_solo12_backend,
+          &ris::create_pybullet_bolthumanoid_backend,
           pybind11::arg("robot_data"),
           pybind11::arg("driver_config"),
           pybind11::arg("first_action_timeout") =

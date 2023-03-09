@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - PyBullet driver for BoltHumanoid for testing in simulation.
-- New demo `demo_solo12_simulation` illustration how to use the PyBullet driver.
-- New option `--sim` for `solo12_show_data` to use the simulation backend. 
+- New demo `demo_bolthumanoid_simulation` illustration how to use the PyBullet driver.
+- New option `--sim` for `bolthumanoid_show_data` to use the simulation backend. 
 
 ### Changed
-- Make `create_solo12_backend()` more generic by accepting a driver as argument (so it
+- Make `create_bolthumanoid_backend()` more generic by accepting a driver as argument (so it
   can be used for all driver types).
-  The old version is still available but renamed to `create_real_solo12_backend()`
+  The old version is still available but renamed to `create_real_bolthumanoid_backend()`
   (`create_real_backend()` in the Python bindings).
 
 ## [0.9.0] - 2022-11-11

@@ -1,4 +1,4 @@
-#include <robot_interfaces_bolt/solo12_driver.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_driver.hpp>
 
 #include <cmath>
 #include <limits>
@@ -10,7 +10,7 @@
 #include <yaml-cpp/yaml.h>
 #include <boost/range/adaptor/indexed.hpp>
 
-#include <robot_interfaces_bolt/solo12_utils.hpp>
+#include <robot_interfaces_bolt/bolthumanoid_utils.hpp>
 
 namespace robot_interfaces_bolt
 {
@@ -29,8 +29,8 @@ BoltHumanoidDriver::BoltHumanoidDriver(const BoltHumanoidConfig &config) : confi
 void BoltHumanoidDriver::initialize()
 {
     log_->debug("Initialize BoltHumanoid");
-    solo12_.initialize(config_.network_interface, config_.slider_serial_port);
-    solo12_.set_max_current(config_.max_motor_current_A);
+    bolthumanoid_.initialize(config_.network_interface, config_.slider_serial_port);
+    bolthumanoid_.set_max_current(config_.max_motor_current_A);
 
     real_time_tools::Spinner spinner;
     spinner.set_period(0.001);
@@ -42,23 +42,23 @@ void BoltHumanoidDriver::initialize()
     Vector12d zero_torque = Vector12d::Zero();
     do
     {
-        solo12_.acquire_sensors();
-        solo12_.send_target_joint_torque(zero_torque);
+        bolthumanoid_.acquire_sensors();
+        bolthumanoid_.send_target_joint_torque(zero_torque);
         spinner.spin();
-    } while (!solo12_.is_ready());
+    } while (!bolthumanoid_.is_ready());
 
     // Homing
     // The homing is also driven by calling send_target_joint_torque() in a
     // loop.  Use do-while-loop because after requesting calibration, we first
     // need to call it once to change the state from "ready" to "calibrate".
     log_->debug("Start homing");
-    solo12_.request_calibration(config_.home_offset_rad);
+    bolthumanoid_.request_calibration(config_.home_offset_rad);
     do
     {
-        solo12_.acquire_sensors();
-        solo12_.send_target_joint_torque(zero_torque);
+        bolthumanoid_.acquire_sensors();
+        bolthumanoid_.send_target_joint_torque(zero_torque);
         spinner.spin();
-    } while (!solo12_.is_ready());
+    } while (!bolthumanoid_.is_ready());
 
     is_initialized_ = true;
     log_->debug("Initialization finished");
@@ -78,15 +78,15 @@ BoltHumanoidDriver::Action BoltHumanoidDriver::apply_action(const Action &desire
     // TODO: safety checks?
     applied_action_ = desired_action;
 
-    solo12_.send_target_joint_position_gains(
+    bolthumanoid_.send_target_joint_position_gains(
         applied_action_.joint_position_gains);
-    solo12_.send_target_joint_position(applied_action_.joint_positions);
-    solo12_.send_target_joint_velocity_gains(
+    bolthumanoid_.send_target_joint_position(applied_action_.joint_positions);
+    bolthumanoid_.send_target_joint_velocity_gains(
         applied_action_.joint_velocity_gains);
-    solo12_.send_target_joint_velocity(applied_action_.joint_velocities);
+    bolthumanoid_.send_target_joint_velocity(applied_action_.joint_velocities);
 
     // this method does the actual sending, so should be called in the end
-    solo12_.send_target_joint_torque(applied_action_.joint_torques);
+    bolthumanoid_.send_target_joint_torque(applied_action_.joint_torques);
 
     // FIXME: implement better timing
     real_time_tools::Timer::sleep_until_sec(start_time_sec + 0.001);
@@ -105,24 +105,24 @@ BoltHumanoidDriver::Observation BoltHumanoidDriver::get_latest_observation()
 
     Observation obs;
 
-    solo12_.acquire_sensors();
+    bolthumanoid_.acquire_sensors();
 
-    obs.joint_positions = solo12_.get_joint_positions();
-    obs.joint_velocities = solo12_.get_joint_velocities();
-    obs.joint_torques = solo12_.get_joint_torques();
-    obs.joint_target_torques = solo12_.get_joint_target_torques();
-    obs.joint_encoder_index = solo12_.get_joint_encoder_index();
+    obs.joint_positions = bolthumanoid_.get_joint_positions();
+    obs.joint_velocities = bolthumanoid_.get_joint_velocities();
+    obs.joint_torques = bolthumanoid_.get_joint_torques();
+    obs.joint_target_torques = bolthumanoid_.get_joint_target_torques();
+    obs.joint_encoder_index = bolthumanoid_.get_joint_encoder_index();
 
-    obs.slider_positions = solo12_.get_slider_positions();
-    obs.imu_accelerometer = solo12_.get_imu_accelerometer();
-    obs.imu_gyroscope = solo12_.get_imu_gyroscope();
-    obs.imu_linear_acceleration = solo12_.get_imu_linear_acceleration();
-    obs.imu_attitude = solo12_.get_imu_attitude();
+    obs.slider_positions = bolthumanoid_.get_slider_positions();
+    obs.imu_accelerometer = bolthumanoid_.get_imu_accelerometer();
+    obs.imu_gyroscope = bolthumanoid_.get_imu_gyroscope();
+    obs.imu_linear_acceleration = bolthumanoid_.get_imu_linear_acceleration();
+    obs.imu_attitude = bolthumanoid_.get_imu_attitude();
 
-    obs.num_sent_command_packets = solo12_.get_num_sent_command_packets();
-    obs.num_lost_command_packets = solo12_.get_num_lost_command_packets();
-    obs.num_sent_sensor_packets = solo12_.get_num_sent_sensor_packets();
-    obs.num_lost_sensor_packets = solo12_.get_num_lost_sensor_packets();
+    obs.num_sent_command_packets = bolthumanoid_.get_num_sent_command_packets();
+    obs.num_lost_command_packets = bolthumanoid_.get_num_lost_command_packets();
+    obs.num_sent_sensor_packets = bolthumanoid_.get_num_sent_sensor_packets();
+    obs.num_lost_sensor_packets = bolthumanoid_.get_num_lost_sensor_packets();
 
     return obs;
 }
@@ -131,9 +131,9 @@ std::string BoltHumanoidDriver::get_error()
 {
     std::string error_msg = "";
 
-    auto board_errors = solo12_.get_motor_board_errors();
+    auto board_errors = bolthumanoid_.get_motor_board_errors();
 
-    if (solo12_.has_error())
+    if (bolthumanoid_.has_error())
     {
         for (auto error_code : boost::adaptors::index(board_errors))
         {
@@ -256,21 +256,21 @@ void FakeBoltHumanoidDriver::shutdown()
 {
 }
 
-BoltHumanoidBackend::Ptr create_real_solo12_backend(
+BoltHumanoidBackend::Ptr create_real_bolthumanoid_backend(
     BoltHumanoidData::Ptr robot_data,
     const BoltHumanoidConfig &driver_config,
     const double first_action_timeout,
     const uint32_t max_number_of_actions)
 {
     constexpr bool enable_timing_watchdog = true;
-    return create_solo12_backend(robot_data,
+    return create_bolthumanoid_backend(robot_data,
                                  std::make_shared<BoltHumanoidDriver>(driver_config),
                                  first_action_timeout,
                                  max_number_of_actions,
                                  enable_timing_watchdog);
 }
 
-BoltHumanoidBackend::Ptr create_fake_solo12_backend(
+BoltHumanoidBackend::Ptr create_fake_bolthumanoid_backend(
     BoltHumanoidData::Ptr robot_data,
     const BoltHumanoidConfig &driver_config,
     const double first_action_timeout,
@@ -279,7 +279,7 @@ BoltHumanoidBackend::Ptr create_fake_solo12_backend(
     auto driver = std::make_shared<FakeBoltHumanoidDriver>(driver_config);
 
     constexpr bool enable_timing_watchdog = false;
-    return create_solo12_backend(robot_data,
+    return create_bolthumanoid_backend(robot_data,
                                  driver,
                                  first_action_timeout,
                                  max_number_of_actions,
