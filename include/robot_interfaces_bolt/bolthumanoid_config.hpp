@@ -41,7 +41,7 @@ struct BoltHumanoidConfig
      * Angles (in radian) between the encoder index and the zero position of
      * each joint.
      */
-    Vector12d home_offset_rad = Vector12d::Zero();
+    Vector9d home_offset_rad = Vector9d::Zero();
 
     /**
      * @brief Logger output level.

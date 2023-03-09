@@ -9,6 +9,6 @@
 
 namespace robot_interfaces_bolt
 {
-typedef Eigen::Matrix<double, 12, 1> Vector12d;
+typedef Eigen::Matrix<double, 9, 1> Vector9d;
 
 }  // namespace robot_interfaces_bolt

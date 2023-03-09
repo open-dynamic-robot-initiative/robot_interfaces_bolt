@@ -30,17 +30,17 @@ namespace robot_interfaces_bolt
 struct BoltHumanoidAction : public robot_interfaces::Loggable
 {
     //! Desired joint torques.
-    Vector12d joint_torques = Vector12d::Zero();
+    Vector9d joint_torques = Vector9d::Zero();
     //! Desired joint positions.  Only used if @ref joint_position_gains are set
     //! to a non-zero value.
-    Vector12d joint_positions = Vector12d::Zero();
+    Vector9d joint_positions = Vector9d::Zero();
     //! Desired joint velocities.  Only used if @ref joint_velocity_gains are
     //! set to a non-zero value.
-    Vector12d joint_velocities = Vector12d::Zero();
+    Vector9d joint_velocities = Vector9d::Zero();
     //! P-gains of the on-board PD+ controller.
-    Vector12d joint_position_gains = Vector12d::Zero();
+    Vector9d joint_position_gains = Vector9d::Zero();
     //! D-gains of the on-board PD+ controller.
-    Vector12d joint_velocity_gains = Vector12d::Zero();
+    Vector9d joint_velocity_gains = Vector9d::Zero();
 
     /**
      * @brief Create a zero-torque action
@@ -81,25 +81,25 @@ struct BoltHumanoidAction : public robot_interfaces::Loggable
         // first map the Eigen vectors to std::vectors
         std::vector<double> torque;
         torque.resize(joint_torques.size());
-        Vector12d::Map(&torque[0], joint_torques.size()) = joint_torques;
+        Vector9d::Map(&torque[0], joint_torques.size()) = joint_torques;
 
         std::vector<double> position;
         position.resize(joint_positions.size());
-        Vector12d::Map(&position[0], joint_positions.size()) = joint_positions;
+        Vector9d::Map(&position[0], joint_positions.size()) = joint_positions;
 
         std::vector<double> velocity;
         velocity.resize(joint_velocities.size());
-        Vector12d::Map(&velocity[0], joint_velocities.size()) =
+        Vector9d::Map(&velocity[0], joint_velocities.size()) =
             joint_velocities;
 
         std::vector<double> position_gains;
         position_gains.resize(joint_position_gains.size());
-        Vector12d::Map(&position_gains[0], joint_position_gains.size()) =
+        Vector9d::Map(&position_gains[0], joint_position_gains.size()) =
             joint_position_gains;
 
         std::vector<double> velocity_gains;
         velocity_gains.resize(joint_velocity_gains.size());
-        Vector12d::Map(&velocity_gains[0], joint_velocity_gains.size()) =
+        Vector9d::Map(&velocity_gains[0], joint_velocity_gains.size()) =
             joint_velocity_gains;
 
         // then return them in a fixed size vector of vectors to avoid

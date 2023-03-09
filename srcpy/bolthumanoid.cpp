@@ -70,11 +70,11 @@ PYBIND11_MODULE(bolthumanoid, m)
 
                 // Create a new C++ instance
                 ris::BoltHumanoidAction action;
-                action.joint_torques = t[0].cast<ris::Vector12d>();
-                action.joint_positions = t[1].cast<ris::Vector12d>();
-                action.joint_velocities = t[2].cast<ris::Vector12d>();
-                action.joint_position_gains = t[3].cast<ris::Vector12d>();
-                action.joint_velocity_gains = t[4].cast<ris::Vector12d>();
+                action.joint_torques = t[0].cast<ris::Vector9d>();
+                action.joint_positions = t[1].cast<ris::Vector9d>();
+                action.joint_velocities = t[2].cast<ris::Vector9d>();
+                action.joint_position_gains = t[3].cast<ris::Vector9d>();
+                action.joint_velocity_gains = t[4].cast<ris::Vector9d>();
 
                 return action;
             }))

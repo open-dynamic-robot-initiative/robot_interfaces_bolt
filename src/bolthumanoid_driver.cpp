@@ -39,7 +39,7 @@ void BoltHumanoidDriver::initialize()
     // trigger enabling the motors and updating the state machine to know once
     // it is ready
     log_->debug("Enable motors");
-    Vector12d zero_torque = Vector12d::Zero();
+    Vector9d zero_torque = Vector9d::Zero();
     do
     {
         bolthumanoid_.acquire_sensors();

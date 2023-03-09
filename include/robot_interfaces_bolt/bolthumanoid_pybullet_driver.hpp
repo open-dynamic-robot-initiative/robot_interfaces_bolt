@@ -41,14 +41,14 @@ private:
     int sensor_packet_counter_ = 0;
 
     //! @brief The torque-part of the last desired action.
-    Vector12d desired_torques_ = Vector12d::Zero();
+    Vector9d desired_torques_ = Vector9d::Zero();
     /**
      * @brief Actual torques that were applied based on the latest action.
      *
      * This also includes the resulting torque from the PD controller if the
      * corresponding parts of the action were set.
      */
-    Vector12d applied_torques_ = Vector12d::Zero();
+    Vector9d applied_torques_ = Vector9d::Zero();
 
     //! Instance of ``bullet_utils.env.BulletEnvWithGround`` used to set up the
     //! simulation.
@@ -58,7 +58,7 @@ private:
     py::object sim_robot_;
 
     //! Get tuple (joint_positions, joint_velocities).
-    std::tuple<Vector12d, Vector12d> get_position_and_velocity();
+    std::tuple<Vector9d, Vector9d> get_position_and_velocity();
 
 public:
     //! @brief Name of the spdlog logger used.

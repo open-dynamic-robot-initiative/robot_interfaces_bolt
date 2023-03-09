@@ -64,16 +64,16 @@ void PyBulletBoltHumanoidDriver::initialize()
 {
 }
 
-std::tuple<Vector12d, Vector12d>
+std::tuple<Vector9d, Vector9d>
 PyBulletBoltHumanoidDriver::get_position_and_velocity()
 {
     py::gil_scoped_acquire acquire;
 
     py::tuple py_state = sim_robot_.attr("get_state")();
-    Vector12d joint_positions =
-        py_state[0][py::slice(-12, std::nullopt, 1)].cast<Vector12d>();
-    Vector12d joint_velocities =
-        py_state[1][py::slice(-12, std::nullopt, 1)].cast<Vector12d>();
+    Vector9d joint_positions =
+        py_state[0][py::slice(-12, std::nullopt, 1)].cast<Vector9d>();
+    Vector9d joint_velocities =
+        py_state[1][py::slice(-12, std::nullopt, 1)].cast<Vector9d>();
 
     return {joint_positions, joint_velocities};
 }
@@ -126,8 +126,8 @@ BoltHumanoidAction PyBulletBoltHumanoidDriver::apply_action(
     auto [joint_positions, joint_velocities] = get_position_and_velocity();
 
     // PD+ controller: Iq_ref = Iq_feeforward + Kp*err_pos + Kd*err_vel
-    Vector12d position_error = desired_action.joint_positions - joint_positions;
-    Vector12d velocity_error =
+    Vector9d position_error = desired_action.joint_positions - joint_positions;
+    Vector9d velocity_error =
         desired_action.joint_velocities - joint_velocities;
     desired_torques_ = desired_action.joint_torques;
     applied_torques_ =

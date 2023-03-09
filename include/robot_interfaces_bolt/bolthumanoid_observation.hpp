@@ -31,15 +31,15 @@ namespace robot_interfaces_bolt
 struct BoltHumanoidObservation : public robot_interfaces::Loggable
 {
     //! Measured joint positions.
-    Vector12d joint_positions;
+    Vector9d joint_positions;
     //! Measured joint velocities.
-    Vector12d joint_velocities;
+    Vector9d joint_velocities;
     //! Measured joint torques.
-    Vector12d joint_torques;
+    Vector9d joint_torques;
     //! Target joint torques applied by the controller.
-    Vector12d joint_target_torques;
+    Vector9d joint_target_torques;
     //! Currently not set!
-    Vector12d joint_encoder_index;
+    Vector9d joint_encoder_index;
 
     //! Positions of the hardware sliders, if connected (range: 0 to 1)
     Eigen::Vector4d slider_positions;
@@ -111,27 +111,27 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
 
         std::vector<double> _joint_positions;
         _joint_positions.resize(joint_positions.size());
-        Vector12d::Map(&_joint_positions[0], joint_positions.size()) =
+        Vector9d::Map(&_joint_positions[0], joint_positions.size()) =
             joint_positions;
 
         std::vector<double> _joint_velocities;
         _joint_velocities.resize(joint_velocities.size());
-        Vector12d::Map(&_joint_velocities[0], joint_velocities.size()) =
+        Vector9d::Map(&_joint_velocities[0], joint_velocities.size()) =
             joint_velocities;
 
         std::vector<double> _joint_torques;
         _joint_torques.resize(joint_torques.size());
-        Vector12d::Map(&_joint_torques[0], joint_torques.size()) =
+        Vector9d::Map(&_joint_torques[0], joint_torques.size()) =
             joint_torques;
 
         std::vector<double> _joint_target_torques;
         _joint_target_torques.resize(joint_target_torques.size());
-        Vector12d::Map(&_joint_target_torques[0], joint_target_torques.size()) =
+        Vector9d::Map(&_joint_target_torques[0], joint_target_torques.size()) =
             joint_target_torques;
 
         std::vector<double> _joint_encoder_index;
         _joint_encoder_index.resize(joint_encoder_index.size());
-        Vector12d::Map(&_joint_encoder_index[0], joint_encoder_index.size()) =
+        Vector9d::Map(&_joint_encoder_index[0], joint_encoder_index.size()) =
             joint_encoder_index;
 
         std::vector<double> _slider_positions;
