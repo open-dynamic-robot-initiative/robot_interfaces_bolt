@@ -55,7 +55,7 @@ target_link_libraries(bolthumanoid_driver
     Eigen3::Eigen
     real_time_tools::real_time_tools
     robot_interfaces::robot_interfaces
-    bolt::bolthumanoid
+    bolt::bolt
     spdlog::spdlog
 
     bolthumanoid_config
