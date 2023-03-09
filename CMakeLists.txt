@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(robot_interfaces_solo)
+project(robot_interfaces_bolt)
 
 # Specify C++ Standard
 set(CMAKE_CXX_STANDARD 17)

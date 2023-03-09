@@ -8,9 +8,9 @@
 
 #include <cli_utils/program_options.hpp>
 
-#include <robot_interfaces_solo/solo12_driver.hpp>
+#include <robot_interfaces_bolt/solo12_driver.hpp>
 
-namespace ris = robot_interfaces_solo;
+namespace ris = robot_interfaces_bolt;
 
 // Class to get console arguments
 class Args : public cli_utils::ProgramOptions

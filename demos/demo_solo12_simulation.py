@@ -10,7 +10,7 @@ import numpy as np
 from bullet_utils.env import BulletEnvWithGround
 from robot_properties_solo.solo12wrapper import BoltHumanoidRobot
 
-from robot_interfaces_solo import solo12
+from robot_interfaces_bolt import solo12
 
 
 @dataclass

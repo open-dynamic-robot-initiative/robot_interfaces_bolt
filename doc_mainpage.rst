@@ -1,4 +1,4 @@
-``robot_interfaces_solo`` provides the necessary types and driver to operate a
+``robot_interfaces_bolt`` provides the necessary types and driver to operate a
 BoltHumanoid robot with :doc:`robot_interfaces <robot_interfaces:index>`.
 
 

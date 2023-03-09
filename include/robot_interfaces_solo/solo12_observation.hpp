@@ -17,7 +17,7 @@
 
 #include "basic_types.hpp"
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 /**
  * @brief Observation of the BoltHumanoid robot.
@@ -181,4 +181,4 @@ struct BoltHumanoidObservation : public robot_interfaces::Loggable
         return result;
     }
 };
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt

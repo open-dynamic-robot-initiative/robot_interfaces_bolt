@@ -5,7 +5,7 @@ This package provides the necessary types and driver to operate a BoltHumanoid r
 with [robot_interfaces](https://github.com/open-dynamic-robot-initiative/robot_interfaces).
 
 For instructions on installation, usage, etc, see the packages's
-[**documentation**](https://open-dynamic-robot-initiative.github.io/robot_interfaces_solo).
+[**documentation**](https://open-dynamic-robot-initiative.github.io/robot_interfaces_bolt).
 
 
 Copyright and License

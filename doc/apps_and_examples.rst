@@ -13,7 +13,7 @@ run with
 
 .. code:: bash
 
-   ros2 run robot_interfaces_solo solo12_show_data path/to/config.yml
+   ros2 run robot_interfaces_bolt solo12_show_data path/to/config.yml
 
 It should look like this:
 
@@ -32,7 +32,7 @@ There are a few demos/examples showing the basic usage:
 
    .. code:: bash
 
-      ros2 run robot_interfaces_solo demo_solo12_hold path/to/config.yml
+      ros2 run robot_interfaces_bolt demo_solo12_hold path/to/config.yml
 
 -  **demo_solo12_sine** [Python]: Initialises the robot and then moves all
   joints back and forth using a sine profile. It is implemented in
@@ -40,7 +40,7 @@ There are a few demos/examples showing the basic usage:
 
    .. code:: bash
 
-      ros2 run robot_interfaces_solo demo_solo12_sine path/to/config.yml
+      ros2 run robot_interfaces_bolt demo_solo12_sine path/to/config.yml
 
 -  **demo_solo12_simulation** [Python]: Shows how to use a simulation backend,
   including directly accessing the simulation to obtain additional data. It is
@@ -48,7 +48,7 @@ There are a few demos/examples showing the basic usage:
 
    .. code:: bash
 
-      ros2 run robot_interfaces_solo demo_solo12_simulation
+      ros2 run robot_interfaces_bolt demo_solo12_simulation
 
 These demos should give an idea on how to use robot_interfaces with the BoltHumanoid
 driver.

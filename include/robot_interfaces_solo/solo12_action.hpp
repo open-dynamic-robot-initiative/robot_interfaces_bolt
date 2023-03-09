@@ -16,7 +16,7 @@
 
 #include "basic_types.hpp"
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 /**
  * @brief Action for the BoltHumanoid robot.
@@ -110,4 +110,4 @@ struct BoltHumanoidAction : public robot_interfaces::Loggable
         return result;
     }
 };
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt

@@ -9,7 +9,7 @@
 
 #include "solo12_types.hpp"
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 /**
  * @brief Create robot backend using a BoltHumanoid driver.
@@ -33,4 +33,4 @@ BoltHumanoidBackend::Ptr create_solo12_backend(
     const double first_action_timeout = std::numeric_limits<double>::infinity(),
     const uint32_t max_number_of_actions = 0,
     bool enable_timing_watchdog = true);
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt

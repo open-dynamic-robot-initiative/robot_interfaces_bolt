@@ -1,6 +1,6 @@
 [[tool.mypy.overrides]]
 module = [
-    "robot_interfaces_solo",  # there are no stubs for pybind11 modules
+    "robot_interfaces_bolt",  # there are no stubs for pybind11 modules
     "bullet_utils.*",
     "robot_properties_solo.*",
     "urwid",

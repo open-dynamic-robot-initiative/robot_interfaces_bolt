@@ -9,7 +9,7 @@ BoltHumanoidAction
 once field per joint (see :cpp:class:`solo::BoltHumanoid` for a mapping of index to
 joint).
 
-.. doxygenstruct:: robot_interfaces_solo::BoltHumanoidAction
+.. doxygenstruct:: robot_interfaces_bolt::BoltHumanoidAction
    :members: joint_torques,
              joint_positions,
              joint_velocities,
@@ -25,7 +25,7 @@ BoltHumanoidObservation
 ``joint_*`` members follow the same order as in the action (see above).
 
 
-.. doxygenstruct:: robot_interfaces_solo::BoltHumanoidObservation
+.. doxygenstruct:: robot_interfaces_bolt::BoltHumanoidObservation
    :members: joint_positions,
              joint_velocities,
              joint_torques,

@@ -1,4 +1,4 @@
-#include <robot_interfaces_solo/solo12_driver.hpp>
+#include <robot_interfaces_bolt/solo12_driver.hpp>
 
 #include <cmath>
 #include <limits>
@@ -10,9 +10,9 @@
 #include <yaml-cpp/yaml.h>
 #include <boost/range/adaptor/indexed.hpp>
 
-#include <robot_interfaces_solo/solo12_utils.hpp>
+#include <robot_interfaces_bolt/solo12_utils.hpp>
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 BoltHumanoidDriver::BoltHumanoidDriver(const BoltHumanoidConfig &config) : config_(config)
 {
@@ -286,4 +286,4 @@ BoltHumanoidBackend::Ptr create_fake_solo12_backend(
                                  enable_timing_watchdog);
 }
 
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt

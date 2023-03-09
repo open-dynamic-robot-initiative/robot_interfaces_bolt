@@ -12,11 +12,11 @@
 #include <pybind11/stl/filesystem.h>
 
 #include <robot_interfaces/pybind_helper.hpp>
-#include <robot_interfaces_solo/solo12_driver.hpp>
-#include <robot_interfaces_solo/solo12_pybullet_driver.hpp>
-#include <robot_interfaces_solo/solo12_utils.hpp>
+#include <robot_interfaces_bolt/solo12_driver.hpp>
+#include <robot_interfaces_bolt/solo12_pybullet_driver.hpp>
+#include <robot_interfaces_bolt/solo12_utils.hpp>
 
-namespace ris = robot_interfaces_solo;
+namespace ris = robot_interfaces_bolt;
 
 PYBIND11_MODULE(solo12, m)
 {

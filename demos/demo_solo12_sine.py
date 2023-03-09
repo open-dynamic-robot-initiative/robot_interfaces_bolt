@@ -8,7 +8,7 @@ import argparse
 
 import numpy as np
 
-from robot_interfaces_solo import solo12
+from robot_interfaces_bolt import solo12
 
 
 def main():

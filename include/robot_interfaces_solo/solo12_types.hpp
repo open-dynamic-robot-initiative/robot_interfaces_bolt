@@ -15,7 +15,7 @@
 #include "solo12_config.hpp"
 #include "solo12_observation.hpp"
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 typedef robot_interfaces::RobotBackend<BoltHumanoidAction, BoltHumanoidObservation>
     BoltHumanoidBackend;
@@ -37,4 +37,4 @@ public:
     typedef std::shared_ptr<const BaseBoltHumanoidDriver> ConstPtr;
 };
 
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt

@@ -13,7 +13,7 @@ import numpy as np
 import urwid as u
 import tabulate
 
-from robot_interfaces_solo import solo12
+from robot_interfaces_bolt import solo12
 
 
 class BackendMode(enum.Enum):

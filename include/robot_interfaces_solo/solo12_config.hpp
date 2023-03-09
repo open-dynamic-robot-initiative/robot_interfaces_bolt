@@ -9,7 +9,7 @@
 
 #include "basic_types.hpp"
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 /**
  * @brief Configuration for the BoltHumanoid driver.
@@ -62,4 +62,4 @@ struct BoltHumanoidConfig
     static BoltHumanoidConfig from_file(const std::filesystem::path &file);
 };
 
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt

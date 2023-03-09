@@ -1,10 +1,10 @@
-#include <robot_interfaces_solo/solo12_utils.hpp>
+#include <robot_interfaces_bolt/solo12_utils.hpp>
 
 #include <memory>
 
 #include <robot_interfaces/monitored_robot_driver.hpp>
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 BoltHumanoidBackend::Ptr create_solo12_backend(BoltHumanoidData::Ptr robot_data,
                                          BaseBoltHumanoidDriver::Ptr robot_driver,
@@ -43,4 +43,4 @@ BoltHumanoidBackend::Ptr create_solo12_backend(BoltHumanoidData::Ptr robot_data,
     return backend;
 }
 
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt

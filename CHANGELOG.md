@@ -23,5 +23,5 @@ simple demo applications and a test application which shows sensor data.
 
 
 
-[Unreleased]: https://github.com/open-dynamic-robot-initiative/robot_interfaces_solo/compare/v0.9.0...HEAD
-[0.9.0]: https://github.com/open-dynamic-robot-initiative/robot_interfaces_solo/releases/tag/v0.9.0
+[Unreleased]: https://github.com/open-dynamic-robot-initiative/robot_interfaces_bolt/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/open-dynamic-robot-initiative/robot_interfaces_bolt/releases/tag/v0.9.0

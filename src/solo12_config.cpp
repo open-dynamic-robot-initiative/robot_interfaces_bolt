@@ -1,11 +1,11 @@
-#include <robot_interfaces_solo/solo12_config.hpp>
+#include <robot_interfaces_bolt/solo12_config.hpp>
 
 #include <fmt/format.h>
 #include <yaml-cpp/yaml.h>
 
 #include <yaml_utils/yaml_eigen.hpp>
 
-namespace robot_interfaces_solo
+namespace robot_interfaces_bolt
 {
 template <typename T>
 void _set_optional_config_value(const YAML::Node &user_config,
@@ -60,4 +60,4 @@ BoltHumanoidConfig BoltHumanoidConfig::from_file(
     return config;
 }
 
-}  // namespace robot_interfaces_solo
+}  // namespace robot_interfaces_bolt
