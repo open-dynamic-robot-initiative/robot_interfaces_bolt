@@ -93,7 +93,7 @@ Create a workspace directory, clone the treep configuration and the project:
    $ cd ~/my_workspace
 
    $ git clone git@github.com:machines-in-motion/treep_machines_in_motion.git 
-   $ treep --clone ROBOT_INTERFACES_SOLO
+   $ treep --clone ROBOT_INTERFACES_BOLT
 
 Build the workspace using the Apptainer container:
 

@@ -1,4 +1,4 @@
-robot_interfaces Driver for Solo Robots
+robot_interfaces Driver for Bolt Robots
 =======================================
 
 This package provides the necessary types and driver to operate a BoltHumanoid robot
