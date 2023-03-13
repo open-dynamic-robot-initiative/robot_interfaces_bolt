@@ -12,8 +12,8 @@
 
 #include <spdlog/spdlog.h>
 
-#include <robot_interfaces/robot_frontend.hpp>
 #include <bolt/bolt_humanoid.hpp>
+#include <robot_interfaces/robot_frontend.hpp>
 
 #include "bolthumanoid_types.hpp"
 

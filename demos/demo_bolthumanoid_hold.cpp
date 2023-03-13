@@ -1,7 +1,8 @@
 /**
- * \file
- * \brief Demo using BoltHumanoid that holds all joints at their current positions.
- * \copyright Copyright (c) 2022, Max Planck Gesellschaft.
+ * @file
+ * @brief Demo using BoltHumanoid that holds all joints at their current
+ *      positions.
+ * @copyright Copyright (c) 2022, Max Planck Gesellschaft.
  */
 #include <memory>
 #include <string>
@@ -60,11 +61,13 @@ int main(int argc, char *argv[])
     }
 
     // load the driver configuration from a YAML file
-    ris::BoltHumanoidConfig config = ris::BoltHumanoidConfig::from_file(args.config_file);
+    ris::BoltHumanoidConfig config =
+        ris::BoltHumanoidConfig::from_file(args.config_file);
 
     // create a robot data instance, robot backend and frontend.
     auto data = std::make_shared<ris::BoltHumanoidSingleProcessData>();
-    ris::BoltHumanoidBackend::Ptr backend = create_real_bolthumanoid_backend(data, config);
+    ris::BoltHumanoidBackend::Ptr backend =
+        create_real_bolthumanoid_backend(data, config);
     ris::BoltHumanoidFrontend frontend(data);
 
     // initialise the robot (this also runs the homing)
