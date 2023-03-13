@@ -44,18 +44,18 @@ PyBulletBoltHumanoidDriver::PyBulletBoltHumanoidDriver(
 
         py::module pybullet = py::module::import("pybullet");
         py::module bullet_utils_env = py::module::import("bullet_utils.env");
-        py::module bolthumanoidwrapper =
-            py::module::import("robot_properties_bolt.bolthumanoidwrapper");
+        py::module bolt_humanoid_wrapper =
+            py::module::import("robot_properties_bolt.bolt_humanoid_wrapper");
 
         py::object RPSBoltHumanoidConfig =
-            bolthumanoidwrapper.attr("BoltHumanoidConfig");
+            bolt_humanoid_wrapper.attr("BoltHumanoidConfig");
 
         py::object pybullet_server =
             visualize ? pybullet.attr("GUI") : pybullet.attr("DIRECT");
         sim_env_ =
             bullet_utils_env.attr("BulletEnvWithGround")(pybullet_server);
-        sim_robot_ = bolthumanoidwrapper.attr("BoltHumanoidRobot")(
-            "useFixedBase"_a = py::cast(use_fixed_base));
+        sim_robot_ = bolt_humanoid_wrapper.attr("BoltHumanoidRobot")(
+            "use_fixed_base"_a = py::cast(use_fixed_base));
         sim_env_.attr("add_robot")(sim_robot_);
 
         sim_robot_.attr("reset_to_initial_state")();

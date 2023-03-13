@@ -2,13 +2,14 @@
 """Basic demo on how to control BoltHumanoid in simulation."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+import argparse
 import typing
+from dataclasses import dataclass
 
 import numpy as np
 
 from bullet_utils.env import BulletEnvWithGround
-from robot_properties_bolt.bolthumanoidwrapper import BoltHumanoidRobot
+from robot_properties_bolt.bolt_humanoid_wrapper import BoltHumanoidRobot
 
 from robot_interfaces_bolt import bolthumanoid
 
@@ -37,6 +38,14 @@ class BaseState:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--fixed-base",
+        action="store_true",
+        help="Keep the base fixed (useful for some tests).",
+    )
+    args = parser.parse_args()
+
     kp = 3.0
     kd = 0.05
     freq = 0.5
@@ -47,7 +56,9 @@ def main() -> None:
 
     # Create a backend with a PyBullet driver.  Here we need to instantiate the driver
     # on our own, so we have a handle to access the simulation.
-    sim_driver = bolthumanoid.PyBulletDriver(real_time_mode=True, visualize=True)
+    sim_driver = bolthumanoid.PyBulletDriver(
+        real_time_mode=True, visualize=True, use_fixed_base=args.fixed_base
+    )
     sim_env: BulletEnvWithGround = sim_driver.get_bullet_env()
     robot_backend = bolthumanoid.create_backend(
         robot_data, sim_driver, enable_timing_watchdog=False
