@@ -9,8 +9,8 @@ be in YAML format and can contain the following values:
    is connected (e.g. “eth0”). This parameter is required.
 
 -  ``slider_serial_port``: Name of the serial port to which the hardware
-   slider is connected. This can typically be omitted, in which case the
-   port is auto-detected.
+   slider is connected.  Set to "auto" to automatically detect the port.
+   Can be omitted (or explicitly set to "none") if no slider box is used.
 
 -  ``max_motor_current_A`` (default: 8 A): Maximum current that can be
    applied to the motors (in Ampere).
@@ -28,5 +28,5 @@ Example:
 .. code-block:: yaml
 
    network_interface: enp0s31f6
-   home_offset_rad: [-0.475, -0.589, -0.500, -0.219,  1.496, -0.308,  0.095, -0.319, -0.177, -0.981, -0.924, -1.175]
+   home_offset_rad: [-0.475, -0.589, -0.500, -0.219,  1.496, -0.308,  0.095, -0.319, -0.177]
    logger_level: debug

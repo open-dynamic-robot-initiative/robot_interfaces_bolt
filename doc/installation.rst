@@ -34,13 +34,13 @@ its dependencies installed:
 
 .. code:: bash
 
-   $ apptainer pull oras://ghcr.io/open-dynamic-robot-initiative/trifinger_singularity/bolt_robot:latest
+   $ apptainer pull oras://ghcr.io/open-dynamic-robot-initiative/trifinger_singularity/solo_bolt_robot:latest
 
 .. note::
    The packages in this container are built for real-time
    communication with the robot. This assumes the computer is set up accordingly
    (see `Real Time Setup`_).
-   There is an alternative container "bolt_user" with a "normal" built, but
+   There is an alternative container "solo_bolt_user" with a "normal" built, but
    you will likely run into timing-related issues if using it for
    controlling the robot.
 
@@ -48,13 +48,13 @@ You can run test/demo applications directly from that container:
 
 .. code:: bash
 
-   $ apptainer run -e bolt_robot.sif ros2 run robot_interfaces_bolt bolthumanoid_show_data ./config.yml
+   $ apptainer run -e solo_bolt_robot.sif ros2 run robot_interfaces_bolt bolthumanoid_show_data ./config.yml
 
 Likewise, you can run custom scripts:
 
 .. code:: bash
 
-   $ apptainer run -e bolt_robot.sif python3 ./my_script.py
+   $ apptainer run -e solo_bolt_robot.sif python3 ./my_script.py
 
 You can also built custom packages which depend on ``robot_interfaces_bolt``:
 
@@ -62,7 +62,7 @@ You can also built custom packages which depend on ``robot_interfaces_bolt``:
 
    # expected directory structure:  ~/workspace/src/my_package
    $ cd ~/workspace
-   $ apptainer shell -e path/to/bolt_robot.sif
+   $ apptainer shell -e path/to/solo_bolt_robot.sif
    Apptainer> source /setup.bash  # Needed to setup the environment
    Apptainer> colcon build
 

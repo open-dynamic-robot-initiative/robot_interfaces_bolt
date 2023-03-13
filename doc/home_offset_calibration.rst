@@ -10,12 +10,12 @@ done in the following way:
 
    .. code-block:: bash
 
-      ros2 run bolt bolthumanoid_hardware_calibration <network-interface>
+      ros2 run bolt bolt_humanoid_hardware_calibration <network-interface>
 
    This will find the next encoder indices (this is the 'home position') and
    then start printing the offset.
 3. Manually move the joints back to the desired zero position.  This time it has
    to be precise.
-4. Stop ``bolthumanoid_hardware_calibration`` (via Ctrl+C).  Copy the last offsets that
-   were printed to the terminal and insert them in the configuration file as
-   value for ``home_offset_rad`` (see :doc:`config`).
+4. Stop ``bolt_humanoid_hardware_calibration`` (via Ctrl+C).  Copy the last
+   offsets that were printed to the terminal and insert them in the
+   configuration file as value for ``home_offset_rad`` (see :doc:`config`).
