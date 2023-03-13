@@ -63,7 +63,9 @@ class Robot:
         elif backend_mode == BackendMode.FAKE:
             self.robot_backend = bolthumanoid.create_fake_backend(robot_data, config)
         elif backend_mode == BackendMode.PYBULLET:
-            self.robot_backend = bolthumanoid.create_pybullet_backend(robot_data, config)
+            self.robot_backend = bolthumanoid.create_pybullet_backend(
+                robot_data, config
+            )
         else:
             raise ValueError(f"Unexpected value {backend_mode} for backend_mode.")
 

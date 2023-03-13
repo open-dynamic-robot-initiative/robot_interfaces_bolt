@@ -21,11 +21,11 @@ namespace robot_interfaces_bolt
 /**
  * @brief Action for the BoltHumanoid robot.
  *
- * BoltHumanoid has an on-board PD+ controller which can be used by setting the P and
- * D control gains per joint to the fields @ref joint_position_gains and @ref
- * joint_velocity_gains.
- * If the gains are zero, @ref joint_positions and @ref joint_velocities are
- * ignored and only the torque commands in @ref joint_torques are executed.
+ * BoltHumanoid has an on-board PD+ controller which can be used by setting the
+ * P and D control gains per joint to the fields @ref joint_position_gains and
+ * @ref joint_velocity_gains. If the gains are zero, @ref joint_positions and
+ * @ref joint_velocities are ignored and only the torque commands in @ref
+ * joint_torques are executed.
  */
 struct BoltHumanoidAction : public robot_interfaces::Loggable
 {
@@ -89,8 +89,7 @@ struct BoltHumanoidAction : public robot_interfaces::Loggable
 
         std::vector<double> velocity;
         velocity.resize(joint_velocities.size());
-        Vector9d::Map(&velocity[0], joint_velocities.size()) =
-            joint_velocities;
+        Vector9d::Map(&velocity[0], joint_velocities.size()) = joint_velocities;
 
         std::vector<double> position_gains;
         position_gains.resize(joint_position_gains.size());

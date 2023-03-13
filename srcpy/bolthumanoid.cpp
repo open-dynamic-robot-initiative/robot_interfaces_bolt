@@ -28,11 +28,12 @@ PYBIND11_MODULE(bolthumanoid, m)
     // import robot_interfaces to provide bindings for Status
     pybind11::module::import("robot_interfaces");
 
-    robot_interfaces::create_interface_python_bindings<ris::BoltHumanoidAction,
-                                                       ris::BoltHumanoidObservation>(
-        m);
+    robot_interfaces::create_interface_python_bindings<
+        ris::BoltHumanoidAction,
+        ris::BoltHumanoidObservation>(m);
 
-    pybind11::class_<ris::BoltHumanoidAction>(m, "Action", "Action for BoltHumanoid")
+    pybind11::class_<ris::BoltHumanoidAction>(
+        m, "Action", "Action for BoltHumanoid")
         .def(pybind11::init<>())
         .def_readwrite("joint_torques",
                        &ris::BoltHumanoidAction::joint_torques,
@@ -78,7 +79,9 @@ PYBIND11_MODULE(bolthumanoid, m)
 
                 return action;
             }))
-        .def("Zero", &ris::BoltHumanoidAction::Zero, "Create a zero-torque action");
+        .def("Zero",
+             &ris::BoltHumanoidAction::Zero,
+             "Create a zero-torque action");
 
     pybind11::class_<ris::BoltHumanoidObservation>(m, "Observation")
         .def(pybind11::init<>())
@@ -86,20 +89,23 @@ PYBIND11_MODULE(bolthumanoid, m)
                        &ris::BoltHumanoidObservation::joint_positions)
         .def_readwrite("joint_velocities",
                        &ris::BoltHumanoidObservation::joint_velocities)
-        .def_readwrite("joint_torques", &ris::BoltHumanoidObservation::joint_torques)
+        .def_readwrite("joint_torques",
+                       &ris::BoltHumanoidObservation::joint_torques)
         .def_readwrite("joint_target_torques",
                        &ris::BoltHumanoidObservation::joint_target_torques)
         .def_readwrite("slider_positions",
                        &ris::BoltHumanoidObservation::slider_positions)
         .def_readwrite("imu_accelerometer",
                        &ris::BoltHumanoidObservation::imu_accelerometer)
-        .def_readwrite("imu_gyroscope", &ris::BoltHumanoidObservation::imu_gyroscope)
+        .def_readwrite("imu_gyroscope",
+                       &ris::BoltHumanoidObservation::imu_gyroscope)
         .def_readwrite("imu_linear_acceleration",
                        &ris::BoltHumanoidObservation::imu_linear_acceleration)
-        .def_readwrite("imu_attitude", &ris::BoltHumanoidObservation::imu_attitude);
+        .def_readwrite("imu_attitude",
+                       &ris::BoltHumanoidObservation::imu_attitude);
 
-    pybind11::class_<ris::BoltHumanoidConfig, std::shared_ptr<ris::BoltHumanoidConfig>>(
-        m, "Config")
+    pybind11::class_<ris::BoltHumanoidConfig,
+                     std::shared_ptr<ris::BoltHumanoidConfig>>(m, "Config")
         .def(pybind11::init<>())
         .def_readwrite("network_interface",
                        &ris::BoltHumanoidConfig::network_interface,
@@ -124,7 +130,8 @@ PYBIND11_MODULE(bolthumanoid, m)
              "Load configuration from a YAML file (using default values for "
              "parameters missing in the file).");
 
-    pybind11::class_<ris::BaseBoltHumanoidDriver, ris::BaseBoltHumanoidDriver::Ptr>
+    pybind11::class_<ris::BaseBoltHumanoidDriver,
+                     ris::BaseBoltHumanoidDriver::Ptr>
         base_driver(m, "BaseBoltHumanoidDriver");
 
     pybind11::class_<ris::PyBulletBoltHumanoidDriver,
@@ -135,7 +142,8 @@ PYBIND11_MODULE(bolthumanoid, m)
              pybind11::arg("visualize") = true,
              pybind11::arg("use_fixed_base") = false,
              pybind11::arg("logger_level") = "debug")
-        .def("get_bullet_env", &ris::PyBulletBoltHumanoidDriver::get_bullet_env);
+        .def("get_bullet_env",
+             &ris::PyBulletBoltHumanoidDriver::get_bullet_env);
 
     m.def("create_backend",
           &ris::create_bolthumanoid_backend,

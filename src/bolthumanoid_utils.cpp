@@ -6,17 +6,18 @@
 
 namespace robot_interfaces_bolt
 {
-BoltHumanoidBackend::Ptr create_bolthumanoid_backend(BoltHumanoidData::Ptr robot_data,
-                                         BaseBoltHumanoidDriver::Ptr robot_driver,
-                                         const double first_action_timeout,
-                                         const uint32_t max_number_of_actions,
-                                         bool enable_timing_watchdog)
+BoltHumanoidBackend::Ptr create_bolthumanoid_backend(
+    BoltHumanoidData::Ptr robot_data,
+    BaseBoltHumanoidDriver::Ptr robot_driver,
+    const double first_action_timeout,
+    const uint32_t max_number_of_actions,
+    bool enable_timing_watchdog)
 {
     constexpr double MAX_ACTION_DURATION_S = 0.003;
     constexpr double MAX_INTER_ACTION_DURATION_S = 0.005;
 
-    std::shared_ptr<
-        robot_interfaces::RobotDriver<BoltHumanoidAction, BoltHumanoidObservation>>
+    std::shared_ptr<robot_interfaces::RobotDriver<BoltHumanoidAction,
+                                                  BoltHumanoidObservation>>
         wrapped_driver;
 
     if (enable_timing_watchdog)
@@ -34,10 +35,10 @@ BoltHumanoidBackend::Ptr create_bolthumanoid_backend(BoltHumanoidData::Ptr robot
 
     constexpr bool real_time_mode = true;
     auto backend = std::make_shared<BoltHumanoidBackend>(wrapped_driver,
-                                                   robot_data,
-                                                   real_time_mode,
-                                                   first_action_timeout,
-                                                   max_number_of_actions);
+                                                         robot_data,
+                                                         real_time_mode,
+                                                         first_action_timeout,
+                                                         max_number_of_actions);
     backend->set_max_action_repetitions(std::numeric_limits<uint32_t>::max());
 
     return backend;
