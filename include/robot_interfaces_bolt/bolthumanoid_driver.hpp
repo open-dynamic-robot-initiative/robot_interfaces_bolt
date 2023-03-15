@@ -13,6 +13,8 @@
 #include <spdlog/spdlog.h>
 
 #include <bolt/bolt_humanoid.hpp>
+#include <real_time_tools/spinner.hpp>
+#include <real_time_tools/timer.hpp>
 #include <robot_interfaces/robot_frontend.hpp>
 
 #include "bolthumanoid_types.hpp"
@@ -40,6 +42,9 @@ private:
     bolt::BoltHumanoid bolthumanoid_;
     Action applied_action_;
     bool is_initialized_ = false;
+    real_time_tools::Spinner spinner_;
+
+    real_time_tools::Timer timer_;
 };
 
 //! Fake driver for testing (ignores actions and returns some artificial

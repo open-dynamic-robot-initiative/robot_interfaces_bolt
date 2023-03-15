@@ -10,8 +10,6 @@
 #include <yaml-cpp/yaml.h>
 #include <boost/range/adaptor/indexed.hpp>
 
-#include <real_time_tools/spinner.hpp>
-
 #include <robot_interfaces_bolt/bolthumanoid_utils.hpp>
 
 namespace robot_interfaces_bolt
@@ -27,6 +25,8 @@ BoltHumanoidDriver::BoltHumanoidDriver(const BoltHumanoidConfig &config)
         auto log_level = spdlog::level::from_str(config.logger_level);
         log_->set_level(log_level);
     }
+
+    spinner_.set_period(0.001);
 }
 
 void BoltHumanoidDriver::initialize()
@@ -36,8 +36,7 @@ void BoltHumanoidDriver::initialize()
                              config_.slider_serial_port);
     bolthumanoid_.set_max_current(config_.max_motor_current_A);
 
-    real_time_tools::Spinner spinner;
-    spinner.set_period(0.001);
+    spinner_.set_period(0.001);
 
     // we have to call acquire_sensors() and send_target_joint_torque() to
     // trigger enabling the motors and updating the state machine to know once
@@ -48,7 +47,7 @@ void BoltHumanoidDriver::initialize()
     {
         bolthumanoid_.acquire_sensors();
         bolthumanoid_.send_target_joint_torque(zero_torque);
-        spinner.spin();
+        spinner_.spin();
     } while (!bolthumanoid_.is_ready());
 
     // Homing
@@ -61,7 +60,7 @@ void BoltHumanoidDriver::initialize()
     {
         bolthumanoid_.acquire_sensors();
         bolthumanoid_.send_target_joint_torque(zero_torque);
-        spinner.spin();
+        spinner_.spin();
     } while (!bolthumanoid_.is_ready());
 
     is_initialized_ = true;
@@ -71,7 +70,7 @@ void BoltHumanoidDriver::initialize()
 BoltHumanoidDriver::Action BoltHumanoidDriver::apply_action(
     const Action &desired_action)
 {
-    double start_time_sec = real_time_tools::Timer::get_current_time_sec();
+    timer_.tac_tic();
 
     if (!is_initialized_)
     {
@@ -80,7 +79,8 @@ BoltHumanoidDriver::Action BoltHumanoidDriver::apply_action(
             "the `initialize()` method.");
     }
 
-    // TODO: safety checks?
+    // No modifications of the action here (max. current is ensured on the
+    // board)
     applied_action_ = desired_action;
 
     bolthumanoid_.send_target_joint_position_gains(
@@ -93,8 +93,7 @@ BoltHumanoidDriver::Action BoltHumanoidDriver::apply_action(
     // this method does the actual sending, so should be called in the end
     bolthumanoid_.send_target_joint_torque(applied_action_.joint_torques);
 
-    // FIXME: implement better timing
-    real_time_tools::Timer::sleep_until_sec(start_time_sec + 0.001);
+    spinner_.spin();
 
     return applied_action_;
 }
@@ -174,6 +173,7 @@ void BoltHumanoidDriver::shutdown()
     {
         apply_action(Action::Zero());
     }
+    timer_.print_statistics();
 }
 
 FakeBoltHumanoidDriver::FakeBoltHumanoidDriver(const BoltHumanoidConfig &config)
