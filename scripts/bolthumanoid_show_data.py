@@ -5,6 +5,8 @@ Show all data from observation, status and applied action in a simple TUI.  Pres
 toggle between position control mode (holding all joints at their current position) and
 zero torque mode.
 """
+from __future__ import annotations
+
 import argparse
 import enum
 import typing
@@ -73,8 +75,12 @@ class Robot:
 
         self.t = 0
 
-    def initialize(self):
-        """Initialize the robot.  Needs to be called before :meth:`update`."""
+    def initialize(self, control_mode: Robot.ControlMode):
+        """Initialize the robot.  Needs to be called before :meth:`update`.
+
+        Args:
+            control_mode:  The control mode with which the robot is started.
+        """
         # Initializes the robot (e.g. performs homing).
         self.robot_backend.initialize()
 
@@ -83,15 +89,7 @@ class Robot:
         action = bolthumanoid.Action.Zero()
         self.t = self.robot_frontend.append_desired_action(action)
 
-        # get the initial joint positions to construct the desired action
-        observation = self.robot_frontend.get_observation(self.t)
-
-        self.desired_action = bolthumanoid.Action()
-        self.desired_action.joint_torques = np.array([0.0] * N_JOINTS)
-        self.desired_action.joint_positions = observation.joint_positions
-        self.desired_action.joint_velocities = np.array([0.0] * N_JOINTS)
-        self.desired_action.joint_position_gains = np.array([self.kp] * N_JOINTS)
-        self.desired_action.joint_velocity_gains = np.array([self.kd] * N_JOINTS)
+        self.set_control_mode(control_mode)
 
     def update(self):
         """Get robot data and send a new command to the robot.
@@ -288,7 +286,7 @@ class Window:
         """
         update_interval_s = 0.001
 
-        self.set_control_mode(Robot.ControlMode.HOLD_POSITION)
+        self.set_control_mode(self.robot.control_mode)
 
         # set update callback
         def update_window(loop: u.MainLoop, win: Window):
@@ -361,6 +359,14 @@ def main():
         type=str,
         help="YAML file with BoltHumanoid driver configuration.",
     )
+    parser.add_argument(
+        "--zero-torque",
+        action="store_const",
+        dest="initial_control_mode",
+        const=Robot.ControlMode.ZERO_TORQUE,
+        default=Robot.ControlMode.HOLD_POSITION,
+        help="Start with 'zero torque' control mode (instead of 'hold position').",
+    )
 
     mode_options = parser.add_mutually_exclusive_group()
     mode_options.add_argument(
@@ -389,7 +395,7 @@ def main():
     args = parser.parse_args()
 
     robot = Robot(args.config_file, args.backend_mode)
-    robot.initialize()
+    robot.initialize(control_mode=args.initial_control_mode)
 
     win = Window(robot)
     win.run()
