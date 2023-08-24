@@ -32,6 +32,7 @@ find_package(spdlog REQUIRED)
 
 ament_export_dependencies(cli_utils real_time_tools robot_interfaces bolt)
 
+ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR ${PROJECT_NAME})
 
 
 add_library(bolthumanoid_config
