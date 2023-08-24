@@ -12,7 +12,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+## find dependencies
+
+# pybind11 needs to be listed first, otherwise Python may not be found correctly
+# on Ubuntu 22.04
+find_package(pybind11 REQUIRED)
+
 find_package(ament_cmake REQUIRED)
 find_package(cli_utils REQUIRED)
 find_package(yaml_utils REQUIRED)
@@ -24,10 +29,10 @@ find_package(bolt REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
-find_package(pybind11 REQUIRED)
 
 ament_export_dependencies(cli_utils real_time_tools robot_interfaces bolt)
 
+ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR ${PROJECT_NAME})
 
 
 add_library(bolthumanoid_config
