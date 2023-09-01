@@ -6,7 +6,7 @@ BoltHumanoid robot with :doc:`robot_interfaces <robot_interfaces:index>`.
     :caption: General Documentation
 
     doc/installation.rst
-    doc/home_offset_calibration.rst
+    doc/homing.rst
     doc/config.rst
     doc/apps_and_examples.rst
     doc/actions_and_observations.rst

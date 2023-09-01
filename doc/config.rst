@@ -16,7 +16,7 @@ be in YAML format and can contain the following values:
    applied to the motors (in Ampere).
 
 -  ``home_offset_rad`` (default: [0, 0, …]): Offset between home position
-   (=encoder index) and zero position. See :doc:`home_offset_calibration`.
+   (=encoder index) and zero position. See :doc:`homing`.
 
 -  ``logger_level`` (default: “warning”): Controls the verbosity of the
    output. Valid values are {“trace”, “debug”, “info”, “warning”,
