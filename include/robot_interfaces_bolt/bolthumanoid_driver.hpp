@@ -31,7 +31,7 @@ public:
     void initialize() override;
     Action apply_action(const Action &desired_action) override;
     Observation get_latest_observation() override;
-    std::string get_error() override;
+    std::optional<std::string> get_error() override;
     void shutdown() override;
 
 private:
@@ -55,7 +55,7 @@ public:
     void initialize() override;
     Action apply_action(const Action &desired_action) override;
     Observation get_latest_observation() override;
-    std::string get_error() override;
+    std::optional<std::string> get_error() override;
     void shutdown() override;
 
 private:

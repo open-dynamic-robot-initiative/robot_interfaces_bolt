@@ -148,9 +148,9 @@ BoltHumanoidAction PyBulletBoltHumanoidDriver::apply_action(
     return desired_action;
 }
 
-std::string PyBulletBoltHumanoidDriver::get_error()
+std::optional<std::string> PyBulletBoltHumanoidDriver::get_error()
 {
-    return "";  // no errors
+    return std::nullopt;  // no errors
 }
 
 void PyBulletBoltHumanoidDriver::shutdown()
