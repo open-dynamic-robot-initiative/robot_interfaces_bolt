@@ -85,7 +85,7 @@ public:
     BoltHumanoidObservation get_latest_observation() override;
     BoltHumanoidAction apply_action(
         const BoltHumanoidAction &desired_action) override;
-    std::string get_error() override;
+    std::optional<std::string> get_error() override;
     void shutdown() override;
 
     //! Get the bullet environment instance for direct access to the simulation.

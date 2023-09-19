@@ -126,18 +126,18 @@ BoltHumanoidDriver::Observation BoltHumanoidDriver::get_latest_observation()
     return obs;
 }
 
-std::string BoltHumanoidDriver::get_error()
+std::optional<std::string> BoltHumanoidDriver::get_error()
 {
-    std::string error_msg = "";
-
-    auto board_errors_mat = bolthumanoid_.get_motor_board_errors();
-    // copy Eigen matrix to std::vector
-    std::vector<int> board_errors(
-        board_errors_mat.data(),
-        board_errors_mat.data() + board_errors_mat.size());
-
     if (bolthumanoid_.has_error())
     {
+        std::string error_msg = "";
+
+        auto board_errors_mat = bolthumanoid_.get_motor_board_errors();
+        // copy Eigen matrix to std::vector
+        std::vector<int> board_errors(
+            board_errors_mat.data(),
+            board_errors_mat.data() + board_errors_mat.size());
+
         for (auto error_code : boost::adaptors::index(board_errors))
         {
             if (error_code.value() != 0)
@@ -158,13 +158,15 @@ std::string BoltHumanoidDriver::get_error()
         {
             error_msg += "Unknown Error";
         }
+
+        return error_msg;
     }
 
     // TODO
     // Some errors on the master board are not reported but simply result in a
     // motor to be disabled.  So check for this explicitly.
 
-    return error_msg;
+    return std::nullopt;
 }
 
 void BoltHumanoidDriver::shutdown()
@@ -246,9 +248,9 @@ FakeBoltHumanoidDriver::get_latest_observation()
     return obs;
 }
 
-std::string FakeBoltHumanoidDriver::get_error()
+std::optional<std::string> FakeBoltHumanoidDriver::get_error()
 {
-    return "";
+    return std::nullopt;
 }
 
 void FakeBoltHumanoidDriver::shutdown()
